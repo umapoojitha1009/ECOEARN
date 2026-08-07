@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOEARN | Pan-India</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
+        <div class="logo">ECOEARN</div>
+        <div class="cart-trigger" onclick="showSection('cart')">
+            <i class="fas fa-shopping-cart"></i><span id="cart-badge" class="badge">0</span>
+        </div>
+    </header>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleSidebar()">&times;</div>
+        <ul>
+            <li onclick="showSection('about')">🌿 <span data-key="nav-about">About</span></li>
+            <li onclick="showSection('growth')">📈 <span data-key="nav-growth">Impact</span></li>
+            <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calc</span></li>
+            <li onclick="showSection('leaderboard')">🏆 <span data-key="nav-rank">Leaderboard</span></li>
+            <li onclick="showSection('orders')">📦 <span data-key="nav-orders">Orders</span></li>
+            <li onclick="showSection('wallet')">💰 <span data-key="nav-wallet">Real Wallet</span></li>
+            <li onclick="showSection('expected-wallet-screen')">⏳ <span data-key="nav-exp-wallet">Expected Wallet</span></li>
+            <li onclick="showQrModal()">📱 <span data-key="nav-qr">My Collector QR</span></li>
+            <li onclick="showSection('products')">🛍️ <span data-key="nav-shop">Shop</span></li>
+            <li onclick="showSection('feedback-screen')">⭐ <span data-key="nav-feedback">Review</span></li>
+            <li onclick="logout()" class="logout-link">🚪 <span data-key="nav-logout">Logout</span></li>
+        </ul>
+    </nav>
+    <div id="overlay" onclick="toggleSidebar()"></div>
+
+    <main>
+        <section id="intro-screen" class="centered-view">
+            <div class="glass-card">
+                <h2>ECOEARN</h2>
+                <p data-key="intro-desc">Recycle plastic and shop 100+ sustainable products.</p>
+                <button class="btn-primary" onclick="showSection('login-screen')" data-key="get-started">Get Started</button>
+            </div>
+        </section>
+
+        <section id="login-screen" class="centered-view hidden">
+            <div class="glass-card">
+                <h3 data-key="login-title">Login / Register</h3>
+                <form id="login-form" class="vertical-form">
+                    <input type="email" id="log-email" placeholder="Email" required autocomplete="email">
+                    <input type="password" id="log-pass" placeholder="Password" required autocomplete="current-password">
+                    <button type="submit" class="btn-primary" data-key="login-btn">Enter Dashboard</button>
+                </form>
+            </div>
+        </section>
+
+        <section id="lang-select-screen" class="centered-view hidden">
+            <div class="glass-card">
+                <h3 data-key="choose-lang">Choose Your Language</h3>
+                <div class="vertical-form">
+                    <select id="main-lang-select" style="padding: 15px; border-radius: 10px; border: none; font-size: 1rem; background: #fff; color: #333;">
+                        <option value="en">English</option>
+                        <option value="te">తెలుగు (Telugu)</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
+                    </select>
+                    <button class="btn-primary" onclick="setInitialLanguage()" data-key="continue-btn">Continue</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-dash">Calculator</h2>
+                <div class="calc-container">
+                    <input type="number" id="plastic-weight" placeholder="KGs" oninput="updateReward()">
+                    <div class="reward-box">
+                        <span data-key="reward-text">Appropriate Reward</span> ₹<span id="reward-val">0</span>
+                    </div>
+                    <button class="btn-primary" onclick="addToExpectedWallet()" data-key="add-exp-wallet-btn">Add to Expected Wallet</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- REAL WALLET (VERIFIED MONEY FOR SHOPPING) -->
+        <section id="wallet" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-wallet">Real Wallet Balance</h2>
+                <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">(Verified by Operator - Usable for Shopping)</p>
+                <div class="balance-large" style="font-size: 3rem; margin: 20px 0; color: #27ae60;">₹<span id="wallet-balance">0</span></div>
+                <button class="btn-primary" onclick="showSection('products')" data-key="shop-now">Shop Now</button>
+            </div>
+        </section>
+
+        <!-- EXPECTED WALLET (SELF-ENTERED ESTIMATE) -->
+        <section id="expected-wallet-screen" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-exp-wallet">Expected Wallet</h2>
+                <p style="color: #f39c12; font-size: 0.85rem; margin-top: 5px;">(Self-Calculated Estimate - Pending Operator Pickup)</p>
+                <div class="balance-large" style="font-size: 3rem; margin: 20px 0; color: #f39c12;">₹<span id="expected-wallet-balance">0</span></div>
+                <p style="color: #ccc; font-size: 0.9rem;">Show your QR code to the operator during pickup to convert this into Real Balance!</p>
+            </div>
+        </section>
+
+        <!-- QR CODE DISPLAY SCREEN -->
+        <section id="qr-modal-screen" class="centered-view hidden">
+            <div class="glass-card">
+                <h2>My Collector QR</h2>
+                <p style="color:#aaa; margin-bottom:15px; font-size:0.85rem;">Show this QR Code to the Operator during pickup to verify and credit your Real Wallet.</p>
+                <div id="qrcode-container" style="display:flex; justify-content:center; background:#fff; padding:15px; border-radius:15px; margin:15px 0;"></div>
+                <p style="font-weight:bold; color:#27ae60;" id="qr-user-email"></p>
+                <button class="btn-primary" onclick="showSection('dashboard')" style="margin-top:15px;">Close</button>
+            </div>
+        </section>
+
+        <!-- OPERATOR VERIFICATION PORTAL SCREEN -->
+        <section id="operator-approval-screen" class="centered-view hidden">
+            <div class="glass-card" style="border:2px solid #27ae60;">
+                <h2 style="color:#27ae60;">Operator Verification Portal</h2>
+                <div style="text-align:left; background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin:15px 0;">
+                    <p><strong>User Email:</strong> <span id="op-user-email">Loading...</span></p>
+                    <p><strong>Current Real Wallet:</strong> ₹<span id="op-user-balance">0</span></p>
+                    <p><strong>Current Expected Wallet:</strong> ₹<span id="op-user-exp-balance">0</span></p>
+                </div>
+                <div class="vertical-form">
+                    <label style="text-align:left; color:#aaa; font-size:0.85rem;">Enter Scale Weight (KGs):</label>
+                    <input type="number" id="op-verified-weight" placeholder="Measured Weight in KGs" oninput="updateOpCreditPreview()">
+                    <p style="font-weight:bold; color:#27ae60; margin:10px 0;">Credit Preview: ₹<span id="op-credit-preview">0</span></p>
+                    <button class="btn-primary" onclick="approveAndCreditUser()">Approve & Credit Real Wallet</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="centered-view hidden">
+            <div class="scroll-container" style="width: 100%; max-width: 1200px; padding: 20px;">
+                <div class="catalog-header" style="margin-bottom: 20px;">
+                    <h2 data-key="nav-shop">Eco Catalog</h2>
+                    <input type="text" id="product-search" placeholder="Search for eco-friendly products..." oninput="filterProducts()" style="width: 100%; max-width: 400px; padding: 12px; border-radius: 8px; border: none;">
+                </div>
+                <div id="product-list" class="product-grid"></div>
+            </div>
+        </section>
+
+        <section id="cart" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-cart">Cart</h2>
+                <div id="cart-items"></div>
+                <h3 style="margin: 20px 0;"><span data-key="total-text">Total</span>: ₹<span id="cart-total-price">0</span></h3>
+                <button class="btn-primary" onclick="processToPickup()" data-key="purchase-btn">Purchase</button>
+            </div>
+        </section>
+
+        <section id="pickup" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="pickup-title">Schedule Pickup</h2>
+                <div class="vertical-form">
+                    <input type="text" id="pickup-address" placeholder="Address" required>
+                    <input type="text" id="pickup-landmark" placeholder="Landmark" required>
+                    <input type="date" id="pickup-date" required>
+                    <button class="btn-primary" onclick="confirmPurchaseAndPickup()" data-key="confirm-order">Confirm Order</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="orders" class="centered-view hidden">
+            <div class="glass-card" style="width: 700px; max-height: 80vh; overflow-y: auto;">
+                <h2 data-key="nav-orders">Your Orders</h2>
+                <div id="orders-list"></div>
+            </div>
+        </section>
+
+        <section id="feedback-screen" class="centered-view hidden">
+            <div class="glass-card" style="width: 500px;">
+                <h2 style="color: #27ae60; margin-bottom: 10px;" data-key="feedback-title">Rate Your Experience</h2>
+                <p style="color: #ccc; margin-bottom: 25px; font-size: 0.95rem;" data-key="feedback-subtitle">Your feedback helps us make ECOEARN better.</p>
+                
+                <div class="star-rating-container" style="display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;">
+                    <i class="fas fa-star feedback-star" onclick="setRating(1)" data-value="1" style="font-size: 2.2rem; cursor: pointer; color: #444; transition: 0.2s;"></i>
+                    <i class="fas fa-star feedback-star" onclick="setRating(2)" data-value="2" style="font-size: 2.2rem; cursor: pointer; color: #444; transition: 0.2s;"></i>
+                    <i class="fas fa-star feedback-star" onclick="setRating(3)" data-value="3" style="font-size: 2.2rem; cursor: pointer; color: #444; transition: 0.2s;"></i>
+                    <i class="fas fa-star feedback-star" onclick="setRating(4)" data-value="4" style="font-size: 2.2rem; cursor: pointer; color: #444; transition: 0.2s;"></i>
+                    <i class="fas fa-star feedback-star" onclick="setRating(5)" data-value="5" style="font-size: 2.2rem; cursor: pointer; color: #444; transition: 0.2s;"></i>
+                </div>
+
+                <div class="vertical-form">
+                    <textarea id="feedback-comments" placeholder="Write your suggestions here..." style="width: 100%; height: 100px; padding: 15px; border-radius: 10px; border: none; font-size: 1rem; outline: none; resize: none; font-family: inherit; color: #333; background: #fff;"></textarea>
+                    <button class="btn-primary" onclick="submitFeedback()" data-key="submit-feedback-btn">Submit Review</button>
+                    <button class="btn-secondary" onclick="showSection('dashboard')" style="background: transparent; color: #aaa; border: none; cursor: pointer; margin-top: 5px;" data-key="skip-btn">Skip for Now</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="growth" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-growth">My Impact</h2>
+                <div class="impact-stat" style="margin: 20px 0;">
+                    <p style="font-size: 2rem; color: #27ae60; margin: 0;"><span id="total-kg">0</span> KG</p>
+                    <small data-key="plastic-recycled" style="color: #aaa;">Plastic Recycled</small>
+                </div>
+            </div>
+        </section>
+
+        <section id="leaderboard" class="centered-view hidden">
+            <div class="glass-card">
+                <h2 data-key="nav-rank">Leaderboard</h2>
+                <div id="leaderboard-list" style="margin-top: 15px;"></div>
+            </div>
+        </section>
+
+        <section id="about" class="centered-view hidden">
+            <div class="glass-card" style="text-align: left; max-height: 80vh; overflow-y: auto;">
+                <h2 data-key="nav-about" style="text-align: center; color: #27ae60;">OUR MISSION</h2>
+                <p data-key="about-content" style="margin-top:20px; line-height:1.6; color: #e0e0e0;">
+                    Welcome to ECOEARN, India's premier digital circular economy platform dedicated to combating plastic pollution while rewarding community action. Our mission is simple yet impactful: to bridge the gap between waste generation and sustainable consumption by turning everyday plastic recyclables into valuable digital credits.
+                    <br><br>
+                    Based out of the coastal hub of Visakhapatnam, ECOEARN empowers citizens to directly reduce their municipal carbon footprint. Every kilogram of plastic waste you log into our smart calculator keeps debris away from pristine marine ecosystems and local landfills, converting your eco-conscious efforts into tradeable currency.
+                </p>
+                <h3 data-key="how-it-works-title" style="color: #27ae60; margin: 25px 0 10px 0; font-size: 1.3rem;">How It Works</h3>
+                <ul style="list-style-position: inside; color: #e0e0e0; line-height: 1.8; margin-bottom: 15px; padding-left: 5px;">
+                    <li data-key="how-step-1"><strong>Collect:</strong> Gather your plastic recyclables at home.</li>
+                    <li data-key="how-step-2"><strong>Calculate:</strong> Input the weight in KGs to view your reward rate (₹20/KG).</li>
+                    <li data-key="how-step-3"><strong>Earn:</strong> Instantly add the digital currency rewards straight to your wallet balance.</li>
+                    <li data-key="how-step-4"><strong>Shop:</strong> Spend your credits directly in our sustainable catalog of over 100+ plastic-free items.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

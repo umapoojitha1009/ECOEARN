@@ -1,0 +1,354 @@
+/* ==========================================
+   1. CORE STYLES & BACKGROUND
+   ========================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: url('bg.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* ==========================================
+   2. TOP BAR NAVIGATION
+   ========================================== */
+.top-bar {
+    height: 70px;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.logo {
+    color: #27ae60;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.hamburger {
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+.cart-trigger {
+    cursor: pointer;
+    position: relative;
+    font-size: 1.4rem;
+}
+
+.badge {
+    background: #e74c3c;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: -10px;
+}
+
+/* ==========================================
+   3. SIDEBAR (COMPRESSED INTERFACE — NO SCROLL)
+   ========================================== */
+.sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    width: 280px;
+    height: 100%;
+    background: #111;
+    transition: 0.4s ease;
+    z-index: 2000;
+    padding-top: 15px; /* Tightened layout header padding */
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin-top: 25px;
+}
+
+.sidebar ul li {
+    padding: 12px 25px; /* Decreased padding to easily fit all links on screen */
+    cursor: pointer;
+    border-bottom: 1px solid #1a1a1a;
+    transition: 0.3s;
+    font-size: 1rem; /* Slightly sleeker typography balance */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* THE BLUE HIGHLIGHT */
+.sidebar ul li:hover {
+    background: #007bff;
+    color: white;
+}
+
+.sidebar-lang {
+    padding: 10px 25px;
+}
+
+/* ==========================================
+   4. GLASS CARDS & SIZING CONTROLS
+   ========================================== */
+.centered-view {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+}
+
+.glass-card {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 35px;
+    border-radius: 25px;
+    text-align: center;
+    width: 100%;
+    max-width: 420px; /* Reduced card size to prevent overly broad appearance */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* Keep the about panel and orders card wide enough for full content visibility */
+#about .glass-card, 
+#orders .glass-card {
+    max-width: 750px;
+}
+
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+input, select, textarea {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.btn-primary {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: #219150;
+    transform: scale(1.02);
+}
+
+/* ==========================================
+   5. ECO CATALOG (CENTERED GRID)
+   ========================================== */
+#products {
+    display: block;
+    padding-top: 100px;
+    text-align: center;
+    width: 100%;
+}
+
+.scroll-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.catalog-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+#product-search {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 35px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.product-item {
+    background: white;
+    color: #333;
+    padding: 20px;
+    border-radius: 20px;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.product-item img {
+    height: 160px;
+    width: 100%;
+    object-fit: contain;
+}
+
+/* ==========================================
+   6. CART & ORDERS STYLING
+   ========================================== */
+.cart-row {
+    background: white;
+    color: black;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.qty-btn {
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    width: 28px;
+    height: 28px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.order-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    border-left: 5px solid #27ae60;
+}
+
+.order-img-strip {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    overflow-x: auto;
+}
+
+.order-img-strip img {
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ==========================================
+   7. UTILITIES & QR SYSTEM
+   ========================================== */
+.reward-box {
+    margin: 20px 0;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.balance-large {
+    font-size: 3.5rem;
+    color: #27ae60;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.impact-stat {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+#qrcode-container img {
+    margin: 0 auto;
+    display: block;
+}
+
+.hidden { display: none !important; }
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 1500;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 1000px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .glass-card { width: 90%; }
+}
+
+@media (max-width: 600px) {
+    .product-grid { grid-template-columns: 1fr; }
+}
+
+/* FEEDBACK STARS STYLING */
+.feedback-star:hover,
+.feedback-star.active {
+    color: #f1c40f !important; /* Gold star color */
+    text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+    transform: scale(1.1);
+}
+
+textarea {
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    transition: 0.3s;
+}
+
+textarea:focus {
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
+}
