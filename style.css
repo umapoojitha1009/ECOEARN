@@ -72,7 +72,7 @@ body {
     background: #111;
     transition: 0.4s ease;
     z-index: 2000;
-    padding-top: 15px; /* Tightened layout header padding */
+    padding-top: 15px;
 }
 
 .sidebar.active {
@@ -94,17 +94,16 @@ body {
 }
 
 .sidebar ul li {
-    padding: 12px 25px; /* Decreased padding to easily fit all links on screen */
+    padding: 12px 25px;
     cursor: pointer;
     border-bottom: 1px solid #1a1a1a;
     transition: 0.3s;
-    font-size: 1rem; /* Slightly sleeker typography balance */
+    font-size: 1rem;
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-/* THE BLUE HIGHLIGHT */
 .sidebar ul li:hover {
     background: #007bff;
     color: white;
@@ -133,16 +132,19 @@ body {
     border-radius: 25px;
     text-align: center;
     width: 100%;
-    max-width: 420px; /* Reduced card size to prevent overly broad appearance */
+    max-width: 420px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* Keep the about panel and orders card wide enough for full content visibility */
 #about .glass-card, 
 #orders .glass-card,
 #map-screen .glass-card {
     max-width: 750px;
+}
+
+#barcode-screen .glass-card {
+    max-width: 550px;
 }
 
 .vertical-form {
@@ -285,7 +287,7 @@ input, select, textarea {
 }
 
 /* ==========================================
-   7. UTILITIES & QR SYSTEM
+   7. UTILITIES, FEEDBACK & QR SYSTEM
    ========================================== */
 .reward-box {
     margin: 20px 0;
@@ -325,20 +327,10 @@ input, select, textarea {
     z-index: 1500;
 }
 
-/* RESPONSIVE FIXES */
-@media (max-width: 1000px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr); }
-    .glass-card { width: 90%; }
-}
-
-@media (max-width: 600px) {
-    .product-grid { grid-template-columns: 1fr; }
-}
-
 /* FEEDBACK STARS STYLING */
 .feedback-star:hover,
 .feedback-star.active {
-    color: #f1c40f !important; /* Gold star color */
+    color: #f1c40f !important;
     text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
     transform: scale(1.1);
 }
@@ -354,8 +346,18 @@ textarea:focus {
     box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
 }
 
+/* RESPONSIVE FIXES */
+@media (max-width: 1000px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .glass-card { width: 90%; }
+}
+
+@media (max-width: 600px) {
+    .product-grid { grid-template-columns: 1fr; }
+}
+
 /* ==========================================
-   8. BARCODE SCANNER & GPS MAP ADD-ONS (NEW)
+   8. BARCODE SCANNER & GPS MAP ADD-ONS
    ========================================== */
 #reader video {
     width: 100% !important;
@@ -373,10 +375,17 @@ textarea:focus {
     margin-top: 10px !important;
 }
 
-#barcode-screen .glass-card {
-    max-width: 550px;
+/* Interactive Price / MRP Input Focus Style */
+#input-mrp-val {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+#input-mrp-val:focus {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
+}
+
+/* Leaflet Map Custom Popup Overrides */
 .leaflet-popup-content-wrapper {
     background: #111 !important;
     color: #fff !important;

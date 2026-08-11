@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Barcode Reader Library (Supports both Live Camera & Image File Upload) -->
+    <!-- Barcode Reader Library (Supports Live Camera & Image File Upload) -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <!-- Leaflet.js Interactive Map (OpenSource GPS Tracking) -->
+    <!-- Leaflet.js Interactive Map (GPS Tracking) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -70,7 +70,7 @@
                     <select id="main-lang-select" style="padding: 15px; border-radius: 10px; border: none; font-size: 1rem; background: #fff; color: #333;">
                         <option value="en">English</option>
                         <option value="te">తెలుగు (Telugu)</option>
-                        <option value="hi">హిन्दी (Hindi)</option>
+                        <option value="hi">हिन्दी (Hindi)</option>
                     </select>
                     <button class="btn-primary" onclick="setInitialLanguage()" data-key="continue-btn">Continue</button>
                 </div>
@@ -96,25 +96,25 @@
                 <h2>📷 Product Barcode Deposit</h2>
                 <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">Scan product barcode or upload image to earn <strong>25% Eco-Deposit Reward</strong>!</p>
                 
-                <!-- Tab Controls for Camera vs Upload -->
+                <!-- Tab Controls -->
                 <div style="display: flex; gap: 10px; margin: 15px 0; justify-content: center;">
                     <button id="btn-cam-tab" type="button" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;" onclick="switchBarcodeTab('cam')">📷 Live Camera</button>
                     <button id="btn-file-tab" type="button" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: #333;" onclick="switchBarcodeTab('file')">📁 Upload Image (Laptop)</button>
                 </div>
 
-                <!-- Live Camera Reader Container -->
+                <!-- Live Camera Container -->
                 <div id="barcode-cam-view" style="width: 100%; margin: 10px 0;">
                     <div id="reader" style="width: 100%; min-height: 250px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;"></div>
                 </div>
 
-                <!-- File Upload Container + Manual Barcode Fallback -->
+                <!-- File Upload Container + Manual Entry -->
                 <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 20px 0; text-align: center; border: 2px dashed #27ae60; padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.05);">
                     <i class="fas fa-file-image" style="font-size: 2.2rem; color: #27ae60; margin-bottom: 8px;"></i>
                     <p style="color: #eee; font-size: 0.9rem; margin-bottom: 10px;">Select a barcode photo from your files:</p>
                     <input type="file" id="barcode-file-input" accept="image/*" onchange="processBarcodeFromFile(this)" style="display: none;">
                     <button type="button" class="btn-primary" onclick="document.getElementById('barcode-file-input').click()">Choose Image File</button>
 
-                    <!-- MANUAL ENTRY FALLBACK IF PHOTO IS BLURRY -->
+                    <!-- MANUAL BARCODE ENTRY -->
                     <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15);">
                         <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 8px;">Or enter the 13-digit barcode number manually:</p>
                         <div style="display: flex; gap: 8px; justify-content: center;">
@@ -124,18 +124,13 @@
                     </div>
                 </div>
 
-                <!-- Scan Result Preview -->
+                <!-- Scan Result Preview & Price Input Card -->
                 <div id="barcode-result-card" class="hidden" style="background: rgba(39, 174, 96, 0.15); border: 1px solid #27ae60; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: left;">
-                    <h4 style="color: #27ae60; margin-bottom: 8px;">✅ Product Identified!</h4>
-                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>Product:</strong> <span id="res-prod-name">PET Beverage Bottle</span></p>
-                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>Retail Price (MRP):</strong> ₹<span id="res-prod-mrp">0</span></p>
-                    <p style="margin: 4px 0; font-size: 1rem; color: #27ae60;"><strong>25% Eco Deposit Reward:</strong> ₹<span id="res-prod-reward">0</span></p>
-                    <button type="button" class="btn-primary" onclick="claimBarcodeReward()" style="margin-top: 12px; width: 100%;">Claim Deposit to Expected Wallet</button>
                 </div>
             </div>
         </section>
 
-        <!-- LIVE GPS RECYCLING CENTER MAP SCREEN -->
+        <!-- RECYCLING CENTER MAP SCREEN -->
         <section id="map-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 100%; max-width: 800px; padding: 20px;">
                 <h2>🗺️ Nearest Recycling Centers</h2>
@@ -164,7 +159,7 @@
             </div>
         </section>
 
-        <!-- QR CODE DISPLAY SCREEN -->
+        <!-- QR CODE SCREEN -->
         <section id="qr-modal-screen" class="centered-view hidden">
             <div class="glass-card">
                 <h2>My Collector QR</h2>
@@ -175,7 +170,7 @@
             </div>
         </section>
 
-        <!-- OPERATOR VERIFICATION PORTAL SCREEN -->
+        <!-- OPERATOR VERIFICATION PORTAL -->
         <section id="operator-approval-screen" class="centered-view hidden">
             <div class="glass-card" style="border:2px solid #27ae60;">
                 <h2 style="color:#27ae60;">Operator Verification Portal</h2>
@@ -291,6 +286,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=2"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>

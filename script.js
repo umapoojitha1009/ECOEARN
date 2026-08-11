@@ -176,10 +176,10 @@ const translations = {
 const productList = [
     { id: 1, name: { en: "Bamboo Toothbrushes", te: "వెదురు టూత్ బ్రష్‌లు", hi: "बांस के टूथब्रश" }, price: 60, img: "brush.png" },
     { id: 2, name: { en: "Glass Jars", te: "గాజు సీసాలు", hi: "कांच के जार" }, price: 120, img: "jar.jpeg" },
-    { id: 3, name: { en: "Stainless Steel Straws", te: "స్టీల్ స్ట్రాలు", hi: "स्टेनलेस स्टील स्ट्रॉ" }, price: 80, img: "straw.png" },
+    { id: 3, name: { en: "Stainless Steel Straws", te: "స్టీల్ స్ట్రాలు", hi: "స్టెయిన్‌లెస్ స్టీల్ స్ట్రా" }, price: 80, img: "straw.png" },
     { id: 4, name: { en: "Beeswax Wraps", te: "తేనెటీగ మైనపు రేపర్లు", hi: "मोम के रैप्स" }, price: 250, img: "wax.jpeg" },
     { id: 5, name: { en: "Cotton Bags", te: "పత్తి సంచులు", hi: "सूती थैले" }, price: 100, img: "cloth.png" },
-    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूట్ के थैले" }, price: 150, img: "jute.png" },
+    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूट के थैले" }, price: 150, img: "jute.png" },
     { id: 7, name: { en: "Bamboo Cutlery", te: "వెదురు స్పూన్లు", hi: "बांस के चम्मच और कांटे" }, price: 200, img: "spoon.png" },
     { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "स्टेनलेस स्टील टिफिन" }, price: 450, img: "box..jpeg" },
     { id: 9, name: { en: "Copper Water Bottles", te: "రాగి వాటర్ బాటిల్స్", hi: "तांबे की पानी की बोतलें" }, price: 850, img: "copper.png" },
@@ -216,7 +216,7 @@ const productList = [
     { id: 40, name: { en: "Sisal Dish Brushes", te: "సిసల్ గిన్నెల బ్రష్లు", hi: "सिसल डिश ब्रश" }, price: 130, img: "dish.jpeg" },
     { id: 41, name: { en: "Natural Rubber Toys", te: "సహజ రబ్బరు బొమ్మలు", hi: "प्राकृतिक रबर के खिलौने" }, price: 450, img: "toys.jpeg" },
     { id: 42, name: { en: "Wooden Building Blocks", te: "చెక్క బిల్డింగ్ బ్లాక్స్", hi: "लकड़ी के ब्लॉक" }, price: 800, img: "block.jpeg" },
-    { id: 43, name: { en: "Cotton Bread Bags", te: "కాటన్ రొట్టె సంచులు", hi: "सूती ब्रेड बैग" }, price: 110, img: "bread.jpeg" },
+    { id: 43, name: { en: "Cotton Bread Bags", te: "కాటన్ రొట్టె సంచులు", hi: "సూती ब्रेड बैग" }, price: 110, img: "bread.jpeg" },
     { id: 44, name: { en: "Canvas Backpacks", te: "క్యాన్వాస్ బ్యాక్‌ప్యాక్‌లు", hi: "క్యాన్వాస్ బ్యాగ్" }, price: 1200, img: "canva.png" },
     { id: 45, name: { en: "Metal Paperclips", te: "మెటల్ పేపర్‌క్లిప్‌లు", hi: "धातु की पेपर क्लिप" }, price: 50, img: "clips.jpeg" },
     { id: 46, name: { en: "Compostable Parchment Paper", te: "కంపోస్టబుల్ పార్చ్మెంట్ పేపర్", hi: "कम्पोस्टेबल चर्मपत्र कागज" }, price: 160, img: "wrap.jpeg" },
@@ -246,7 +246,7 @@ const productList = [
     { id: 70, name: { en: "Reed Diffusers", te: "రీడ్ డిఫ్యూజర్లు", hi: "రీడ్ డిఫ్యూజర్" }, price: 450, img: "reedd.jpeg" },
     { id: 71, name: { en: "Bamboo Baskets", te: "వెదురు బుట్టలు", hi: "बांस की टोकरियाँ" }, price: 900, img: "bin.jpeg" },
     { id: 72, name: { en: "Ice Cube Trays", te: "ఐస్ క్యూబ్ ట్రేలు", hi: "बर्फ जमाने की ट्रे" }, price: 320, img: "ice.jpeg" },
-    { id: 73, name: { en: "Ceramic Dinnerware", te: "సిరామిక్ డిన్నర్ సెట్లు", hi: "सिरेमिक डिनर सेट" }, price: 1500, img: "set.jpeg" },
+    { id: 73, name: { en: "Ceramic Dinnerware", te: "సిరామిక్ డిన్నర్ సెట్లు", hi: "సిరేమిక్ డిన్నర్ సెట్" }, price: 1500, img: "set.jpeg" },
     { id: 74, name: { en: "Spice Racks", te: "మసాలా పెట్టెల స్టాండ్లు", hi: "मसाला रखने का रैक" }, price: 400, img: "stack.jpeg" },
     { id: 75, name: { en: "Measuring Cups", te: "కొలత కప్పులు", hi: "मापने वाले कप" }, price: 280, img: "glass2.jpeg" },
     { id: 76, name: { en: "Bamboo Straws", te: "వెదురు స్ట్రాలు", hi: "बांस के स्ट्रॉ" }, price: 60, img: "bamboos.jpeg" },
@@ -521,9 +521,7 @@ function processManualBarcode() {
     // Instant UI Loading Feedback
     const resultCard = document.getElementById('barcode-result-card');
     if (resultCard) {
-        document.getElementById('res-prod-name').innerText = "Searching global product database...";
-        document.getElementById('res-prod-mrp').innerText = "...";
-        document.getElementById('res-prod-reward').innerText = "...";
+        resultCard.innerHTML = `<h4 style="color: #27ae60; margin-bottom: 8px;">🔍 Identifying product...</h4>`;
         resultCard.classList.remove('hidden');
     }
 
@@ -535,38 +533,65 @@ async function handleScannedBarcode(barcodeText) {
     console.log("Processing Barcode: ", barcodeText);
     
     let prodName = "PET Plastic Beverage Container";
-    let prodMrp = 40; // Default fallback MRP if unlisted in global database
 
     try {
-        // Query Open Food Facts Global API
+        // Query Open Food Facts Global API for Brand/Product Name
         const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcodeText}.json`);
         const data = await response.json();
         
         if (data.status === 1 && data.product) {
             prodName = data.product.product_name || data.product.brands || "PET Plastic Beverage Container";
-            if (data.product.nutriments && data.product.nutriments.price) {
-                prodMrp = parseFloat(data.product.nutriments.price);
-            }
         }
     } catch (err) {
-        console.log("Using standard deposit fallback.");
+        console.log("Barcode lookup fallback triggered.");
     }
 
-    // Calculate 25% Eco-Deposit Reward
-    scannedProductReward = Math.round(prodMrp * 0.25);
-    if (scannedProductReward < 10) scannedProductReward = 10; // Minimum default reward ₹10
+    scannedProductReward = 0; // Reset reward state until user inputs MRP
 
-    // Display Results
-    document.getElementById('res-prod-name').innerText = prodName;
-    document.getElementById('res-prod-mrp').innerText = prodMrp;
-    document.getElementById('res-prod-reward').innerText = scannedProductReward;
+    // Display Result Card with MRP Prompt
+    const resultCard = document.getElementById('barcode-result-card');
+    resultCard.innerHTML = `
+        <h4 style="color: #27ae60; margin-bottom: 8px;">✅ Product Identified!</h4>
+        <p style="margin: 6px 0; font-size: 0.95rem;"><strong>Product / Brand:</strong> <span id="res-prod-name">${prodName}</span></p>
+        
+        <div style="margin: 12px 0;">
+            <label style="font-size: 0.85rem; color: #ccc;">Enter Item Price/MRP (₹):</label><br>
+            <input type="number" id="input-mrp-val" placeholder="e.g. 135" oninput="calculateCustomDeposit()" style="padding: 8px 12px; border-radius: 6px; border: 1.5px solid #27ae60; width: 140px; margin-top: 5px; font-weight: bold; font-size: 1rem; color: #333; outline: none;">
+        </div>
+
+        <p style="margin: 8px 0; font-size: 1.1rem; color: #27ae60;">
+            <strong>25% Eco Deposit Reward:</strong> ₹<span id="res-prod-reward">0</span>
+        </p>
+        
+        <button type="button" class="btn-primary" onclick="claimBarcodeReward()" style="margin-top: 12px; width: 100%;">Claim Deposit to Expected Wallet</button>
+    `;
+
+    resultCard.classList.remove('hidden');
+}
+
+function calculateCustomDeposit() {
+    const mrpInput = document.getElementById('input-mrp-val');
+    if (!mrpInput) return;
     
-    document.getElementById('barcode-result-card').classList.remove('hidden');
+    let userMrp = parseFloat(mrpInput.value) || 0;
+    
+    // Safety cap at ₹2,000 per single item
+    if (userMrp > 2000) {
+        userMrp = 2000;
+        mrpInput.value = 2000;
+    }
+    
+    scannedProductReward = Math.round(userMrp * 0.25);
+    
+    const rewardSpan = document.getElementById('res-prod-reward');
+    if (rewardSpan) {
+        rewardSpan.innerText = scannedProductReward;
+    }
 }
 
 async function claimBarcodeReward() {
     if (!currentUserData) return alert("Please log in first!");
-    if (scannedProductReward <= 0) return alert("No valid deposit reward to claim.");
+    if (scannedProductReward <= 0) return alert("Please enter a valid price/MRP to calculate reward before claiming.");
 
     try {
         const newExpWallet = (currentUserData.expectedWallet || 0) + scannedProductReward;
