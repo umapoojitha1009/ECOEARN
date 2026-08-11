@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Barcode Reader Library (Supports both Live Camera & Image File Upload) -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- Leaflet.js Interactive Map (OpenSource GPS Tracking) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <header class="top-bar">
@@ -24,6 +29,8 @@
             <li onclick="showSection('about')">🌿 <span data-key="nav-about">About</span></li>
             <li onclick="showSection('growth')">📈 <span data-key="nav-growth">Impact</span></li>
             <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calc</span></li>
+            <li onclick="showSection('barcode-screen')">📷 <span data-key="nav-barcode">Barcode Deposit</span></li>
+            <li onclick="showSection('map-screen')">🗺️ <span data-key="nav-map">Recycling Centers</span></li>
             <li onclick="showSection('leaderboard')">🏆 <span data-key="nav-rank">Leaderboard</span></li>
             <li onclick="showSection('orders')">📦 <span data-key="nav-orders">Orders</span></li>
             <li onclick="showSection('wallet')">💰 <span data-key="nav-wallet">Real Wallet</span></li>
@@ -80,6 +87,51 @@
                     </div>
                     <button class="btn-primary" onclick="addToExpectedWallet()" data-key="add-exp-wallet-btn">Add to Expected Wallet</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- BARCODE DEPOSIT SCANNER SCREEN (NEW: CAMERA + FILE UPLOAD FOR LAPTOP) -->
+        <section id="barcode-screen" class="centered-view hidden">
+            <div class="glass-card" style="width: 100%; max-width: 550px;">
+                <h2>📷 Product Barcode Deposit</h2>
+                <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">Scan product barcode or upload image to earn <strong>25% Eco-Deposit Reward</strong>!</p>
+                
+                <!-- Tab Controls for Camera vs Upload -->
+                <div style="display: flex; gap: 10px; margin: 15px 0; justify-content: center;">
+                    <button id="btn-cam-tab" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;" onclick="switchBarcodeTab('cam')">📷 Live Camera</button>
+                    <button id="btn-file-tab" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: #333;" onclick="switchBarcodeTab('file')">📁 Upload Image (Laptop)</button>
+                </div>
+
+                <!-- Live Camera Reader Container -->
+                <div id="barcode-cam-view" style="width: 100%; margin: 10px 0;">
+                    <div id="reader" style="width: 100%; min-height: 250px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;"></div>
+                </div>
+
+                <!-- File Upload Container -->
+                <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 20px 0; text-align: center; border: 2px dashed #27ae60; padding: 25px; border-radius: 12px; background: rgba(255,255,255,0.05);">
+                    <i class="fas fa-file-image" style="font-size: 2.5rem; color: #27ae60; margin-bottom: 10px;"></i>
+                    <p style="color: #eee; font-size: 0.9rem; margin-bottom: 12px;">Select a barcode photo from your files:</p>
+                    <input type="file" id="barcode-file-input" accept="image/*" onchange="processBarcodeFromFile(this)" style="display: none;">
+                    <button class="btn-primary" onclick="document.getElementById('barcode-file-input').click()">Choose Image File</button>
+                </div>
+
+                <!-- Scan Result Preview -->
+                <div id="barcode-result-card" class="hidden" style="background: rgba(39, 174, 96, 0.15); border: 1px solid #27ae60; border-radius: 10px; padding: 15px; margin-top: 15px; text-align: left;">
+                    <h4 style="color: #27ae60; margin-bottom: 8px;">✅ Product Identified!</h4>
+                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>Product:</strong> <span id="res-prod-name">PET Beverage Bottle</span></p>
+                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>Retail Price (MRP):</strong> ₹<span id="res-prod-mrp">0</span></p>
+                    <p style="margin: 4px 0; font-size: 1rem; color: #27ae60;"><strong>25% Eco Deposit Reward:</strong> ₹<span id="res-prod-reward">0</span></p>
+                    <button class="btn-primary" onclick="claimBarcodeReward()" style="margin-top: 12px; width: 100%;">Claim Deposit to Expected Wallet</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE GPS RECYCLING CENTER MAP SCREEN (NEW) -->
+        <section id="map-screen" class="centered-view hidden">
+            <div class="glass-card" style="width: 100%; max-width: 800px; padding: 20px;">
+                <h2>🗺️ Nearest Recycling Centers</h2>
+                <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">Real-time GPS mapping for nearby scrap aggregators and drop-off hubs.</p>
+                <div id="eco-map" style="height: 380px; width: 100%; border-radius: 12px; margin-top: 15px; border: 1.5px solid #27ae60; position: relative; z-index: 1;"></div>
             </div>
         </section>
 

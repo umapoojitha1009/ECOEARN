@@ -20,6 +20,12 @@ let userCart = [];
 let currentLang = 'en';
 let selectedRatingScore = 0;
 
+// Scanner & Map State Variables
+let html5QrScannerInstance = null;
+let scannedProductReward = 0;
+let ecoMapInstance = null;
+let mapInitialized = false;
+
 // ==========================================
 // 2. TRANSLATIONS DICTIONARY (UNIFIED & MULTILINGUAL)
 // ==========================================
@@ -53,6 +59,8 @@ const translations = {
         'nav-wallet': 'Real Wallet', 
         'nav-exp-wallet': 'Expected Wallet',
         'nav-qr': 'My Collector QR',
+        'nav-barcode': 'Barcode Deposit',
+        'nav-map': 'Recycling Centers',
         'shop-now': 'Shop Now', 
         'add-to-cart': 'Add to Cart', 
         'nav-rank': 'Leaderboard', 
@@ -97,6 +105,8 @@ const translations = {
         'nav-wallet': 'అసలు వాలెట్', 
         'nav-exp-wallet': 'అంచనా వాలెట్',
         'nav-qr': 'నా కలెక్టర్ QR',
+        'nav-barcode': 'బార్‌కోడ్ డిపాజిట్',
+        'nav-map': 'రీసైక్లింగ్ కేంద్రాలు',
         'shop-now': 'ఇప్పుడే షాపింగ్ చేయండి', 
         'add-to-cart': 'కార్ట్‌కి జోడించు', 
         'nav-rank': 'లీడర్ బోర్డ్', 
@@ -141,6 +151,8 @@ const translations = {
         'nav-wallet': 'असली वॉलेट', 
         'nav-exp-wallet': 'अपेक्षित वॉलेट',
         'nav-qr': 'मेरा कलेक्टर QR',
+        'nav-barcode': 'बारकोड जमा',
+        'nav-map': 'रीसाइक्लिंग केंद्र',
         'shop-now': 'अभी खरीदें', 
         'add-to-cart': 'कार्ट में जोड़ें', 
         'nav-rank': 'लीडरबोर्ड', 
@@ -186,7 +198,7 @@ const productList = [
     { id: 22, name: { en: "Glass Spray Bottles", te: "గాజు స్ప్రే సీసాలు", hi: "कांच की स्प्रे बोतलें" }, price: 220, img: "spray.jpeg" },
     { id: 23, name: { en: "Soap Nuts", te: "కుంకుడుకాయలు", hi: "रीठा (सोप नट्स)" }, price: 150, img: "sballs.jpeg" },
     { id: 24, name: { en: "Cast Iron Cookware", te: "ఇనుప వంట పాత్రలు", hi: "कास्ट आयरन कड़ाही-तवा" }, price: 1800, img: "cookware.jpeg" },
-    { id: 25, name: { en: "Ceramic Mugs", te: "సిరామిక్ కప్పులు", hi: "सिरेमिक मग" }, price: 240, img: "mugs.jpeg" },
+    { id: 25, name: { en: "Ceramic Mugs", te: "సిరామిక్ కప్పులు", hi: "సిరేమిక్ మగ్స్" }, price: 240, img: "mugs.jpeg" },
     { id: 26, name: { en: "Bamboo Cutting Boards", te: "వెదురు చాపింగ్ బోర్డులు", hi: "बांस के चॉपिंग बोर्ड" }, price: 400, img: "cutveg.jpeg" },
     { id: 27, name: { en: "Cornstarch Trash Bags", te: "మొక్కజొన్న పిండి చెత్త సంచులు", hi: "कॉर्नस्टार्च कचरा बैग" }, price: 130, img: "corn.jpeg" },
     { id: 28, name: { en: "Paper Packing Tape", te: "కాగితం ప్యాకింగ్ టేప్", hi: "कागज पैकिंग टेप" }, price: 90, img: "tape.jpeg" },
@@ -216,7 +228,7 @@ const productList = [
     { id: 52, name: { en: "Neem Wood Spatulas", te: "వేప చెక్క వంట గరిటెలు", hi: "नीम की लकड़ी के चम्मच" }, price: 110, img: "cutt.jpeg" },
     { id: 53, name: { en: "Stainless Steel Tiffin Carriers", te: "స్టీల్ క్యారేజీలు", hi: "स्टेनलेस स्टील टिफिन कैरियर" }, price: 550, img: "box..jpeg" },
     { id: 54, name: { en: "Konjac Sponges", te: "కొంజాక్ స్పాంజ్లు", hi: "कोंजैक स्पंज" }, price: 130, img: "konjac.jpeg" },
-    { id: 55, name: { en: "Recycled Cardboard Boxes", te: "రీసైకిల్ చేసిన కార్డ్‌బోర్డ్ పెట్టెలు", hi: "రీసాइकल कार्डबोर्ड बक्से" }, price: 60, img: "cardboard.png" },
+    { id: 55, name: { en: "Recycled Cardboard Boxes", te: "రీసైకిల్ చేసిన కార్డ్‌బోర్డ్ పెట్టెలు", hi: "రీసాఇకల్ కార్డ్‌బోర్డ్ బక్సే" }, price: 60, img: "cardboard.png" },
     { id: 56, name: { en: "Mushroom Packaging", te: "మష్రూమ్ ప్యాకేజింగ్", hi: "मशरूम पैकेजिंग" }, price: 90, img: "mush.jpeg" },
     { id: 57, name: { en: "Plant-based Phone Cases", te: "మొక్కల ఆధారిత ఫోన్ కేసులు", hi: "प्लांट-आधारित फोन केस" }, price: 450, img: "phone.jpeg" },
     { id: 58, name: { en: "Wooden Furniture", te: "చెక్క ఫర్నిచర్", hi: "लकड़ी के फर्नीचर" }, price: 3500, img: "furniture.jpeg" },
@@ -431,7 +443,182 @@ async function approveAndCreditUser() {
 }
 
 // ==========================================
-// 7. CART & PURCHASE (USES REAL WALLET)
+// 7. BARCODE DEPOSIT SCANNER & 25% CALCULATION
+// ==========================================
+function switchBarcodeTab(mode) {
+    const camView = document.getElementById('barcode-cam-view');
+    const fileView = document.getElementById('barcode-file-view');
+    const btnCam = document.getElementById('btn-cam-tab');
+    const btnFile = document.getElementById('btn-file-tab');
+
+    if (mode === 'cam') {
+        camView.classList.remove('hidden');
+        fileView.classList.add('hidden');
+        btnCam.style.background = '#27ae60';
+        btnFile.style.background = '#333';
+        initBarcodeCamScanner();
+    } else {
+        camView.classList.add('hidden');
+        fileView.classList.remove('hidden');
+        btnCam.style.background = '#333';
+        btnFile.style.background = '#27ae60';
+        stopBarcodeScanner();
+    }
+}
+
+function initBarcodeCamScanner() {
+    if (typeof Html5Qrcode === 'undefined') return;
+    stopBarcodeScanner(); // Clear previous instance
+
+    html5QrScannerInstance = new Html5Qrcode("reader");
+    html5QrScannerInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 150 } },
+        (decodedText) => {
+            handleScannedBarcode(decodedText);
+            stopBarcodeScanner();
+        },
+        (error) => { /* ignore minor frame scanning errors */ }
+    ).catch(err => {
+        console.log("Camera access error, falling back to file input: ", err);
+    });
+}
+
+function stopBarcodeScanner() {
+    if (html5QrScannerInstance && html5QrScannerInstance.isScanning) {
+        html5QrScannerInstance.stop().then(() => {
+            html5QrScannerInstance.clear();
+        }).catch(err => console.error(err));
+    }
+}
+
+function processBarcodeFromFile(input) {
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    
+    if (typeof Html5Qrcode !== 'undefined') {
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.scanFile(file, true)
+            .then(decodedText => {
+                handleScannedBarcode(decodedText);
+            })
+            .catch(err => {
+                alert("Could not detect barcode from image file. Please try a clearer picture.");
+            });
+    }
+}
+
+async function handleScannedBarcode(barcodeText) {
+    console.log("Scanned Barcode: ", barcodeText);
+    
+    let prodName = "PET Plastic Container";
+    let prodMrp = 40; // Default MRP fallback if unlisted
+
+    try {
+        // Query Open Food Facts Global API
+        const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcodeText}.json`);
+        const data = await response.json();
+        
+        if (data.status === 1 && data.product) {
+            prodName = data.product.product_name || data.product.brands || "PET Plastic Beverage Container";
+            if (data.product.nutriments && data.product.nutriments.price) {
+                prodMrp = parseFloat(data.product.nutriments.price);
+            }
+        }
+    } catch (err) {
+        console.log("Barcode lookup fallback triggered.");
+    }
+
+    // Calculate 25% Eco-Deposit Reward
+    scannedProductReward = Math.round(prodMrp * 0.25);
+    if (scannedProductReward < 5) scannedProductReward = 10; // Minimum default reward ₹10
+
+    document.getElementById('res-prod-name').innerText = prodName;
+    document.getElementById('res-prod-mrp').innerText = prodMrp;
+    document.getElementById('res-prod-reward').innerText = scannedProductReward;
+    
+    document.getElementById('barcode-result-card').classList.remove('hidden');
+}
+
+async function claimBarcodeReward() {
+    if (!currentUserData) return alert("Please log in first!");
+    if (scannedProductReward <= 0) return alert("No valid deposit reward to claim.");
+
+    try {
+        const newExpWallet = (currentUserData.expectedWallet || 0) + scannedProductReward;
+        await db.collection('users').doc(currentUserData.id).update({ expectedWallet: newExpWallet });
+        await loadUserData(currentUserData.id);
+        
+        alert(`🎉 ₹${scannedProductReward} (25% Deposit) added to your Expected Wallet!`);
+        document.getElementById('barcode-result-card').classList.add('hidden');
+        scannedProductReward = 0;
+        showSection('expected-wallet-screen');
+    } catch (err) {
+        alert("Error claiming deposit: " + err.message);
+    }
+}
+
+// ==========================================
+// 8. LIVE GPS RECYCLING CENTER MAP (LEAFLET.JS)
+// ==========================================
+function initEcoMap() {
+    if (mapInitialized || typeof L === 'undefined') return;
+
+    // Default coordinates: Visakhapatnam, Andhra Pradesh
+    let userLat = 17.6868;
+    let userLng = 83.2185;
+
+    const centers = [
+        { name: "GVMC Smart Eco-Hub - Sector 1", lat: 17.6868, lng: 83.2185, hours: "8 AM - 6 PM" },
+        { name: "Visakha Plastic Scrap Aggregator", lat: 17.7231, lng: 83.3012, hours: "9 AM - 8 PM" },
+        { name: "Samvruddi Green Resource Yard", lat: 17.7000, lng: 83.2500, hours: "10 AM - 5 PM" },
+        { name: "Kurmannapalem Waste Drop-off Point", lat: 17.6500, lng: 83.1800, hours: "7 AM - 7 PM" }
+    ];
+
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            userLat = pos.coords.latitude;
+            userLng = pos.coords.longitude;
+            renderMap(userLat, userLng, centers);
+        }, () => {
+            renderMap(userLat, userLng, centers); // Fallback to default
+        });
+    } else {
+        renderMap(userLat, userLng, centers);
+    }
+}
+
+function renderMap(lat, lng, centers) {
+    if (ecoMapInstance) return;
+
+    ecoMapInstance = L.map('eco-map').setView([lat, lng], 13);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(ecoMapInstance);
+
+    // User Blue Marker
+    L.marker([lat, lng]).addTo(ecoMapInstance)
+        .bindPopup("<b>📍 Your Current Location</b>")
+        .openPopup();
+
+    // Drop Center Markers
+    centers.forEach(c => {
+        const popupText = `
+            <div style="font-size:13px; color:#fff;">
+                <b style="color:#27ae60;">${c.name}</b><br>
+                🕒 Hours: ${c.hours}<br>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}" target="_blank" style="color:#3498db; font-weight:bold;">🚗 Get Directions</a>
+            </div>
+        `;
+        L.marker([c.lat, c.lng]).addTo(ecoMapInstance).bindPopup(popupText);
+    });
+
+    mapInitialized = true;
+}
+
+// ==========================================
+// 9. CART & PURCHASE (USES REAL WALLET)
 // ==========================================
 function processToPickup() {
     let total = userCart.reduce((a, b) => a + (b.price * b.qty), 0);
@@ -481,7 +668,7 @@ async function confirmPurchaseAndPickup() {
 }
 
 // ==========================================
-// 8. RATING & FEEDBACK ENGINE
+// 10. RATING & FEEDBACK ENGINE
 // ==========================================
 function setRating(score) {
     selectedRatingScore = score;
@@ -513,7 +700,7 @@ async function submitFeedback() {
 }
 
 // ==========================================
-// 9. RENDERING & UI FUNCTIONS
+// 11. RENDERING & UI FUNCTIONS
 // ==========================================
 function renderOrders() {
     const list = currentUserData.orders || [];
@@ -599,9 +786,22 @@ async function loadLeaderboard() {
 }
 
 function showSection(id) {
+    // Stop barcode camera scanner if navigating away
+    if (id !== 'barcode-screen') {
+        stopBarcodeScanner();
+    }
+
     document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
     const targetedSec = document.getElementById(id);
     if (targetedSec) targetedSec.classList.remove('hidden');
+    
+    // Auto-trigger Scanner or Map when entering their respective tabs
+    if (id === 'barcode-screen') {
+        switchBarcodeTab('cam');
+    } else if (id === 'map-screen') {
+        setTimeout(initEcoMap, 300); // Small delay to let container unhide
+    }
+
     const sb = document.getElementById('sidebar');
     if(sb && sb.classList.contains('active')) toggleSidebar();
 }

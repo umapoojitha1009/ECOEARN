@@ -140,7 +140,8 @@ body {
 
 /* Keep the about panel and orders card wide enough for full content visibility */
 #about .glass-card, 
-#orders .glass-card {
+#orders .glass-card,
+#map-screen .glass-card {
     max-width: 750px;
 }
 
@@ -351,4 +352,38 @@ textarea {
 textarea:focus {
     background: #ffffff;
     box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
+}
+
+/* ==========================================
+   8. BARCODE SCANNER & GPS MAP ADD-ONS (NEW)
+   ========================================== */
+#reader video {
+    width: 100% !important;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+#reader__dashboard_section_csr button {
+    background: #27ae60 !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 15px !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    margin-top: 10px !important;
+}
+
+#barcode-screen .glass-card {
+    max-width: 550px;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #111 !important;
+    color: #fff !important;
+    border-radius: 10px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5) !important;
+}
+
+.leaflet-popup-tip {
+    background: #111 !important;
 }
