@@ -179,7 +179,7 @@ const productList = [
     { id: 3, name: { en: "Stainless Steel Straws", te: "స్టీల్ స్ట్రాలు", hi: "स्टेनलेस स्टील स्ट्रॉ" }, price: 80, img: "straw.png" },
     { id: 4, name: { en: "Beeswax Wraps", te: "తేనెటీగ మైనపు రేపర్లు", hi: "मोम के रैप्स" }, price: 250, img: "wax.jpeg" },
     { id: 5, name: { en: "Cotton Bags", te: "పత్తి సంచులు", hi: "सूती थैले" }, price: 100, img: "cloth.png" },
-    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूट के थैले" }, price: 150, img: "jute.png" },
+    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूట్ के थैले" }, price: 150, img: "jute.png" },
     { id: 7, name: { en: "Bamboo Cutlery", te: "వెదురు స్పూన్లు", hi: "बांस के चम्मच और कांटे" }, price: 200, img: "spoon.png" },
     { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "स्टेनलेस स्टील टिफिन" }, price: 450, img: "box..jpeg" },
     { id: 9, name: { en: "Copper Water Bottles", te: "రాగి వాటర్ బాటిల్స్", hi: "तांबे की पानी की बोतलें" }, price: 850, img: "copper.png" },
@@ -217,7 +217,7 @@ const productList = [
     { id: 41, name: { en: "Natural Rubber Toys", te: "సహజ రబ్బరు బొమ్మలు", hi: "प्राकृतिक रबर के खिलौने" }, price: 450, img: "toys.jpeg" },
     { id: 42, name: { en: "Wooden Building Blocks", te: "చెక్క బిల్డింగ్ బ్లాక్స్", hi: "लकड़ी के ब्लॉक" }, price: 800, img: "block.jpeg" },
     { id: 43, name: { en: "Cotton Bread Bags", te: "కాటన్ రొట్టె సంచులు", hi: "सूती ब्रेड बैग" }, price: 110, img: "bread.jpeg" },
-    { id: 44, name: { en: "Canvas Backpacks", te: "క్యాన్వాస్ బ్యాక్‌ప్యాక్‌లు", hi: "कैनवास बैग" }, price: 1200, img: "canva.png" },
+    { id: 44, name: { en: "Canvas Backpacks", te: "క్యాన్వాస్ బ్యాక్‌ప్యాక్‌లు", hi: "క్యాన్వాస్ బ్యాగ్" }, price: 1200, img: "canva.png" },
     { id: 45, name: { en: "Metal Paperclips", te: "మెటల్ పేపర్‌క్లిప్‌లు", hi: "धातु की पेपर क्लिप" }, price: 50, img: "clips.jpeg" },
     { id: 46, name: { en: "Compostable Parchment Paper", te: "కంపోస్టబుల్ పార్చ్మెంట్ పేపర్", hi: "कम्पोस्टेबल चर्मपत्र कागज" }, price: 160, img: "wrap.jpeg" },
     { id: 47, name: { en: "Soy Wax Candles", te: "సోయా మైనపు కొవ్వొత్తులు", hi: "सोया मोम की मोमबत्तियां" }, price: 320, img: "candel.jpeg" },
@@ -243,7 +243,7 @@ const productList = [
     { id: 67, name: { en: "Wooden Toilet Brushes", te: "చెక్క టాయిలెట్ బ్రష్లు", hi: "लकड़ी के शौचालय ब्रश" }, price: 300, img: "bathbrush.jpeg" },
     { id: 68, name: { en: "Cotton Shower Curtains", te: "కాటన్ షవర్ కర్టెన్లు", hi: "सूती शावर पर्दे" }, price: 750, img: "shower.jpeg" },
     { id: 69, name: { en: "Beeswax Polish", te: "బీస్వాక్స్ పాలిష్", hi: "मधुमक्खी मोम की पॉलिश" }, price: 280, img: "beewax.jpeg" },
-    { id: 70, name: { en: "Reed Diffusers", te: "రీడ్ డిఫ్యూజర్లు", hi: "रीड डिफ्यूज़र" }, price: 450, img: "reedd.jpeg" },
+    { id: 70, name: { en: "Reed Diffusers", te: "రీడ్ డిఫ్యూజర్లు", hi: "రీడ్ డిఫ్యూజర్" }, price: 450, img: "reedd.jpeg" },
     { id: 71, name: { en: "Bamboo Baskets", te: "వెదురు బుట్టలు", hi: "बांस की टोकरियाँ" }, price: 900, img: "bin.jpeg" },
     { id: 72, name: { en: "Ice Cube Trays", te: "ఐస్ క్యూబ్ ట్రేలు", hi: "बर्फ जमाने की ट्रे" }, price: 320, img: "ice.jpeg" },
     { id: 73, name: { en: "Ceramic Dinnerware", te: "సిరామిక్ డిన్నర్ సెట్లు", hi: "सिरेमिक डिनर सेट" }, price: 1500, img: "set.jpeg" },
@@ -255,11 +255,11 @@ const productList = [
     { id: 79, name: { en: "Metal Buckets", te: "మెటల్ బకెట్లు", hi: "धातु की बाल्टी" }, price: 400, img: "bucket.jpeg" },
     { id: 80, name: { en: "Clay Water Pots", te: "మట్టి నీటి కుండలు", hi: "मिट्टी के घड़े" }, price: 350, img: "pot2.jpeg" },
     { id: 81, name: { en: "Bag", te: "పర్సు సంచులు", hi: "झोला" }, price: 1200, img: "bag7.jpeg" },
-    { id: 82, name: { en: "Cotton Towels", te: "కాటన్ తువ్వాళ్లు", hi: "सूती तौलिया" }, price: 600, img: "towel.jpeg" },
+    { id: 82, name: { en: "Cotton Towels", te: "కాటన్ తువ్వాళ్లు", hi: "సూతీ తౌలియా" }, price: 600, img: "towel.jpeg" },
     { id: 83, name: { en: "Wooden Hangers", te: "చెక్క బట్టల హ్యాంగర్లు", hi: "लकड़ी के हैंगर" }, price: 300, img: "hanger.jpeg" },
     { id: 84, name: { en: "Window Blinds", te: "కిటికీ బ్లైండ్స్", hi: "खिड़की के पर्दे" }, price: 1800, img: "table.jpeg" },
     { id: 85, name: { en: "Glass Vases", te: "గాజు పూలకుండీలు", hi: "कांच के गुलदस्ते" }, price: 450, img: "glass4.jpeg" },
-    { id: 86, name: { en: "Tongue Scrapers", te: "మెటల్ టంగ్ క్లీనర్లు", hi: "स्टील के टंग क्लीनर" }, price: 120, img: "steelt.jpeg" },
+    { id: 86, name: { en: "Tongue Scrapers", te: "మెటల్ టంగ్ క్లీనర్లు", hi: "స్టీల के टंग क्लीनर" }, price: 120, img: "steelt.jpeg" },
     { id: 87, name: { en: "Paper Straws", te: "కాగితపు స్ట్రాలు", hi: "कागज के स्ट्रॉ" }, price: 30, img: "straww.jpeg" },
     { id: 88, name: { en: "Bamboo Wipes", te: "వెదురు వైప్స్", hi: "बांस के वाइप्स" }, price: 150, img: "wrap4.jpeg" },
     { id: 89, name: { en: "Incense Sticks", te: "అగరుబత్తీలు", hi: "अगरबत्तियां" }, price: 100, img: "strap4.jpeg" },
@@ -478,7 +478,7 @@ function initBarcodeCamScanner() {
             handleScannedBarcode(decodedText);
             stopBarcodeScanner();
         },
-        (error) => { /* ignore minor frame scanning errors */ }
+        (error) => { /* ignore minor camera errors */ }
     ).catch(err => {
         console.log("Camera access error, falling back to file input: ", err);
     });
@@ -503,16 +503,39 @@ function processBarcodeFromFile(input) {
                 handleScannedBarcode(decodedText);
             })
             .catch(err => {
-                alert("Could not detect barcode from image file. Please try a clearer picture.");
+                alert("Could not detect barcode from image file. Please try entering the 13-digit number manually below.");
             });
     }
 }
 
+// MANUAL INPUT SUBMIT HANDLER
+function processManualBarcode() {
+    const inputEl = document.getElementById('manual-barcode-input');
+    if (!inputEl) return alert("Input box not found!");
+
+    const inputVal = inputEl.value.trim();
+    if (!inputVal || inputVal.length < 8) {
+        return alert("Please enter a valid 8 to 13-digit barcode number!");
+    }
+
+    // Instant UI Loading Feedback
+    const resultCard = document.getElementById('barcode-result-card');
+    if (resultCard) {
+        document.getElementById('res-prod-name').innerText = "Searching global product database...";
+        document.getElementById('res-prod-mrp').innerText = "...";
+        document.getElementById('res-prod-reward').innerText = "...";
+        resultCard.classList.remove('hidden');
+    }
+
+    handleScannedBarcode(inputVal);
+    inputEl.value = "";
+}
+
 async function handleScannedBarcode(barcodeText) {
-    console.log("Scanned Barcode: ", barcodeText);
+    console.log("Processing Barcode: ", barcodeText);
     
-    let prodName = "PET Plastic Container";
-    let prodMrp = 40; // Default MRP fallback if unlisted
+    let prodName = "PET Plastic Beverage Container";
+    let prodMrp = 40; // Default fallback MRP if unlisted in global database
 
     try {
         // Query Open Food Facts Global API
@@ -526,13 +549,14 @@ async function handleScannedBarcode(barcodeText) {
             }
         }
     } catch (err) {
-        console.log("Barcode lookup fallback triggered.");
+        console.log("Using standard deposit fallback.");
     }
 
     // Calculate 25% Eco-Deposit Reward
     scannedProductReward = Math.round(prodMrp * 0.25);
-    if (scannedProductReward < 5) scannedProductReward = 10; // Minimum default reward ₹10
+    if (scannedProductReward < 10) scannedProductReward = 10; // Minimum default reward ₹10
 
+    // Display Results
     document.getElementById('res-prod-name').innerText = prodName;
     document.getElementById('res-prod-mrp').innerText = prodMrp;
     document.getElementById('res-prod-reward').innerText = scannedProductReward;
@@ -799,7 +823,7 @@ function showSection(id) {
     if (id === 'barcode-screen') {
         switchBarcodeTab('cam');
     } else if (id === 'map-screen') {
-        setTimeout(initEcoMap, 300); // Small delay to let container unhide
+        setTimeout(initEcoMap, 300);
     }
 
     const sb = document.getElementById('sidebar');
