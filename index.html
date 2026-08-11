@@ -90,7 +90,7 @@
             </div>
         </section>
 
-        <!-- BARCODE DEPOSIT SCANNER SCREEN (NEW: CAMERA + FILE UPLOAD FOR LAPTOP) -->
+        <!-- BARCODE DEPOSIT SCANNER SCREEN (WITH CAMERA, FILE UPLOAD & MANUAL ENTRY FALLBACK) -->
         <section id="barcode-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 100%; max-width: 550px;">
                 <h2>📷 Product Barcode Deposit</h2>
@@ -107,12 +107,21 @@
                     <div id="reader" style="width: 100%; min-height: 250px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;"></div>
                 </div>
 
-                <!-- File Upload Container -->
-                <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 20px 0; text-align: center; border: 2px dashed #27ae60; padding: 25px; border-radius: 12px; background: rgba(255,255,255,0.05);">
-                    <i class="fas fa-file-image" style="font-size: 2.5rem; color: #27ae60; margin-bottom: 10px;"></i>
-                    <p style="color: #eee; font-size: 0.9rem; margin-bottom: 12px;">Select a barcode photo from your files:</p>
+                <!-- File Upload Container + Manual Barcode Fallback -->
+                <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 20px 0; text-align: center; border: 2px dashed #27ae60; padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.05);">
+                    <i class="fas fa-file-image" style="font-size: 2.2rem; color: #27ae60; margin-bottom: 8px;"></i>
+                    <p style="color: #eee; font-size: 0.9rem; margin-bottom: 10px;">Select a barcode photo from your files:</p>
                     <input type="file" id="barcode-file-input" accept="image/*" onchange="processBarcodeFromFile(this)" style="display: none;">
                     <button class="btn-primary" onclick="document.getElementById('barcode-file-input').click()">Choose Image File</button>
+
+                    <!-- MANUAL ENTRY FALLBACK IF PHOTO IS BLURRY -->
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15);">
+                        <p style="color: #aaa; font-size: 0.8rem; margin-bottom: 8px;">Or enter the 13-digit barcode number manually:</p>
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <input type="text" id="manual-barcode-input" placeholder="e.g. 8901030000000" style="padding: 10px; border-radius: 8px; border: none; width: 65%; color: #333;">
+                            <button class="btn-primary" onclick="processManualBarcode()" style="padding: 10px 15px; font-size: 0.85rem;">Submit</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Scan Result Preview -->
