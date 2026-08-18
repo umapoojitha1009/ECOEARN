@@ -27,7 +27,7 @@ let ecoMapInstance = null;
 let mapInitialized = false;
 
 // ==========================================
-// 2. TRANSLATIONS DICTIONARY (UNIFIED & MULTILINGUAL)
+// 2. TRANSLATIONS DICTIONARY
 // ==========================================
 const translations = {
     'en': { 
@@ -171,7 +171,7 @@ const translations = {
 };
 
 // ==========================================
-// 3. PRODUCT LIST (100 ITEMS - TRANSLATED)
+// 3. PRODUCT LIST (100 ITEMS)
 // ==========================================
 const productList = [
     { id: 1, name: { en: "Bamboo Toothbrushes", te: "వెదురు టూత్ బ్రష్‌లు", hi: "बांस के टूथब्रश" }, price: 60, img: "brush.png" },
@@ -197,94 +197,105 @@ const productList = [
     { id: 21, name: { en: "Reusable Cotton Rounds", te: "మళ్ళీ వాడదగిన కాటన్ ప్యాడ్స్", hi: "पुन: प्रयोज्य कॉटन पैड्स" }, price: 180, img: "cotton pads.jpeg" },
     { id: 22, name: { en: "Glass Spray Bottles", te: "గాజు స్ప్రే సీసాలు", hi: "कांच की स्प्रे बोतलें" }, price: 220, img: "spray.jpeg" },
     { id: 23, name: { en: "Soap Nuts", te: "కుంకుడుకాయలు", hi: "रीठा (सोप नट्स)" }, price: 150, img: "sballs.jpeg" },
-    { id: 24, name: { en: "Cast Iron Cookware", te: "ఇనుప వంట పాత్రలు", hi: "कास्ट आयरन कड़ाही-तवा" }, price: 1800, img: "cookware.jpeg" },
+    { id: 24, name: { en: "Cast Iron Cookware", te: "ఇనుప వంట పాత్రలు", hi: "కాస్ట్ ఐరన్ కడాహీ-తవా" }, price: 1800, img: "cookware.jpeg" },
     { id: 25, name: { en: "Ceramic Mugs", te: "సిరామిక్ కప్పులు", hi: "సిరేమిక్ మగ్స్" }, price: 240, img: "mugs.jpeg" },
     { id: 26, name: { en: "Bamboo Cutting Boards", te: "వెదురు చాపింగ్ బోర్డులు", hi: "बांस के चॉपिंग बोर्ड" }, price: 400, img: "cutveg.jpeg" },
     { id: 27, name: { en: "Cornstarch Trash Bags", te: "మొక్కజొన్న పిండి చెత్త సంచులు", hi: "कॉर्नस्टार्च कचरा बैग" }, price: 130, img: "corn.jpeg" },
     { id: 28, name: { en: "Paper Packing Tape", te: "కాగితం ప్యాకింగ్ టేప్", hi: "कागज पैकिंग टेप" }, price: 90, img: "tape.jpeg" },
-    { id: 29, name: { en: "Hemp Twine", te: "జనపనార దారం", hi: "भांग की सुतली" }, price: 75, img: "thread.jpeg" },
+    { id: 29, name: { en: "Hemp Twine", te: "జనపనార దారం", hi: "భాంగ్ కీ సుతలీ" }, price: 75, img: "thread.jpeg" },
     { id: 30, name: { en: "Terracotta Pots", te: "మట్టి కుండలు", hi: "मिट्टी के गमले" }, price: 200, img: "pots.jpeg" },
     { id: 31, name: { en: "Recycled Paper Notebooks", te: "రీసైకిల్ చేసిన కాగితం నోట్‌బుక్‌లు", hi: "रीसाइकल पेपर नोटबुक" }, price: 120, img: "book.jpeg" },
     { id: 32, name: { en: "Wooden Pencils", te: "చెక్క పెన్సిళ్లు", hi: "लकड़ी की पेंसिल" }, price: 40, img: "pencil.jpeg" },
-    { id: 33, name: { en: "Refillable Fountain Pens", te: "రీఫిల్ చేయగల ఫౌంటెన్ పెన్నులు", hi: "रीफिलेबल फाउंटेन पेन" }, price: 500, img: "repen.jpeg" },
+    { id: 33, name: { en: "Refillable Fountain Pens", te: "రీఫిల్ చేయగల ఫౌంటెన్ పెన్నులు", hi: "రీఫిలేబల్ ఫౌంటెన్ పెన్" }, price: 500, img: "repen.jpeg" },
     { id: 34, name: { en: "Stainless Steel Tea Infusers", te: "స్టీల్ టీ వడపోత", hi: "స్టెయిన్‌లెస్ స్టీల్ చాయ్ ఇన్ఫ్యూజర్" }, price: 180, img: "tea.jpeg" },
     { id: 35, name: { en: "Cloth Diapers", te: "బట్ట డైపర్లు", hi: "कपड़े के डायपर" }, price: 350, img: "diaper.jpeg" },
-    { id: 36, name: { en: "Menstrual Cups", te: "మెన్‌స్ట్రువల్ కప్పులు", hi: "मासिक धर्म कप" }, price: 600, img: "menstrual.jpeg" },
-    { id: 37, name: { en: "Bamboo Flooring", te: "వెదురు ఫ్లోరింగ్", hi: "बांस का फर्श" }, price: 2500, img: "floor.jpeg" },
-    { id: 38, name: { en: "Cork Coasters", te: "కార్క్ కోస్టర్లు", hi: "कॉर्क कोस्टर" }, price: 100, img: "coasters.jpeg" },
-    { id: 39, name: { en: "Glass Food Containers", te: "గాజు ఆహార డబ్బాలు", hi: "कांच के भोजन कंटेनर" }, price: 380, img: "container.jpeg" },
-    { id: 40, name: { en: "Sisal Dish Brushes", te: "సిసల్ గిన్నెల బ్రష్లు", hi: "सिसल डिश ब्रश" }, price: 130, img: "dish.jpeg" },
-    { id: 41, name: { en: "Natural Rubber Toys", te: "సహజ రబ్బరు బొమ్మలు", hi: "प्राकृतिक रबर के खिलौने" }, price: 450, img: "toys.jpeg" },
-    { id: 42, name: { en: "Wooden Building Blocks", te: "చెక్క బిల్డింగ్ బ్లాక్స్", hi: "लकड़ी के ब्लॉक" }, price: 800, img: "block.jpeg" },
-    { id: 43, name: { en: "Cotton Bread Bags", te: "కాటన్ రొట్టె సంచులు", hi: "సూती ब्रेड बैग" }, price: 110, img: "bread.jpeg" },
+    { id: 36, name: { en: "Menstrual Cups", te: "మెన్‌స్ట్రువల్ కప్పులు", hi: "మాసిక్ ధర్మ కప్" }, price: 600, img: "menstrual.jpeg" },
+    { id: 37, name: { en: "Bamboo Flooring", te: "వెదురు ఫ్లోరింగ్", hi: "బాన్స్ కా ఫర్ష్" }, price: 2500, img: "floor.jpeg" },
+    { id: 38, name: { en: "Cork Coasters", te: "కార్క్ కోస్టర్లు", hi: "కార్క్ కోస్టర్" }, price: 100, img: "coasters.jpeg" },
+    { id: 39, name: { en: "Glass Food Containers", te: "గాజు ఆహార డబ్బాలు", hi: "కాంచ్ కే భోజన్ కంటైనర్" }, price: 380, img: "container.jpeg" },
+    { id: 40, name: { en: "Sisal Dish Brushes", te: "సిసల్ గిన్నెల బ్రష్లు", hi: "సిసల్ డిష్ బ్రష్" }, price: 130, img: "dish.jpeg" },
+    { id: 41, name: { en: "Natural Rubber Toys", te: "సహజ రబ్బరు బొమ్మలు", hi: "ప్రాకృతిక్ రబర్ కే ఖిలౌనే" }, price: 450, img: "toys.jpeg" },
+    { id: 42, name: { en: "Wooden Building Blocks", te: "చెక్క బిల్డింగ్ బ్లాక్స్", hi: "లకడీ కే బ్లాక్స్" }, price: 800, img: "block.jpeg" },
+    { id: 43, name: { en: "Cotton Bread Bags", te: "కాటన్ రొట్టె సంచులు", hi: "సూతీ బ్రెడ్ బ్యాగ్" }, price: 110, img: "bread.jpeg" },
     { id: 44, name: { en: "Canvas Backpacks", te: "క్యాన్వాస్ బ్యాక్‌ప్యాక్‌లు", hi: "క్యాన్వాస్ బ్యాగ్" }, price: 1200, img: "canva.png" },
-    { id: 45, name: { en: "Metal Paperclips", te: "మెటల్ పేపర్‌క్లిప్‌లు", hi: "धातु की पेपर क्लिप" }, price: 50, img: "clips.jpeg" },
-    { id: 46, name: { en: "Compostable Parchment Paper", te: "కంపోస్టబుల్ పార్చ్మెంట్ పేపర్", hi: "कम्पोस्टेबल चर्मपत्र कागज" }, price: 160, img: "wrap.jpeg" },
-    { id: 47, name: { en: "Soy Wax Candles", te: "సోయా మైనపు కొవ్వొత్తులు", hi: "सोया मोम की मोमबत्तियां" }, price: 320, img: "candel.jpeg" },
-    { id: 48, name: { en: "Bamboo Hairbrushes", te: "వెదురు జుట్టు దువ్వెనలు", hi: "बांस के हेयर ब्रश" }, price: 250, img: "hbrush.jpeg" },
-    { id: 49, name: { en: "Silk Dental Floss", te: "సిల్క్ డెంటల్ ఫ్లాస్", hi: "रेशम दंत फ़्लॉस" }, price: 140, img: "dental.jpeg" },
-    { id: 50, name: { en: "Toothpaste Tablets", te: "టూత్‌పేస్ట్ టాబ్లెట్లు", hi: "टूथपेस्ट गोलियां" }, price: 220, img: "tablet.jpeg" },
-    { id: 51, name: { en: "Bamboo Tongue Scrapers", te: "వెదురు నాలుక బద్దలు", hi: "बांस के टंग क्लीनर" }, price: 80, img: "tounge.jpeg" },
-    { id: 52, name: { en: "Neem Wood Spatulas", te: "వేప చెక్క వంట గరిటెలు", hi: "नीम की लकड़ी के चम्मच" }, price: 110, img: "cutt.jpeg" },
+    { id: 45, name: { en: "Metal Paperclips", te: "మెటల్ పేపర్‌క్లిప్‌లు", hi: "ధాతు కీ పేపర్ క్లిప్" }, price: 50, img: "clips.jpeg" },
+    { id: 46, name: { en: "Compostable Parchment Paper", te: "కంపోస్టబుల్ పార్చ్మెంట్ పేపర్", hi: "కంపొస్టేబల్ చర్మపత్ర కాగజ్" }, price: 160, img: "wrap.jpeg" },
+    { id: 47, name: { en: "Soy Wax Candles", te: "సోయా మైనపు కొవ్వొత్తులు", hi: "సోయా మోమ్ కీ మోంబత్తియాం" }, price: 320, img: "candel.jpeg" },
+    { id: 48, name: { en: "Bamboo Hairbrushes", te: "వెదురు జుట్టు దువ్వెనలు", hi: "బాన్స్ కే హెయిర్ బ్రష్" }, price: 250, img: "hbrush.jpeg" },
+    { id: 49, name: { en: "Silk Dental Floss", te: "సిల్క్ డెంటల్ ఫ్లాస్", hi: "రేషమ్ దంత్ ఫ్లాస్" }, price: 140, img: "dental.jpeg" },
+    { id: 50, name: { en: "Toothpaste Tablets", te: "టూత్‌పేస్ట్ టాబ్లెట్లు", hi: "టూత్‌పేస్ట్ గోలియాం" }, price: 220, img: "tablet.jpeg" },
+    { id: 51, name: { en: "Bamboo Tongue Scrapers", te: "వెదురు నాలుక బద్దలు", hi: "బాన్స్ కే టంగ్ క్లీనర్" }, price: 80, img: "tounge.jpeg" },
+    { id: 52, name: { en: "Neem Wood Spatulas", te: "వేప చెక్క వంట గరిటెలు", hi: "నీమ్ కీ లకడీ కే చమ్మచ్" }, price: 110, img: "cutt.jpeg" },
     { id: 53, name: { en: "Stainless Steel Tiffin Carriers", te: "స్టీల్ క్యారేజీలు", hi: "స్టెయిన్‌లెస్ స్టీల్ టిఫిన్ కేరియర్" }, price: 550, img: "box..jpeg" },
-    { id: 54, name: { en: "Konjac Sponges", te: "కొంజాక్ స్పాంజ్లు", hi: "कोंजैक स्पंज" }, price: 130, img: "konjac.jpeg" },
-    { id: 55, name: { en: "Recycled Cardboard Boxes", te: "రీసైకిల్ చేసిన కార్డ్‌బోర్డ్ పెట్టెలు", hi: "రీసాఇకల్ కార్డ్‌బోర్డ్ బక్సే" }, price: 60, img: "cardboard.png" },
-    { id: 56, name: { en: "Mushroom Packaging", te: "మష్రూమ్ ప్యాకేజింగ్", hi: "मशरूम पैकेजिंग" }, price: 90, img: "mush.jpeg" },
-    { id: 57, name: { en: "Plant-based Phone Cases", te: "మొక్కల ఆధారిత ఫోన్ కేసులు", hi: "प्लांट-आधारित फोन केस" }, price: 450, img: "phone.jpeg" },
-    { id: 58, name: { en: "Wooden Furniture", te: "చెక్క ఫర్నిచర్", hi: "लकड़ी के फर्नीचर" }, price: 3500, img: "furniture.jpeg" },
-    { id: 59, name: { en: "Linen Napkins", te: "లినెన్ నాప్‌కిన్లు", hi: "लिनन नैपकिन" }, price: 240, img: "napkin.jpeg" },
-    { id: 60, name: { en: "Wool Rugs", te: "ఉన్ని తివాచీలు", hi: "ऊन के कालीन" }, price: 2800, img: "rugs.jpeg" },
-    { id: 61, name: { en: "Copper Tongue Cleaners", te: "రాగి నాలుక గీతలు", hi: "तांबे के टंग क्लीनर" }, price: 150, img: "coppert.jpeg" },
+    { id: 54, name: { en: "Konjac Sponges", te: "కొంజాక్ స్పాంజ్లు", hi: "కోంజక్ స్పంజ్" }, price: 130, img: "konjac.jpeg" },
+    { id: 55, name: { en: "Recycled Cardboard Boxes", te: "రీసైకిల్ చేసిన కార్డ్‌బోర్డ్ పెట్టెలు", hi: "రీసైకిల్ కార్డ్‌బోర్డ్ బక్సే" }, price: 60, img: "cardboard.png" },
+    { id: 56, name: { en: "Mushroom Packaging", te: "మష్రూమ్ ప్యాకేజింగ్", hi: "మష్రూమ్ ప్యాకేజింగ్" }, price: 90, img: "mush.jpeg" },
+    { id: 57, name: { en: "Plant-based Phone Cases", te: "మొక్కల ఆధారిత ఫోన్ కేసులు", hi: "ప్లాంట్-ఆధారిత ఫోన్ కేస్" }, price: 450, img: "phone.jpeg" },
+    { id: 58, name: { en: "Wooden Furniture", te: "చెక్క ఫర్నిచర్", hi: "లకడీ కే ఫర్నీచర్" }, price: 3500, img: "furniture.jpeg" },
+    { id: 59, name: { en: "Linen Napkins", te: "లినెన్ నాప్‌కిన్లు", hi: "లినెన్ నేప్‌కిన్" }, price: 240, img: "napkin.jpeg" },
+    { id: 60, name: { en: "Wool Rugs", te: "ఉన్ని తివాచీలు", hi: "ఊన్ కే కాలీన్" }, price: 2800, img: "rugs.jpeg" },
+    { id: 61, name: { en: "Copper Tongue Cleaners", te: "రాగి నాలుక గీతలు", hi: "తాంబే కే టంగ్ క్లీనర్" }, price: 150, img: "coppert.jpeg" },
     { id: 62, name: { en: "Stainless Steel Laundry Racks", te: "స్టీల్ బట్టల స్టాండ్లు", hi: "స్టెయిన్‌లెస్ స్టీల్ కపడే సుఖానే కా రేక్" }, price: 1200, img: "steela.jpeg" },
-    { id: 63, name: { en: "Bamboo Makeup Brushes", te: "వెదురు మేకప్ బ్రష్‌లు", hi: "बांस के मेकअप ब्रश" }, price: 500, img: "makeup.jpeg" },
-    { id: 64, name: { en: "Glass Soap Dispensers", te: "గాజు సబ్బు డిస్పెన్సర్లు", hi: "कांच के साबुन डिस्पेंसर" }, price: 220, img: "soapd.jpeg" },
-    { id: 65, name: { en: "Reusable Snack Bags", te: "మళ్ళీ వాడదగిన స్నాక్స్ సంచులు", hi: "पुन: प्रयोज्य स्नैक बैग" }, price: 180, img: "foods.jpeg" },
-    { id: 66, name: { en: "Natural Fiber Mops", te: "సహజ పీచు తుడిచే కర్రలు", hi: "प्राकृतिक फाइबर मॉप" }, price: 600, img: "mop.jpeg" },
-    { id: 67, name: { en: "Wooden Toilet Brushes", te: "చెక్క టాయిలెట్ బ్రష్లు", hi: "लकड़ी के शौचालय ब्रश" }, price: 300, img: "bathbrush.jpeg" },
-    { id: 68, name: { en: "Cotton Shower Curtains", te: "కాటన్ షవర్ కర్టెన్లు", hi: "सूती शावर पर्दे" }, price: 750, img: "shower.jpeg" },
-    { id: 69, name: { en: "Beeswax Polish", te: "బీస్వాక్స్ పాలిష్", hi: "मधुमक्खी मोम की पॉलिश" }, price: 280, img: "beewax.jpeg" },
+    { id: 63, name: { en: "Bamboo Makeup Brushes", te: "వెదురు మేకప్ బ్రష్‌లు", hi: "బాన్స్ కే మేకప్ బ్రష్" }, price: 500, img: "makeup.jpeg" },
+    { id: 64, name: { en: "Glass Soap Dispensers", te: "గాజు సబ్బు డిస్పెన్సర్లు", hi: "కాంచ్ కే సాబున్ డిస్పెన్సర్" }, price: 220, img: "soapd.jpeg" },
+    { id: 65, name: { en: "Reusable Snack Bags", te: "మళ్ళీ వాడదగిన స్నాక్స్ సంచులు", hi: "పునర్-ప్రయోజనీయ స్నాక్ బ్యాగ్" }, price: 180, img: "foods.jpeg" },
+    { id: 66, name: { en: "Natural Fiber Mops", te: "సహజ పీచు తుడిచే కర్రలు", hi: "ప్రాకృతిక్ ఫైబర్ మాప్" }, price: 600, img: "mop.jpeg" },
+    { id: 67, name: { en: "Wooden Toilet Brushes", te: "చెక్క టాయిలెట్ బ్రష్లు", hi: "లకడీ కే శౌచాలయ బ్రష్" }, price: 300, img: "bathbrush.jpeg" },
+    { id: 68, name: { en: "Cotton Shower Curtains", te: "కాటన్ షవర్ కర్టెన్లు", hi: "సూతీ షవర్ పర్దే" }, price: 750, img: "shower.jpeg" },
+    { id: 69, name: { en: "Beeswax Polish", te: "బీస్వాక్స్ పాలిష్", hi: "మధుమక్ఖీ మోమ్ కీ పాలిష్" }, price: 280, img: "beewax.jpeg" },
     { id: 70, name: { en: "Reed Diffusers", te: "రీడ్ డిఫ్యూజర్లు", hi: "రీడ్ డిఫ్యూజర్" }, price: 450, img: "reedd.jpeg" },
-    { id: 71, name: { en: "Bamboo Baskets", te: "వెదురు బుట్టలు", hi: "बांस की टोकरियाँ" }, price: 900, img: "bin.jpeg" },
-    { id: 72, name: { en: "Ice Cube Trays", te: "ఐస్ క్యూబ్ ట్రేలు", hi: "बर्फ जमाने की ट्रे" }, price: 320, img: "ice.jpeg" },
+    { id: 71, name: { en: "Bamboo Baskets", te: "వెదురు బుట్టలు", hi: "బాన్స్ కీ టోకరియాం" }, price: 900, img: "bin.jpeg" },
+    { id: 72, name: { en: "Ice Cube Trays", te: "ఐస్ క్యూబ్ ట్రేలు", hi: "బర్ఫ్ జమానే కీ ట్రే" }, price: 320, img: "ice.jpeg" },
     { id: 73, name: { en: "Ceramic Dinnerware", te: "సిరామిక్ డిన్నర్ సెట్లు", hi: "సిరేమిక్ డిన్నర్ సెట్" }, price: 1500, img: "set.jpeg" },
-    { id: 74, name: { en: "Spice Racks", te: "మసాలా పెట్టెల స్టాండ్లు", hi: "मसाला रखने का रैक" }, price: 400, img: "stack.jpeg" },
-    { id: 75, name: { en: "Measuring Cups", te: "కొలత కప్పులు", hi: "मापने वाले कप" }, price: 280, img: "glass2.jpeg" },
-    { id: 76, name: { en: "Bamboo Straws", te: "వెదురు స్ట్రాలు", hi: "बांस के स्ट्रॉ" }, price: 60, img: "bamboos.jpeg" },
-    { id: 77, name: { en: "Coconut Shell Bowls", te: "కొబ్బరి చిప్ప గిన్నెలు", hi: "नारियल के कटोरे" }, price: 220, img: "bowll.jpeg" },
-    { id: 78, name: { en: "Woven Baskets", te: "అల్లిన బుట్టలు", hi: "बुनी हुई टोकरियाँ" }, price: 500, img: "bin2.jpeg" },
-    { id: 79, name: { en: "Metal Buckets", te: "మెటల్ బకెట్లు", hi: "धातु की बाल्टी" }, price: 400, img: "bucket.jpeg" },
-    { id: 80, name: { en: "Clay Water Pots", te: "మట్టి నీటి కుండలు", hi: "मिट्टी के घड़े" }, price: 350, img: "pot2.jpeg" },
+    { id: 74, name: { en: "Spice Racks", te: "మసాలా పెట్టెల స్టాండ్లు", hi: "మసాలా రఖ్నే కా రేక్" }, price: 400, img: "stack.jpeg" },
+    { id: 75, name: { en: "Measuring Cups", te: "కొలత కప్పులు", hi: "మాప్నే వాలే కప్" }, price: 280, img: "glass2.jpeg" },
+    { id: 76, name: { en: "Bamboo Straws", te: "వెదురు స్ట్రాలు", hi: "బాన్స్ కే స్ట్రా" }, price: 60, img: "bamboos.jpeg" },
+    { id: 77, name: { en: "Coconut Shell Bowls", te: "కొబ్బరి చిప్ప గిన్నెలు", hi: "నారియల్ కే కటోరే" }, price: 220, img: "bowll.jpeg" },
+    { id: 78, name: { en: "Woven Baskets", te: "అల్లిన బుట్టలు", hi: "బునీ హుయీ టోకరియాం" }, price: 500, img: "bin2.jpeg" },
+    { id: 79, name: { en: "Metal Buckets", te: "మెటల్ బకెట్లు", hi: "ధాతు కీ బాల్టీ" }, price: 400, img: "bucket.jpeg" },
+    { id: 80, name: { en: "Clay Water Pots", te: "మట్టి నీటి కుండలు", hi: "మిట్టీ కే ఘడే" }, price: 350, img: "pot2.jpeg" },
     { id: 81, name: { en: "Bag", te: "పర్సు సంచులు", hi: "झोला" }, price: 1200, img: "bag7.jpeg" },
     { id: 82, name: { en: "Cotton Towels", te: "కాటన్ తువ్వాళ్లు", hi: "సూతీ తౌలియా" }, price: 600, img: "towel.jpeg" },
-    { id: 83, name: { en: "Wooden Hangers", te: "చెక్క బట్టల హ్యాంగర్లు", hi: "लकड़ी के हैंगर" }, price: 300, img: "hanger.jpeg" },
-    { id: 84, name: { en: "Window Blinds", te: "కిటికీ బ్లైండ్స్", hi: "खिड़की के पर्दे" }, price: 1800, img: "table.jpeg" },
-    { id: 85, name: { en: "Glass Vases", te: "గాజు పూలకుండీలు", hi: "कांच के गुलदस्ते" }, price: 450, img: "glass4.jpeg" },
-    { id: 86, name: { en: "Tongue Scrapers", te: "మెటల్ టంగ్ క్లీనర్లు", hi: "స్టీల के टंग क्लीनर" }, price: 120, img: "steelt.jpeg" },
-    { id: 87, name: { en: "Paper Straws", te: "కాగితపు స్ట్రాలు", hi: "कागज के स्ट्रॉ" }, price: 30, img: "straww.jpeg" },
-    { id: 88, name: { en: "Bamboo Wipes", te: "వెదురు వైప్స్", hi: "बांस के वाइप्स" }, price: 150, img: "wrap4.jpeg" },
-    { id: 89, name: { en: "Incense Sticks", te: "అగరుబత్తీలు", hi: "अगरबत्तियां" }, price: 100, img: "strap4.jpeg" },
-    { id: 90, name: { en: "Picture Frames", te: "ఫొటో ఫ్రేమ్‌లు", hi: "फोटो फ्रेम" }, price: 320, img: "frame4.jpeg" },
-    { id: 91, name: { en: "Agave Scrubbers", te: "అగవే పీచు స్క్రబ్బర్లు", hi: "अगैव स्क्रबर" }, price: 80, img: "clean4.jpeg" },
-    { id: 92, name: { en: "Step Stools", te: "చిన్న చెక్క స్టూల్స్", hi: "लकड़ी के छोटे स्टूल" }, price: 600, img: "stool.jpeg" },
-    { id: 93, name: { en: "Mixing Bowls", te: "కలిపే గిన్నెలు", hi: "मिक्सिंग कटोरे" }, price: 450, img: "box4.jpeg" },
-    { id: 94, name: { en: "Laundry Bags", te: "లాండ్రీ సంచులు", hi: "कपड़े धोने का बैग" }, price: 350, img: "bin3.jpeg" },
-    { id: 95, name: { en: "Garden Markers", te: "తోట గుర్తులు", hi: "गार्डन मार्कर" }, price: 120, img: "garden.jpeg" },
-    { id: 96, name: { en: "Baby Bottles", te: "గాజు పాల సీసాలు", hi: "कांच की बच्चों की बोतलें" }, price: 380, img: "baby.jpeg" },
-    { id: 97, name: { en: "Tire Mats", te: "రీసైకిల్ చేసిన టైర్ల మాట్స్", hi: "टायर के पायदान" }, price: 550, img: "car.jpeg" },
-    { id: 98, name: { en: "Bath Mats", te: "బాత్‌రూమ్ మాట్స్", hi: "बाथ मैट" }, price: 700, img: "bathb.jpeg" },
-    { id: 99, name: { en: "Laptop Sleeves", te: "ల్యాప్‌టాప్ కవర్లు", hi: "लैपटॉप स्लीव्स" }, price: 450, img: "laptop.jpeg" },
-    { id: 100, name: { en: "Mailers", te: "పర్యావరణ అనుకూల కవర్లు", hi: "इको-फ्रेंडली डाक लिफाफे" }, price: 100, img: "mail.jpeg" }
+    { id: 83, name: { en: "Wooden Hangers", te: "చెక్క బట్టల హ్యాంగర్లు", hi: "లకడీ కే హ్యాంగర్" }, price: 300, img: "hanger.jpeg" },
+    { id: 84, name: { en: "Window Blinds", te: "కిటికీ బ్లైండ్స్", hi: "ఖిడకీ కే పర్దే" }, price: 1800, img: "table.jpeg" },
+    { id: 85, name: { en: "Glass Vases", te: "గాజు పూలకుండీలు", hi: "కాంచ్ కే గుల్దస్తే" }, price: 450, img: "glass4.jpeg" },
+    { id: 86, name: { en: "Tongue Scrapers", te: "మెటల్ టంగ్ క్లీనర్లు", hi: "స్టీల్ కే టంగ్ క్లీనర్" }, price: 120, img: "steelt.jpeg" },
+    { id: 87, name: { en: "Paper Straws", te: "కాగితపు స్ట్రాలు", hi: "కాగజ్ కే స్ట్రా" }, price: 30, img: "straww.jpeg" },
+    { id: 88, name: { en: "Bamboo Wipes", te: "వెదురు వైప్స్", hi: "బాన్స్ కే వైప్స్" }, price: 150, img: "wrap4.jpeg" },
+    { id: 89, name: { en: "Incense Sticks", te: "అగరుబత్తీలు", hi: "అగర్‌బత్తియాం" }, price: 100, img: "strap4.jpeg" },
+    { id: 90, name: { en: "Picture Frames", te: "ఫొటో ఫ్రేమ్‌లు", hi: "ఫోటో ఫ్రేమ్" }, price: 320, img: "frame4.jpeg" },
+    { id: 91, name: { en: "Agave Scrubbers", te: "అగవే పీచు స్క్రబ్బర్లు", hi: "అగైవ్ స్క్రబర్" }, price: 80, img: "clean4.jpeg" },
+    { id: 92, name: { en: "Step Stools", te: "చిన్న చెక్క స్టూల్స్", hi: "లకడీ కే ఛోటే స్టూల్" }, price: 600, img: "stool.jpeg" },
+    { id: 93, name: { en: "Mixing Bowls", te: "కలిపే గిన్నెలు", hi: "మిక్సింగ్ కటోరే" }, price: 450, img: "box4.jpeg" },
+    { id: 94, name: { en: "Laundry Bags", te: "లాండ్రీ సంచులు", hi: "కపడే ధోనే కా బ్యాగ్" }, price: 350, img: "bin3.jpeg" },
+    { id: 95, name: { en: "Garden Markers", te: "తోట గుర్తులు", hi: "గార్డెన్ మార్కర్" }, price: 120, img: "garden.jpeg" },
+    { id: 96, name: { en: "Baby Bottles", te: "గాజు పాల సీసాలు", hi: "కాంచ్ కీ బచ్చోం కీ బోతలేం" }, price: 380, img: "baby.jpeg" },
+    { id: 97, name: { en: "Tire Mats", te: "రీసైకిల్ చేసిన టైర్ల మాట్స్", hi: "టైర్ కే పాయదాన్" }, price: 550, img: "car.jpeg" },
+    { id: 98, name: { en: "Bath Mats", te: "బాత్‌రూమ్ మాట్స్", hi: "బాత్ మ్యాట్" }, price: 700, img: "bathb.jpeg" },
+    { id: 99, name: { en: "Laptop Sleeves", te: "ల్యాప్‌టాప్ కవర్లు", hi: "ల్యాప్‌టాప్ స్లీవ్స్" }, price: 450, img: "laptop.jpeg" },
+    { id: 100, name: { en: "Mailers", te: "పర్యావరణ అనుకూల కవర్లు", hi: "ఎకో-ఫ్రెండ్లీ డాక్ లిఫాఫే" }, price: 100, img: "mail.jpeg" }
 ];
 
 // ==========================================
-// 4. AUTH, SESSION PERSISTENCE & INITIALIZATION
+// 4. AUTH, SESSION & OPERATOR QR HANDLER
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    // Persistent Authentication State Observer
+    // Check if this visit was triggered by scanning a collector QR
+    const urlParams = new URLSearchParams(window.location.search);
+    const scanUid = urlParams.get('approve_uid');
+    
+    if (scanUid) {
+        targetScanUid = scanUid;
+        loadOperatorView(scanUid);
+    }
+
+    // Persistent Auth Listener
     auth.onAuthStateChanged(async (user) => {
+        // If an operator scan is currently active, don't interrupt it!
+        if (targetScanUid) return;
+
         if (user) {
             await loadUserData(user.uid, false);
-            // Restore the exact page user was visiting prior to refresh
             const savedSection = localStorage.getItem('ecoearn_active_section') || 'dashboard';
             showSection(savedSection);
         } else {
@@ -319,17 +330,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     renderProducts();
-    checkUrlForScan();
 });
-
-function checkUrlForScan() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const scanUid = urlParams.get('approve_uid');
-    if (scanUid) {
-        targetScanUid = scanUid;
-        loadOperatorView(scanUid);
-    }
-}
 
 async function loadOperatorView(uid) {
     showSection('operator-approval-screen');
@@ -341,7 +342,7 @@ async function loadOperatorView(uid) {
             document.getElementById('op-user-balance').innerText = d.wallet || 0;
             document.getElementById('op-user-exp-balance').innerText = d.expectedWallet || 0;
         } else {
-            alert("Scanned User Not Found!");
+            alert("Scanned User Not Found in System!");
         }
     } catch (err) {
         console.error("Error loading user for verification:", err);
@@ -408,7 +409,7 @@ function showQrModal() {
     const container = document.getElementById('qrcode-container');
     if (!container) return;
     
-    container.innerHTML = ""; // Clear existing QR
+    container.innerHTML = ""; // Clear existing
     
     const appBaseUrl = window.location.href.split('?')[0];
     const qrUrl = `${appBaseUrl}?approve_uid=${currentUserData.id}`;
@@ -435,12 +436,12 @@ function updateOpCreditPreview() {
 async function approveAndCreditUser() {
     if (!targetScanUid) return alert("No user target selected!");
     const w = parseFloat(document.getElementById('op-verified-weight').value) || 0;
-    if (w <= 0) return alert("Please enter a valid measured weight!");
+    if (w <= 0) return alert("Please enter a valid measured scale weight!");
 
     try {
         const userRef = db.collection('users').doc(targetScanUid);
         const doc = await userRef.get();
-        if (!doc.exists) return alert("User document not found!");
+        if (!doc.exists) return alert("User not found!");
         
         const d = doc.data();
         const addedCredit = w * 20;
@@ -454,7 +455,7 @@ async function approveAndCreditUser() {
             totalKg: newTotalKg
         });
 
-        alert(`Successfully approved! Added ₹${addedCredit} to Real Wallet.`);
+        alert(`✅ Verified! Added ₹${addedCredit} to user's Real Wallet.`);
         location.href = window.location.href.split('?')[0];
     } catch (err) {
         console.error(err);
@@ -463,7 +464,7 @@ async function approveAndCreditUser() {
 }
 
 // ==========================================
-// 7. BARCODE DEPOSIT SCANNER & 25% CALCULATION
+// 7. BARCODE SCANNER & 25% CALCULATION
 // ==========================================
 function switchBarcodeTab(mode) {
     const camView = document.getElementById('barcode-cam-view');
@@ -498,9 +499,9 @@ function initBarcodeCamScanner() {
             handleScannedBarcode(decodedText);
             stopBarcodeScanner();
         },
-        (error) => { /* ignore minor camera frame noise */ }
+        (error) => { /* ignore minor camera noise */ }
     ).catch(err => {
-        console.log("Camera access error, falling back to file upload: ", err);
+        console.log("Camera access fallback triggered: ", err);
     });
 }
 
@@ -523,7 +524,7 @@ function processBarcodeFromFile(input) {
                 handleScannedBarcode(decodedText);
             })
             .catch(err => {
-                alert("Could not detect barcode from image file. Please try entering the 13-digit number manually below.");
+                alert("Could not detect barcode from image file. Please enter the 13-digit number manually below.");
             });
     }
 }
@@ -548,7 +549,6 @@ function processManualBarcode() {
 }
 
 async function handleScannedBarcode(barcodeText) {
-    console.log("Processing Barcode: ", barcodeText);
     let prodName = "PET Plastic Beverage Container";
 
     try {
@@ -570,7 +570,7 @@ async function handleScannedBarcode(barcodeText) {
         <p style="margin: 6px 0; font-size: 0.95rem;"><strong>Product / Brand:</strong> <span id="res-prod-name">${prodName}</span></p>
         
         <div style="margin: 12px 0;">
-            <label style="font-size: 0.85rem; color: #ccc;">Enter Item Price/MRP (₹):</label><br>
+            <label style="font-size: 0.85rem; color: #cbd5e1;">Enter Item Price/MRP (₹):</label><br>
             <input type="number" id="input-mrp-val" placeholder="e.g. 135" oninput="calculateCustomDeposit()" style="padding: 8px 12px; border-radius: 6px; border: 1.5px solid #27ae60; width: 140px; margin-top: 5px; font-weight: bold; font-size: 1rem; color: #333; outline: none;">
         </div>
 
@@ -589,14 +589,12 @@ function calculateCustomDeposit() {
     if (!mrpInput) return;
     
     let userMrp = parseFloat(mrpInput.value) || 0;
-    
     if (userMrp > 2000) {
         userMrp = 2000;
         mrpInput.value = 2000;
     }
     
     scannedProductReward = Math.round(userMrp * 0.25);
-    
     const rewardSpan = document.getElementById('res-prod-reward');
     if (rewardSpan) {
         rewardSpan.innerText = scannedProductReward;
@@ -605,7 +603,7 @@ function calculateCustomDeposit() {
 
 async function claimBarcodeReward() {
     if (!currentUserData) return alert("Please log in first!");
-    if (scannedProductReward <= 0) return alert("Please enter a valid price/MRP to calculate reward before claiming.");
+    if (scannedProductReward <= 0) return alert("Please enter the product price to calculate your reward.");
 
     try {
         const newExpWallet = (currentUserData.expectedWallet || 0) + scannedProductReward;
@@ -622,7 +620,7 @@ async function claimBarcodeReward() {
 }
 
 // ==========================================
-// 8. LIVE GPS RECYCLING CENTER MAP (LEAFLET.JS)
+// 8. GPS RECYCLING MAP (LEAFLET.JS)
 // ==========================================
 function initEcoMap() {
     if (mapInitialized || typeof L === 'undefined') return;
@@ -678,9 +676,13 @@ function renderMap(lat, lng, centers) {
 }
 
 // ==========================================
-// 9. CART & PURCHASE (USES REAL WALLET)
+// 9. CART & PICKUP CHECKOUT
 // ==========================================
 function processToPickup() {
+    if (!currentUserData) {
+        alert("Please log in to proceed to checkout!");
+        return showSection('login-screen');
+    }
     let total = userCart.reduce((a, b) => a + (b.price * b.qty), 0);
     if(total === 0) return alert(translations[currentLang]['alert-empty']);
     if(currentUserData.wallet < total) return alert(translations[currentLang]['alert-credits']);
@@ -720,7 +722,6 @@ async function confirmPurchaseAndPickup() {
         document.getElementById('feedback-comments').value = ""; 
         setRating(0); 
         showSection('feedback-screen'); 
-        
     } catch (error) {
         console.error("Order processing failed:", error);
         alert("Something went wrong. Please try again.");
@@ -728,7 +729,7 @@ async function confirmPurchaseAndPickup() {
 }
 
 // ==========================================
-// 10. RATING & FEEDBACK ENGINE
+// 10. RATING & FEEDBACK
 // ==========================================
 function setRating(score) {
     selectedRatingScore = score;
@@ -741,6 +742,10 @@ function setRating(score) {
 }
 
 async function submitFeedback() {
+    if (!currentUserData) {
+        alert("Please log in to submit a review!");
+        return showSection('login-screen');
+    }
     if (selectedRatingScore === 0) return alert("Please select a star rating!");
     const textualComments = document.getElementById('feedback-comments').value.trim();
 
@@ -763,7 +768,7 @@ async function submitFeedback() {
 // 11. RENDERING & UI FUNCTIONS
 // ==========================================
 function renderOrders() {
-    const list = currentUserData.orders || [];
+    const list = (currentUserData && currentUserData.orders) || [];
     document.getElementById('orders-list').innerHTML = list.length ? list.map(o => `
         <div class="order-box">
             <strong>Date:</strong> ${o.date} | <strong>Total:</strong> ₹${o.total}
@@ -798,6 +803,10 @@ function filterProducts() {
 }
 
 function addToCart(id) {
+    if (!currentUserData) {
+        alert("Please login or create an account to start shopping and add items to your cart!");
+        return showSection('login-screen');
+    }
     const p = productList.find(x => x.id === id);
     const item = userCart.find(i => i.id === id);
     if (item) item.qty++; else userCart.push({ ...p, qty: 1 });
@@ -854,8 +863,8 @@ function showSection(id) {
     const targetedSec = document.getElementById(id);
     if (targetedSec) targetedSec.classList.remove('hidden');
     
-    // Save current active screen to localStorage for session persistence
-    if (currentUserData) {
+    // Save active view (unless it's an operator scan session)
+    if (currentUserData && !targetScanUid) {
         localStorage.setItem('ecoearn_active_section', id);
     }
 
