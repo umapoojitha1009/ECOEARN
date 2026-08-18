@@ -181,7 +181,7 @@ const productList = [
     { id: 5, name: { en: "Cotton Bags", te: "పత్తి సంచులు", hi: "सूती थैले" }, price: 100, img: "cloth.png" },
     { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूट के थैले" }, price: 150, img: "jute.png" },
     { id: 7, name: { en: "Bamboo Cutlery", te: "వెదురు స్పూన్లు", hi: "बांस के चम्मच और कांटे" }, price: 200, img: "spoon.png" },
-    { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "स्टेनलेस स्टील टिफिन" }, price: 450, img: "box..jpeg" },
+    { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "స్టెయిన్‌లెస్ స్టీల్ టిఫిన్" }, price: 450, img: "box..jpeg" },
     { id: 9, name: { en: "Copper Water Bottles", te: "రాగి వాటర్ బాటిల్స్", hi: "तांबे की पानी की बोतलें" }, price: 850, img: "copper.png" },
     { id: 10, name: { en: "Wooden Combs", te: "చెక్క దువ్వెనలు", hi: "लकड़ी की कंघी" }, price: 90, img: "comb.png" },
     { id: 11, name: { en: "Shampoo Bars", te: "షాంపూ బార్ సబ్బులు", hi: "शैम्पू बार्स" }, price: 280, img: "shampoo.png" },
@@ -207,7 +207,7 @@ const productList = [
     { id: 31, name: { en: "Recycled Paper Notebooks", te: "రీసైకిల్ చేసిన కాగితం నోట్‌బుక్‌లు", hi: "रीसाइकल पेपर नोटबुक" }, price: 120, img: "book.jpeg" },
     { id: 32, name: { en: "Wooden Pencils", te: "చెక్క పెన్సిళ్లు", hi: "लकड़ी की पेंसिल" }, price: 40, img: "pencil.jpeg" },
     { id: 33, name: { en: "Refillable Fountain Pens", te: "రీఫిల్ చేయగల ఫౌంటెన్ పెన్నులు", hi: "रीफिलेबल फाउंटेन पेन" }, price: 500, img: "repen.jpeg" },
-    { id: 34, name: { en: "Stainless Steel Tea Infusers", te: "స్టీల్ టీ వడపోత", hi: "स्टेनलेस स्टील चाय इन्फ्यूज़र" }, price: 180, img: "tea.jpeg" },
+    { id: 34, name: { en: "Stainless Steel Tea Infusers", te: "స్టీల్ టీ వడపోత", hi: "స్టెయిన్‌లెస్ స్టీల్ చాయ్ ఇన్ఫ్యూజర్" }, price: 180, img: "tea.jpeg" },
     { id: 35, name: { en: "Cloth Diapers", te: "బట్ట డైపర్లు", hi: "कपड़े के डायपर" }, price: 350, img: "diaper.jpeg" },
     { id: 36, name: { en: "Menstrual Cups", te: "మెన్‌స్ట్రువల్ కప్పులు", hi: "मासिक धर्म कप" }, price: 600, img: "menstrual.jpeg" },
     { id: 37, name: { en: "Bamboo Flooring", te: "వెదురు ఫ్లోరింగ్", hi: "बांस का फर्श" }, price: 2500, img: "floor.jpeg" },
@@ -226,7 +226,7 @@ const productList = [
     { id: 50, name: { en: "Toothpaste Tablets", te: "టూత్‌పేస్ట్ టాబ్లెట్లు", hi: "टूथपेस्ट गोलियां" }, price: 220, img: "tablet.jpeg" },
     { id: 51, name: { en: "Bamboo Tongue Scrapers", te: "వెదురు నాలుక బద్దలు", hi: "बांस के टंग क्लीनर" }, price: 80, img: "tounge.jpeg" },
     { id: 52, name: { en: "Neem Wood Spatulas", te: "వేప చెక్క వంట గరిటెలు", hi: "नीम की लकड़ी के चम्मच" }, price: 110, img: "cutt.jpeg" },
-    { id: 53, name: { en: "Stainless Steel Tiffin Carriers", te: "స్టీల్ క్యారేజీలు", hi: "स्टेनलेस स्टील टिफिन कैरियर" }, price: 550, img: "box..jpeg" },
+    { id: 53, name: { en: "Stainless Steel Tiffin Carriers", te: "స్టీల్ క్యారేజీలు", hi: "స్టెయిన్‌లెస్ స్టీల్ టిఫిన్ కేరియర్" }, price: 550, img: "box..jpeg" },
     { id: 54, name: { en: "Konjac Sponges", te: "కొంజాక్ స్పాంజ్లు", hi: "कोंजैक स्पंज" }, price: 130, img: "konjac.jpeg" },
     { id: 55, name: { en: "Recycled Cardboard Boxes", te: "రీసైకిల్ చేసిన కార్డ్‌బోర్డ్ పెట్టెలు", hi: "రీసాఇకల్ కార్డ్‌బోర్డ్ బక్సే" }, price: 60, img: "cardboard.png" },
     { id: 56, name: { en: "Mushroom Packaging", te: "మష్రూమ్ ప్యాకేజింగ్", hi: "मशरूम पैकेजिंग" }, price: 90, img: "mush.jpeg" },
@@ -235,7 +235,7 @@ const productList = [
     { id: 59, name: { en: "Linen Napkins", te: "లినెన్ నాప్‌కిన్లు", hi: "लिनन नैपकिन" }, price: 240, img: "napkin.jpeg" },
     { id: 60, name: { en: "Wool Rugs", te: "ఉన్ని తివాచీలు", hi: "ऊन के कालीन" }, price: 2800, img: "rugs.jpeg" },
     { id: 61, name: { en: "Copper Tongue Cleaners", te: "రాగి నాలుక గీతలు", hi: "तांबे के टंग क्लीनर" }, price: 150, img: "coppert.jpeg" },
-    { id: 62, name: { en: "Stainless Steel Laundry Racks", te: "స్టీల్ బట్టల స్టాండ్లు", hi: "स्टेनलेस स्टील कपड़े सुखाने का रैक" }, price: 1200, img: "steela.jpeg" },
+    { id: 62, name: { en: "Stainless Steel Laundry Racks", te: "స్టీల్ బట్టల స్టాండ్లు", hi: "స్టెయిన్‌లెస్ స్టీల్ కపడే సుఖానే కా రేక్" }, price: 1200, img: "steela.jpeg" },
     { id: 63, name: { en: "Bamboo Makeup Brushes", te: "వెదురు మేకప్ బ్రష్‌లు", hi: "बांस के मेकअप ब्रश" }, price: 500, img: "makeup.jpeg" },
     { id: 64, name: { en: "Glass Soap Dispensers", te: "గాజు సబ్బు డిస్పెన్సర్లు", hi: "कांच के साबुन डिस्पेंसर" }, price: 220, img: "soapd.jpeg" },
     { id: 65, name: { en: "Reusable Snack Bags", te: "మళ్ళీ వాడదగిన స్నాక్స్ సంచులు", hi: "पुन: प्रयोज्य स्नैक बैग" }, price: 180, img: "foods.jpeg" },
@@ -277,9 +277,22 @@ const productList = [
 ];
 
 // ==========================================
-// 4. AUTH & INITIALIZATION
+// 4. AUTH, SESSION PERSISTENCE & INITIALIZATION
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
+    // Persistent Authentication State Observer
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            await loadUserData(user.uid, false);
+            // Restore the exact page user was visiting prior to refresh
+            const savedSection = localStorage.getItem('ecoearn_active_section') || 'dashboard';
+            showSection(savedSection);
+        } else {
+            currentUserData = null;
+            showSection('intro-screen');
+        }
+    });
+
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.onsubmit = async (e) => {
@@ -292,12 +305,19 @@ window.addEventListener('DOMContentLoaded', () => {
                     userCredential = await auth.signInWithEmailAndPassword(email, pass);
                 } catch (err) {
                     userCredential = await auth.createUserWithEmailAndPassword(email, pass);
-                    await db.collection('users').doc(userCredential.user.uid).set({ email, wallet: 0, expectedWallet: 0, totalKg: 0, orders: [] });
+                    await db.collection('users').doc(userCredential.user.uid).set({ 
+                        email, 
+                        wallet: 0, 
+                        expectedWallet: 0, 
+                        totalKg: 0, 
+                        orders: [] 
+                    });
                 }
-                loadUserData(userCredential.user.uid, true);
+                await loadUserData(userCredential.user.uid, true);
             } catch (err) { alert(err.message); }
         };
     }
+
     renderProducts();
     checkUrlForScan();
 });
@@ -360,7 +380,7 @@ async function loadUserData(uid, isLogin = false) {
     renderOrders(); 
     loadLeaderboard(); 
     updateInterface();
-    if(isLogin) showSection('lang-select-screen');
+    if (isLogin) showSection('lang-select-screen');
 }
 
 function updateReward() {
@@ -435,7 +455,7 @@ async function approveAndCreditUser() {
         });
 
         alert(`Successfully approved! Added ₹${addedCredit} to Real Wallet.`);
-        location.href = window.location.href.split('?')[0]; // Reset page back to clean view
+        location.href = window.location.href.split('?')[0];
     } catch (err) {
         console.error(err);
         alert("Approval failed: " + err.message);
@@ -468,7 +488,7 @@ function switchBarcodeTab(mode) {
 
 function initBarcodeCamScanner() {
     if (typeof Html5Qrcode === 'undefined') return;
-    stopBarcodeScanner(); // Clear previous instance
+    stopBarcodeScanner();
 
     html5QrScannerInstance = new Html5Qrcode("reader");
     html5QrScannerInstance.start(
@@ -478,9 +498,9 @@ function initBarcodeCamScanner() {
             handleScannedBarcode(decodedText);
             stopBarcodeScanner();
         },
-        (error) => { /* ignore minor camera errors */ }
+        (error) => { /* ignore minor camera frame noise */ }
     ).catch(err => {
-        console.log("Camera access error, falling back to file input: ", err);
+        console.log("Camera access error, falling back to file upload: ", err);
     });
 }
 
@@ -508,7 +528,6 @@ function processBarcodeFromFile(input) {
     }
 }
 
-// MANUAL INPUT SUBMIT HANDLER
 function processManualBarcode() {
     const inputEl = document.getElementById('manual-barcode-input');
     if (!inputEl) return alert("Input box not found!");
@@ -518,7 +537,6 @@ function processManualBarcode() {
         return alert("Please enter a valid 8 to 13-digit barcode number!");
     }
 
-    // Instant UI Loading Feedback
     const resultCard = document.getElementById('barcode-result-card');
     if (resultCard) {
         resultCard.innerHTML = `<h4 style="color: #27ae60; margin-bottom: 8px;">🔍 Identifying product...</h4>`;
@@ -531,11 +549,9 @@ function processManualBarcode() {
 
 async function handleScannedBarcode(barcodeText) {
     console.log("Processing Barcode: ", barcodeText);
-    
     let prodName = "PET Plastic Beverage Container";
 
     try {
-        // Query Open Food Facts Global API for Brand/Product Name
         const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcodeText}.json`);
         const data = await response.json();
         
@@ -546,9 +562,8 @@ async function handleScannedBarcode(barcodeText) {
         console.log("Barcode lookup fallback triggered.");
     }
 
-    scannedProductReward = 0; // Reset reward state until user inputs MRP
+    scannedProductReward = 0;
 
-    // Display Result Card with MRP Prompt
     const resultCard = document.getElementById('barcode-result-card');
     resultCard.innerHTML = `
         <h4 style="color: #27ae60; margin-bottom: 8px;">✅ Product Identified!</h4>
@@ -575,7 +590,6 @@ function calculateCustomDeposit() {
     
     let userMrp = parseFloat(mrpInput.value) || 0;
     
-    // Safety cap at ₹2,000 per single item
     if (userMrp > 2000) {
         userMrp = 2000;
         mrpInput.value = 2000;
@@ -613,7 +627,6 @@ async function claimBarcodeReward() {
 function initEcoMap() {
     if (mapInitialized || typeof L === 'undefined') return;
 
-    // Default coordinates: Visakhapatnam, Andhra Pradesh
     let userLat = 17.6868;
     let userLng = 83.2185;
 
@@ -630,7 +643,7 @@ function initEcoMap() {
             userLng = pos.coords.longitude;
             renderMap(userLat, userLng, centers);
         }, () => {
-            renderMap(userLat, userLng, centers); // Fallback to default
+            renderMap(userLat, userLng, centers);
         });
     } else {
         renderMap(userLat, userLng, centers);
@@ -646,12 +659,10 @@ function renderMap(lat, lng, centers) {
         attribution: '© OpenStreetMap contributors'
     }).addTo(ecoMapInstance);
 
-    // User Blue Marker
     L.marker([lat, lng]).addTo(ecoMapInstance)
         .bindPopup("<b>📍 Your Current Location</b>")
         .openPopup();
 
-    // Drop Center Markers
     centers.forEach(c => {
         const popupText = `
             <div style="font-size:13px; color:#fff;">
@@ -835,7 +846,6 @@ async function loadLeaderboard() {
 }
 
 function showSection(id) {
-    // Stop barcode camera scanner if navigating away
     if (id !== 'barcode-screen') {
         stopBarcodeScanner();
     }
@@ -844,7 +854,11 @@ function showSection(id) {
     const targetedSec = document.getElementById(id);
     if (targetedSec) targetedSec.classList.remove('hidden');
     
-    // Auto-trigger Scanner or Map when entering their respective tabs
+    // Save current active screen to localStorage for session persistence
+    if (currentUserData) {
+        localStorage.setItem('ecoearn_active_section', id);
+    }
+
     if (id === 'barcode-screen') {
         switchBarcodeTab('cam');
     } else if (id === 'map-screen') {
@@ -864,4 +878,11 @@ function toggleSidebar() {
     }
 }
 
-function logout() { location.reload(); }
+function logout() {
+    localStorage.removeItem('ecoearn_active_section');
+    auth.signOut().then(() => {
+        location.reload();
+    }).catch(() => {
+        location.reload();
+    });
+}

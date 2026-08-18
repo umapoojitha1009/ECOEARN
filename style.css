@@ -74,7 +74,7 @@ body {
     z-index: 2000;
     padding-top: 15px;
     padding-bottom: 30px;
-    overflow-y: auto; /* Enables vertical scrolling for long menus */
+    overflow-y: auto;
 }
 
 .sidebar.active {
@@ -96,7 +96,7 @@ body {
 }
 
 .sidebar ul li {
-    padding: 10px 20px; /* Reduced padding so all links easily fit */
+    padding: 10px 20px;
     cursor: pointer;
     border-bottom: 1px solid #1a1a1a;
     transition: 0.3s;
@@ -116,26 +116,26 @@ body {
 }
 
 /* ==========================================
-   4. GLASS CARDS & SIZING CONTROLS
+   4. GLASS CARDS & GENERAL LAYOUT
    ========================================== */
 .centered-view {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 80px;
+    padding: 90px 20px 40px 20px;
 }
 
 .glass-card {
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     padding: 35px;
     border-radius: 25px;
     text-align: center;
     width: 100%;
-    max-width: 420px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 440px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
@@ -174,15 +174,281 @@ input, select, textarea {
     cursor: pointer;
     font-size: 0.95rem;
     transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .btn-primary:hover {
     background: #219150;
-    transform: scale(1.02);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.btn-large {
+    padding: 16px 28px;
+    font-size: 1.05rem;
+    border-radius: 12px;
 }
 
 /* ==========================================
-   5. ECO CATALOG (CENTERED GRID)
+   5. RICH LANDING PAGE STYLES
+   ========================================== */
+.landing-section {
+    padding-top: 70px;
+    width: 100%;
+}
+
+.landing-hero {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    background: radial-gradient(circle at center, rgba(39, 174, 96, 0.25) 0%, rgba(0,0,0,0.8) 75%);
+}
+
+.hero-badge {
+    background: rgba(39, 174, 96, 0.2);
+    color: #2ecc71;
+    border: 1px solid #27ae60;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    max-width: 900px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+.highlight-green {
+    color: #2ecc71;
+    text-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    color: #cbd5e1;
+    max-width: 720px;
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.hero-btn-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.landing-content-block {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 70px 20px;
+    text-align: center;
+}
+
+.section-heading {
+    font-size: 2.2rem;
+    color: #2ecc71;
+    margin-bottom: 12px;
+}
+
+.section-subtext {
+    font-size: 1.05rem;
+    color: #aaa;
+    margin-bottom: 45px;
+}
+
+/* Steps Grid (How It Works) */
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.step-card {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 30px 20px;
+    position: relative;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-6px);
+    border-color: #27ae60;
+}
+
+.step-number {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: #27ae60;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.9rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-icon {
+    font-size: 2.3rem;
+    color: #2ecc71;
+    margin-bottom: 15px;
+}
+
+.step-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.step-card p {
+    font-size: 0.88rem;
+    color: #bbb;
+    line-height: 1.5;
+}
+
+/* Benefits Grid */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.benefit-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 25px 20px;
+    text-align: left;
+    transition: 0.3s;
+}
+
+.benefit-card:hover {
+    background: rgba(39, 174, 96, 0.1);
+    border-color: rgba(39, 174, 96, 0.5);
+}
+
+.benefit-icon {
+    font-size: 2rem;
+    color: #2ecc71;
+    margin-bottom: 15px;
+}
+
+.benefit-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.benefit-card p {
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.5;
+}
+
+/* Landing Footer */
+.landing-footer {
+    background: rgba(10, 10, 10, 0.95);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px 20px 20px 20px;
+    margin-top: 40px;
+}
+
+.footer-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 30px;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    color: #27ae60;
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.footer-col h4 {
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #27ae60;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    color: #94a3b8;
+    font-size: 0.88rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.footer-links li:hover {
+    color: #2ecc71;
+    padding-left: 4px;
+}
+
+.footer-bottom {
+    max-width: 1180px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #64748b;
+}
+
+/* ==========================================
+   6. ECO CATALOG (CENTERED GRID)
    ========================================== */
 #products {
     display: block;
@@ -240,7 +506,7 @@ input, select, textarea {
 }
 
 /* ==========================================
-   6. CART & ORDERS STYLING
+   7. CART & ORDERS STYLING
    ========================================== */
 .cart-row {
     background: white;
@@ -289,7 +555,7 @@ input, select, textarea {
 }
 
 /* ==========================================
-   7. UTILITIES, FEEDBACK & QR SYSTEM
+   8. UTILITIES, FEEDBACK & QR SYSTEM
    ========================================== */
 .reward-box {
     margin: 20px 0;
@@ -348,18 +614,8 @@ textarea:focus {
     box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
 }
 
-/* RESPONSIVE FIXES */
-@media (max-width: 1000px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr); }
-    .glass-card { width: 90%; }
-}
-
-@media (max-width: 600px) {
-    .product-grid { grid-template-columns: 1fr; }
-}
-
 /* ==========================================
-   8. BARCODE SCANNER & GPS MAP ADD-ONS
+   9. BARCODE SCANNER & GPS MAP ADD-ONS
    ========================================== */
 #reader video {
     width: 100% !important;
@@ -377,7 +633,6 @@ textarea:focus {
     margin-top: 10px !important;
 }
 
-/* Interactive Price / MRP Input Focus Style */
 #input-mrp-val {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -387,7 +642,6 @@ textarea:focus {
     box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
 }
 
-/* Leaflet Map Custom Popup Overrides */
 .leaflet-popup-content-wrapper {
     background: #111 !important;
     color: #fff !important;
@@ -397,4 +651,24 @@ textarea:focus {
 
 .leaflet-popup-tip {
     background: #111 !important;
+}
+
+/* ==========================================
+   10. RESPONSIVE BREAKPOINTS
+   ========================================== */
+@media (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .hero-title { font-size: 2.3rem; }
+}
+
+@media (max-width: 650px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 1.85rem; }
+    .glass-card { width: 95%; padding: 25px 18px; }
 }

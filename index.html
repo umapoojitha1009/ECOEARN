@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECOEARN | Pan-India</title>
+    <title>ECOEARN | Smart Circular Recycling</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <!-- Barcode Reader Library (Supports Live Camera & Image File Upload) -->
@@ -17,7 +17,7 @@
 <body>
     <header class="top-bar">
         <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
-        <div class="logo">ECOEARN</div>
+        <div class="logo" onclick="showSection('intro-screen')" style="cursor: pointer;">ECOEARN</div>
         <div class="cart-trigger" onclick="showSection('cart')">
             <i class="fas fa-shopping-cart"></i><span id="cart-badge" class="badge">0</span>
         </div>
@@ -26,17 +26,18 @@
     <nav id="sidebar" class="sidebar">
         <div class="close-btn" onclick="toggleSidebar()">&times;</div>
         <ul>
+            <li onclick="showSection('intro-screen')">🏠 <span>Home</span></li>
             <li onclick="showSection('about')">🌿 <span data-key="nav-about">About</span></li>
-            <li onclick="showSection('growth')">📈 <span data-key="nav-growth">Impact</span></li>
-            <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calc</span></li>
+            <li onclick="showSection('growth')">📈 <span data-key="nav-growth">My Impact</span></li>
+            <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calculator</span></li>
             <li onclick="showSection('barcode-screen')">📷 <span data-key="nav-barcode">Barcode Deposit</span></li>
             <li onclick="showSection('map-screen')">🗺️ <span data-key="nav-map">Recycling Centers</span></li>
             <li onclick="showSection('leaderboard')">🏆 <span data-key="nav-rank">Leaderboard</span></li>
-            <li onclick="showSection('orders')">📦 <span data-key="nav-orders">Orders</span></li>
+            <li onclick="showSection('orders')">📦 <span data-key="nav-orders">Your Orders</span></li>
             <li onclick="showSection('wallet')">💰 <span data-key="nav-wallet">Real Wallet</span></li>
             <li onclick="showSection('expected-wallet-screen')">⏳ <span data-key="nav-exp-wallet">Expected Wallet</span></li>
             <li onclick="showQrModal()">📱 <span data-key="nav-qr">My Collector QR</span></li>
-            <li onclick="showSection('products')">🛍️ <span data-key="nav-shop">Shop</span></li>
+            <li onclick="showSection('products')">🛍️ <span data-key="nav-shop">Eco Catalog</span></li>
             <li onclick="showSection('feedback-screen')">⭐ <span data-key="nav-feedback">Review</span></li>
             <li onclick="logout()" class="logout-link">🚪 <span data-key="nav-logout">Logout</span></li>
         </ul>
@@ -44,14 +45,160 @@
     <div id="overlay" onclick="toggleSidebar()"></div>
 
     <main>
-        <section id="intro-screen" class="centered-view">
-            <div class="glass-card">
-                <h2>ECOEARN</h2>
-                <p data-key="intro-desc">Recycle plastic and shop 100+ sustainable products.</p>
-                <button class="btn-primary" onclick="showSection('login-screen')" data-key="get-started">Get Started</button>
+        <!-- 1. FULL-FEATURED RICH LANDING PAGE -->
+        <section id="intro-screen" class="landing-section">
+            <!-- Hero Banner -->
+            <div class="landing-hero">
+                <span class="hero-badge">🌱 Circular Economy Platform</span>
+                <h1 class="hero-title">Turn Household Plastic Into <span class="highlight-green">Digital Wealth</span></h1>
+                <p class="hero-subtitle" data-key="intro-desc">
+                    Recycle verified plastic scrap at ₹20/KG or earn a 25% Deposit Reward on container barcodes. Spend credits directly on 100+ sustainable, plastic-free alternatives.
+                </p>
+                <div class="hero-btn-group">
+                    <button class="btn-primary btn-large" onclick="showSection('login-screen')" data-key="get-started">
+                        <i class="fas fa-arrow-right"></i> Get Started / Login
+                    </button>
+                    <button class="btn-secondary btn-large" onclick="showSection('products')">
+                        <i class="fas fa-shopping-bag"></i> Browse Eco-Catalog
+                    </button>
+                </div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="landing-content-block">
+                <h2 class="section-heading"><i class="fas fa-cubes-stacked"></i> How ECOEARN Works</h2>
+                <p class="section-subtext">Four effortless steps to monetize your home recyclables and protect our planet.</p>
+                
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon"><i class="fas fa-recycle"></i></div>
+                        <h3>1. Collect & Segregate</h3>
+                        <p>Gather your dry plastic containers, bottles, and scrap at home.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon"><i class="fas fa-barcode"></i></div>
+                        <h3>2. Scan / Calculate</h3>
+                        <p>Scan the product barcode or log the estimated weight at ₹20/KG.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon"><i class="fas fa-qrcode"></i></div>
+                        <h3>3. QR Verification</h3>
+                        <p>Show your Collector QR to the operator for scale validation and instant crediting.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-icon"><i class="fas fa-bag-shopping"></i></div>
+                        <h3>4. Eco-Shopping</h3>
+                        <p>Use your real wallet balance to order from 100+ plastic-free goods.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Benefits & Value Grid -->
+            <div class="landing-content-block">
+                <h2 class="section-heading"><i class="fas fa-shield-halved"></i> Why Choose ECOEARN?</h2>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <i class="fas fa-hand-holding-dollar benefit-icon"></i>
+                        <h4>Direct Financial Credits</h4>
+                        <p>Receive guaranteed reward rates with zero hidden charges.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-wallet benefit-icon"></i>
+                        <h4>Dual-Wallet Security</h4>
+                        <p>Estimated and verified balances remain 100% fraud-proof.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-map-location-dot benefit-icon"></i>
+                        <h4>Geo-Tagged Recycling Map</h4>
+                        <p>Locate nearby smart scrap drop hubs with live turn-by-turn navigation.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fas fa-seedling benefit-icon"></i>
+                        <h4>100+ Sustainable Catalog</h4>
+                        <p>Support sustainable makers across India with zero-plastic packaging.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Landing Page Footer -->
+            <footer class="landing-footer">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h3 class="footer-logo">ECOEARN</h3>
+                        <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                            Empowering citizens to combat municipal plastic pollution through verified digital rewards and circular consumption.
+                        </p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Quick Navigation</h4>
+                        <ul class="footer-links">
+                            <li onclick="showSection('about')">About Our Mission</li>
+                            <li onclick="showSection('products')">Sustainable Products</li>
+                            <li onclick="showSection('map-screen')">Recycling Center Map</li>
+                            <li onclick="showSection('leaderboard')">Community Leaderboard</li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Help & Support</h4>
+                        <ul class="footer-links">
+                            <li onclick="showSection('help-section')">Operator Verification Guide</li>
+                            <li onclick="showSection('help-section')">Pickup Scheduling FAQ</li>
+                            <li onclick="showSection('feedback-screen')">Give Feedback / Review</li>
+                            <li>Email: support@ecoearn.org</li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal & Privacy</h4>
+                        <ul class="footer-links">
+                            <li onclick="showSection('terms-section')">Terms & Conditions</li>
+                            <li onclick="showSection('terms-section')">Privacy Policy</li>
+                            <li onclick="showSection('terms-section')">Deposit Return Standards</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2026 ECOEARN Initiative. All rights reserved. Designed for Sustainable Living.</p>
+                </div>
+            </footer>
+        </section>
+
+        <!-- HELP & FAQ SCREEN -->
+        <section id="help-section" class="centered-view hidden">
+            <div class="glass-card" style="max-width: 680px; text-align: left;">
+                <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-circle-question"></i> Help & Support</h2>
+                <div style="line-height: 1.6; font-size: 0.9rem; color: #cbd5e1;">
+                    <p><strong>Q1: How do I convert Expected Wallet to Real Wallet?</strong><br>
+                    Expected Wallet is an estimate based on your calculator or barcode entries. When an operator collects and weighs your recyclables, they will scan your Collector QR and credit your Real Wallet instantly.</p>
+                    <hr style="margin: 12px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p><strong>Q2: How does the 25% Barcode Deposit work?</strong><br>
+                    Scan or type the 13-digit barcode of eligible plastic containers, enter the retail MRP, and 25% of that price will be added to your Expected Wallet.</p>
+                    <hr style="margin: 12px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p><strong>Q3: How do I schedule a home pickup?</strong><br>
+                    Add items from the Eco-Catalog to your cart, proceed to checkout, and fill in your address and preferred collection date.</p>
+                </div>
+                <button class="btn-primary" onclick="showSection('intro-screen')" style="margin-top: 20px; width: 100%;">Back to Home</button>
             </div>
         </section>
 
+        <!-- TERMS & CONDITIONS SCREEN -->
+        <section id="terms-section" class="centered-view hidden">
+            <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
+                <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-file-contract"></i> Terms & Conditions</h2>
+                <div style="line-height: 1.6; font-size: 0.88rem; color: #cbd5e1;">
+                    <p><strong>1. Digital Incentive Settlement:</strong> Rewards displayed in the Expected Wallet are calculated estimates and do not constitute cash or spendable credit until physically audited by an authorized collector agent.</p><br>
+                    <p><strong>2. Waste Segregation Protocol:</strong> Only clean, dry, non-hazardous plastic recyclables are eligible for weighing and credit settlement.</p><br>
+                    <p><strong>3. Store Purchase & Delivery:</strong> Credits stored in the Real Wallet are redeemable strictly inside the ECOEARN sustainable catalog for listed eco-friendly goods.</p>
+                </div>
+                <button class="btn-primary" onclick="showSection('intro-screen')" style="margin-top: 20px; width: 100%;">Accept & Return</button>
+            </div>
+        </section>
+
+        <!-- LOGIN / REGISTER SCREEN -->
         <section id="login-screen" class="centered-view hidden">
             <div class="glass-card">
                 <h3 data-key="login-title">Login / Register</h3>
@@ -63,6 +210,7 @@
             </div>
         </section>
 
+        <!-- LANGUAGE SELECTION SCREEN -->
         <section id="lang-select-screen" class="centered-view hidden">
             <div class="glass-card">
                 <h3 data-key="choose-lang">Choose Your Language</h3>
@@ -77,6 +225,7 @@
             </div>
         </section>
 
+        <!-- CALCULATOR DASHBOARD -->
         <section id="dashboard" class="centered-view hidden">
             <div class="glass-card">
                 <h2 data-key="nav-dash">Calculator</h2>
@@ -94,7 +243,7 @@
         <section id="barcode-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 100%; max-width: 550px;">
                 <h2>📷 Product Barcode Deposit</h2>
-                <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">Scan product barcode or upload image to earn <strong>25% Eco-Deposit Reward</strong>!</p>
+                <p style="color: #aaa; font-size: 0.85rem; margin-top: 5px;">Scan product barcode or enter numbers to claim <strong>25% Eco-Deposit Reward</strong>!</p>
                 
                 <!-- Tab Controls -->
                 <div style="display: flex; gap: 10px; margin: 15px 0; justify-content: center;">
@@ -188,6 +337,7 @@
             </div>
         </section>
 
+        <!-- PRODUCTS CATALOG -->
         <section id="products" class="centered-view hidden">
             <div class="scroll-container" style="width: 100%; max-width: 1200px; padding: 20px;">
                 <div class="catalog-header" style="margin-bottom: 20px;">
@@ -198,6 +348,7 @@
             </div>
         </section>
 
+        <!-- CART -->
         <section id="cart" class="centered-view hidden">
             <div class="glass-card">
                 <h2 data-key="nav-cart">Cart</h2>
@@ -207,6 +358,7 @@
             </div>
         </section>
 
+        <!-- PICKUP -->
         <section id="pickup" class="centered-view hidden">
             <div class="glass-card">
                 <h2 data-key="pickup-title">Schedule Pickup</h2>
@@ -219,6 +371,7 @@
             </div>
         </section>
 
+        <!-- ORDERS -->
         <section id="orders" class="centered-view hidden">
             <div class="glass-card" style="width: 700px; max-height: 80vh; overflow-y: auto;">
                 <h2 data-key="nav-orders">Your Orders</h2>
@@ -226,6 +379,7 @@
             </div>
         </section>
 
+        <!-- FEEDBACK REVIEW -->
         <section id="feedback-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 500px;">
                 <h2 style="color: #27ae60; margin-bottom: 10px;" data-key="feedback-title">Rate Your Experience</h2>
@@ -247,6 +401,7 @@
             </div>
         </section>
 
+        <!-- IMPACT GROWTH -->
         <section id="growth" class="centered-view hidden">
             <div class="glass-card">
                 <h2 data-key="nav-growth">My Impact</h2>
@@ -257,6 +412,7 @@
             </div>
         </section>
 
+        <!-- LEADERBOARD -->
         <section id="leaderboard" class="centered-view hidden">
             <div class="glass-card">
                 <h2 data-key="nav-rank">Leaderboard</h2>
@@ -264,6 +420,7 @@
             </div>
         </section>
 
+        <!-- ABOUT SCREEN -->
         <section id="about" class="centered-view hidden">
             <div class="glass-card" style="text-align: left; max-height: 80vh; overflow-y: auto;">
                 <h2 data-key="nav-about" style="text-align: center; color: #27ae60;">OUR MISSION</h2>
@@ -286,6 +443,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
