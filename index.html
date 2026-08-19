@@ -193,7 +193,7 @@
             </div>
         </section>
 
-        <!-- FULL-FEATURED OPERATOR DASHBOARD (SCHEDULE, LIVE ROUTE MAP & QR SCANNER) -->
+        <!-- FULL-FEATURED OPERATOR DASHBOARD -->
         <section id="operator-dashboard-screen" class="centered-view hidden">
             <div class="glass-card" style="max-width: 900px; width: 100%; text-align: left;">
                 
@@ -225,13 +225,30 @@
                     <div id="op-route-map" style="height:320px; width:100%; border-radius:12px; border:1.5px solid #38bdf8;"></div>
                 </div>
 
-                <!-- 3. QR Camera Scanner View for Operator -->
+                <!-- 3. QR Camera Scanner View for Operator (Fixed Controls & Lookup) -->
                 <div id="op-tab-scan" class="hidden" style="text-align: center;">
                     <h3 style="color:#2ecc71; margin-bottom:8px;">📷 Live Collector QR Scanner</h3>
-                    <p style="color:#cbd5e1; font-size:0.85rem; margin-bottom:12px;">Point camera at the citizen's <strong>My Collector QR</strong> screen to verify and credit.</p>
+                    <p style="color:#cbd5e1; font-size:0.85rem; margin-bottom:12px;">Scan citizen QR, upload image, or search citizen email directly.</p>
                     
-                    <div id="op-qr-camera-view" style="width:100%; max-width:400px; margin:0 auto; min-height:240px; background:#000; border-radius:10px; overflow:hidden;"></div>
+                    <!-- Mode Controls -->
+                    <div style="display:flex; justify-content:center; gap:8px; margin-bottom:15px;">
+                        <button type="button" class="btn-primary" style="padding:6px 14px; font-size:0.82rem;" onclick="initOperatorQrCameraScanner()">🎥 Start Camera</button>
+                        <button type="button" class="btn-secondary" style="padding:6px 14px; font-size:0.82rem; background:#334155; color:#fff;" onclick="document.getElementById('op-file-qr-input').click()">📁 Upload QR Image</button>
+                    </div>
+                    <input type="file" id="op-file-qr-input" accept="image/*" style="display:none;" onchange="processOpQrFromFile(this)">
                     
+                    <!-- Camera Viewport Container -->
+                    <div id="op-qr-camera-view" style="width:100%; max-width:380px; margin:0 auto; min-height:240px; background:#000; border-radius:10px; overflow:hidden; border: 1.5px solid #27ae60;"></div>
+                    
+                    <!-- Manual Email Search Fallback -->
+                    <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.15);">
+                        <p style="color:#cbd5e1; font-size:0.8rem; margin-bottom:6px;">Or look up citizen by email directly:</p>
+                        <div style="display:flex; gap:8px; justify-content:center; max-width:400px; margin:0 auto;">
+                            <input type="email" id="op-manual-citizen-email" placeholder="citizen@email.com" style="padding:8px 12px; border-radius:6px; border:none; width:70%; color:#333;">
+                            <button type="button" class="btn-primary" style="padding:8px 14px; font-size:0.85rem;" onclick="lookupCitizenByEmail()">Search</button>
+                        </div>
+                    </div>
+
                     <!-- Verification / Scale Weight Box -->
                     <div id="op-active-verification-box" class="hidden" style="background:rgba(39,174,96,0.15); border:1.5px solid #27ae60; padding:15px; border-radius:10px; margin-top:15px; text-align:left;">
                         <h4 style="color:#2ecc71; margin-bottom:8px;">⚖️ Physical Weight Audit</h4>
@@ -635,6 +652,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=8"></script>
+    <script src="script.js?v=9"></script>
 </body>
 </html>

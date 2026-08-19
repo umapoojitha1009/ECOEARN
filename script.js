@@ -183,7 +183,7 @@ const productList = [
     { id: 3, name: { en: "Stainless Steel Straws", te: "స్టీల్ స్ట్రాలు", hi: "స్టెయిన్‌లెస్ స్టీల్ స్ట్రా" }, price: 80, img: "straw.png" },
     { id: 4, name: { en: "Beeswax Wraps", te: "తేనెటీగ మైనపు రేపర్లు", hi: "मोम के रैप्स" }, price: 250, img: "wax.jpeg" },
     { id: 5, name: { en: "Cotton Bags", te: "పత్తి సంచులు", hi: "सूती थैले" }, price: 100, img: "cloth.png" },
-    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूట్ के थैले" }, price: 150, img: "jute.png" },
+    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूट के थैले" }, price: 150, img: "jute.png" },
     { id: 7, name: { en: "Bamboo Cutlery", te: "వెదురు స్పూన్లు", hi: "बांस के चम्मच और कांटे" }, price: 200, img: "spoon.png" },
     { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "స్టెయిన్‌లెస్ స్టీల్ టిఫిన్" }, price: 450, img: "box..jpeg" },
     { id: 9, name: { en: "Copper Water Bottles", te: "రాగి వాటర్ బాటిల్స్", hi: "तांबे की पानी की बोतलें" }, price: 850, img: "copper.png" },
@@ -203,7 +203,7 @@ const productList = [
     { id: 23, name: { en: "Soap Nuts", te: "కుంకుడుకాయలు", hi: "रीठा (सोप नट्स)" }, price: 150, img: "sballs.jpeg" },
     { id: 24, name: { en: "Cast Iron Cookware", te: "ఇనుప వంట పాత్రలు", hi: "కాస్ట్ ఐరన్ కడాహీ-తవా" }, price: 1800, img: "cookware.jpeg" },
     { id: 25, name: { en: "Ceramic Mugs", te: "సిరామిక్ కప్పులు", hi: "సిరేమిక్ మగ్స్" }, price: 240, img: "mugs.jpeg" },
-    { id: 26, name: { en: "Bamboo Cutting Boards", te: "వెదురు చాపింగ్ బోర్డులు", hi: "बांस के चॉपिंग बोर्ड" }, price: 400, img: "cutveg.jpeg" },
+    { id: 26, name: { en: "Bamboo Cutting Boards", te: "వెదురు చాపింగ్ బోర్డులు", hi: "बांस के चॉपिंग board" }, price: 400, img: "cutveg.jpeg" },
     { id: 27, name: { en: "Cornstarch Trash Bags", te: "మొక్కజొన్న పిండి చెత్త సంచులు", hi: "कॉर्नस्टार्च कचरा बैग" }, price: 130, img: "corn.jpeg" },
     { id: 28, name: { en: "Paper Packing Tape", te: "కాగితం ప్యాకింగ్ టేప్", hi: "कागज पैकिंग टेप" }, price: 90, img: "tape.jpeg" },
     { id: 29, name: { en: "Hemp Twine", te: "జనపనార దారం", hi: "భాంగ్ కీ సుతలీ" }, price: 75, img: "thread.jpeg" },
@@ -390,7 +390,8 @@ function switchOperatorTab(tab) {
     } else if (tab === 'scan') {
         tabScan.classList.remove('hidden');
         btnScan.style.background = '#27ae60';
-        initOperatorQrCameraScanner();
+        // 350ms delay guarantees container is fully visible in DOM before camera binding
+        setTimeout(initOperatorQrCameraScanner, 350);
     }
 }
 
@@ -410,7 +411,8 @@ async function loadOperatorPickupSchedule() {
                         uid: doc.id,
                         email: d.email,
                         date: o.date,
-                        expWallet: d.expectedWallet || 0,
+                        locality: o.locality || o.address || "Sector 1",
+                        expKg: Math.round((d.expectedWallet || 20) / 20),
                         orderId: o.orderId
                     });
                 });
@@ -418,7 +420,6 @@ async function loadOperatorPickupSchedule() {
         });
 
         if (pickupStops.length === 0) {
-            // Default active routes for display demo
             pickupStops = [
                 { email: "user.mvp@ecoearn.org", date: "Today", locality: "MVP Colony Sector 3", expKg: 12 },
                 { email: "resident.gajuwaka@ecoearn.org", date: "Today", locality: "Gajuwaka Main Road", expKg: 25 },
@@ -429,8 +430,8 @@ async function loadOperatorPickupSchedule() {
         container.innerHTML = pickupStops.map((s, idx) => `
             <div class="op-stop-card">
                 <div>
-                    <strong style="color:#f1c40f;">Stop #${idx + 1}: ${s.locality || s.email}</strong><br>
-                    <small style="color:#cbd5e1;">Scheduled: ${s.date} | Est. Weight: ~${s.expKg || 15} KG</small>
+                    <strong style="color:#f1c40f;">Stop #${idx + 1}: ${s.locality}</strong><br>
+                    <small style="color:#cbd5e1;">Citizen: ${s.email} | Scheduled: ${s.date} | Est. Weight: ~${s.expKg} KG</small>
                 </div>
                 <button class="btn-primary" onclick="switchOperatorTab('scan')" style="padding:6px 14px; font-size:0.8rem;">
                     <i class="fas fa-qrcode"></i> Audit
@@ -445,7 +446,6 @@ async function loadOperatorPickupSchedule() {
 function initOperatorRouteMap() {
     if (opRouteMapInstance) return;
 
-    // Center on local district hub
     const centerLat = 17.6868;
     const centerLng = 83.2185;
 
@@ -462,27 +462,78 @@ function initOperatorRouteMap() {
     const latlngs = stops.map(s => [s.lat, s.lng]);
     L.polyline(latlngs, { color: '#38bdf8', weight: 4, dashArray: '6, 8' }).addTo(opRouteMapInstance);
 
-    stops.forEach((s, i) => {
+    stops.forEach((s) => {
         L.marker([s.lat, s.lng]).addTo(opRouteMapInstance)
             .bindPopup(`<b>${s.name}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank" style="color:#38bdf8;">🚗 Turn-by-Turn GPS</a>`);
     });
 }
 
+// FIXED & ROBUST OPERATOR CAMERA SCANNER
 function initOperatorQrCameraScanner() {
-    if (typeof Html5Qrcode === 'undefined') return;
+    if (typeof Html5Qrcode === 'undefined') {
+        console.error("Html5Qrcode library not loaded.");
+        return;
+    }
     stopOperatorQrScanner();
 
+    const cameraBox = document.getElementById("op-qr-camera-view");
+    if (!cameraBox) return;
+
     operatorQrScannerInstance = new Html5Qrcode("op-qr-camera-view");
+    
+    // Explicit camera config
+    const qrConfig = { 
+        fps: 15, 
+        qrbox: { width: 220, height: 220 },
+        aspectRatio: 1.0
+    };
+
+    Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+            // Select back/rear camera if available, otherwise first camera
+            const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('rear')) || devices[0];
+            
+            operatorQrScannerInstance.start(
+                backCamera.id,
+                qrConfig,
+                (decodedText) => {
+                    handleOperatorDecodedQR(decodedText);
+                    stopOperatorQrScanner();
+                },
+                (err) => { /* frame scan noise */ }
+            ).catch(err => {
+                console.warn("Starting by ID failed, falling back to facingMode: ", err);
+                startCameraWithFacingMode(qrConfig);
+            });
+        } else {
+            startCameraWithFacingMode(qrConfig);
+        }
+    }).catch(err => {
+        startCameraWithFacingMode(qrConfig);
+    });
+}
+
+function startCameraWithFacingMode(qrConfig) {
     operatorQrScannerInstance.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 220, height: 220 } },
+        qrConfig,
         (decodedText) => {
             handleOperatorDecodedQR(decodedText);
             stopOperatorQrScanner();
         },
-        (error) => { /* frame noise */ }
+        (err) => { /* frame scan noise */ }
     ).catch(err => {
-        console.warn("Operator camera scanner fallback:", err);
+        console.warn("Camera start failed completely: ", err);
+        const cameraBox = document.getElementById("op-qr-camera-view");
+        if (cameraBox) {
+            cameraBox.innerHTML = `
+                <div style="padding: 25px 15px; color: #cbd5e1; text-align: center;">
+                    <i class="fas fa-camera-slash" style="font-size: 2rem; color: #f1c40f; margin-bottom: 8px;"></i><br>
+                    Camera access blocked or unavailable.<br>
+                    <small style="color: #aaa;">Use "Upload QR Image" or search citizen email below.</small>
+                </div>
+            `;
+        }
     });
 }
 
@@ -494,31 +545,75 @@ function stopOperatorQrScanner() {
     }
 }
 
+// File Upload Handler for Citizen QR
+function processOpQrFromFile(input) {
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    
+    if (typeof Html5Qrcode !== 'undefined') {
+        const qrCodeScanner = new Html5Qrcode("op-qr-camera-view");
+        qrCodeScanner.scanFile(file, true)
+            .then(decodedText => {
+                handleOperatorDecodedQR(decodedText);
+            })
+            .catch(err => {
+                alert("Could not detect QR code in this image. Please try another photo or use email search.");
+            });
+    }
+}
+
+// Email Direct Search Fallback
+async function lookupCitizenByEmail() {
+    const input = document.getElementById('op-manual-citizen-email');
+    if (!input) return;
+    const emailVal = input.value.trim().toLowerCase();
+    if (!emailVal) return alert("Please enter citizen's email address!");
+
+    try {
+        const snap = await db.collection('users').where('email', '==', emailVal).get();
+        if (!snap.empty) {
+            const doc = snap.docs[0];
+            targetScanUid = doc.id;
+            loadCitizenAuditBox(doc.data());
+            input.value = "";
+        } else {
+            alert("No registered citizen found with that email!");
+        }
+    } catch (err) {
+        alert("Search error: " + err.message);
+    }
+}
+
 async function handleOperatorDecodedQR(decodedText) {
     try {
         let scannedUid = decodedText;
         if (decodedText.includes("approve_uid=")) {
-            scannedUid = decodedText.split("approve_uid=")[1];
+            scannedUid = decodedText.split("approve_uid=")[1].split("&")[0];
         }
 
-        targetScanUid = scannedUid;
-        const doc = await db.collection('users').doc(scannedUid).get();
+        targetScanUid = scannedUid.trim();
+        const doc = await db.collection('users').doc(targetScanUid).get();
         if (doc.exists) {
-            const d = doc.data();
-            document.getElementById('op-verified-user-email').innerText = d.email || "Citizen";
-            document.getElementById('op-verified-exp-balance').innerText = d.expectedWallet || 0;
-            document.getElementById('op-active-verification-box').classList.remove('hidden');
+            loadCitizenAuditBox(doc.data());
         } else {
-            alert("Scanned citizen ID not found!");
+            alert("Scanned citizen ID not found in database!");
         }
     } catch (err) {
         alert("Error processing QR: " + err.message);
     }
 }
 
+function loadCitizenAuditBox(userData) {
+    document.getElementById('op-verified-user-email').innerText = userData.email || "Citizen";
+    document.getElementById('op-verified-exp-balance').innerText = userData.expectedWallet || 0;
+    document.getElementById('op-scale-kg-input').value = "";
+    document.getElementById('op-scale-credit-val').innerText = "0";
+    document.getElementById('op-active-verification-box').classList.remove('hidden');
+}
+
 function calculateOpCredit() {
     const kg = parseFloat(document.getElementById('op-scale-kg-input').value) || 0;
-    document.getElementById('op-scale-credit-val').innerText = kg * 20;
+    document.getElementById('op-scale-credit-val').innerText = Math.round(kg * 20);
 }
 
 async function submitOperatorApproval() {
@@ -532,7 +627,7 @@ async function submitOperatorApproval() {
         if (!doc.exists) return alert("User not found!");
 
         const d = doc.data();
-        const credit = kg * 20;
+        const credit = Math.round(kg * 20);
         const newRealWallet = (d.wallet || 0) + credit;
         const newTotalKg = (d.totalKg || 0) + kg;
         const newExpWallet = Math.max(0, (d.expectedWallet || 0) - credit);
@@ -858,7 +953,6 @@ async function fetchWorldwideRecyclingCenters(lat, lng) {
 function getCleanUserName() {
     if (!currentUserData || !currentUserData.email) return "VALUED STEWARD";
     
-    // Strip all numbers and symbols from email, leaving only words
     let rawUsername = currentUserData.email.split('@')[0];
     let lettersOnly = rawUsername.replace(/[0-9]/g, '').replace(/[._-]/g, ' ').trim();
     
@@ -909,7 +1003,6 @@ function downloadCertificatePDF() {
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
     };
 
-    // Direct download trigger
     html2pdf().set(options).from(certElement).save();
 }
 
