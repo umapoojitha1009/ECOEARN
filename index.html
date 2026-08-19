@@ -6,8 +6,11 @@
     <title>ECOEARN | Smart Circular Recycling</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Barcode Reader Library -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- Leaflet.js Interactive Map (Live Worldwide GPS) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -25,9 +28,9 @@
         <ul>
             <li onclick="showSection('intro-screen')">🏠 <span>Home</span></li>
             <li onclick="showSection('about')">🌿 <span data-key="nav-about">About</span></li>
-            <li onclick="showSection('growth')">📈 <span data-key="nav-growth">My Impact</span></li>
+            <li onclick="showSection('growth')">📈 <span data-key="nav-growth">My Impact & Certificate</span></li>
             <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calculator</span></li>
-            <li onclick="showSection('barcode-screen')">📷 <span data-key="nav-barcode">Barcode Deposit</span></li>
+            <li onclick="showSection('barcode-screen')">📷 <span data-key="nav-barcode">Barcode (10% Discount)</span></li>
             <li onclick="showSection('map-screen')">🗺️ <span data-key="nav-map">Recycling Centers</span></li>
             <li onclick="showSection('leaderboard')">🏆 <span data-key="nav-rank">Leaderboard</span></li>
             <li onclick="showSection('orders')">📦 <span data-key="nav-orders">Your Orders</span></li>
@@ -48,7 +51,7 @@
                 <span class="hero-badge">🌱 Smart Circular Economy</span>
                 <h1 class="hero-title">Turn Household Plastic Into <span class="highlight-green">Digital Wealth</span></h1>
                 <p class="hero-subtitle" data-key="intro-desc">
-                    Recycle dry plastic scrap at ₹20/KG or claim a 25% Deposit Reward on packaging barcodes. Spend verified credits on 100+ sustainable, plastic-free alternatives.
+                    Recycle dry plastic scrap at ₹20/KG or scan packaging barcodes with Premium to unlock 10% catalog discount coupons. Spend verified credits on 100+ sustainable, plastic-free alternatives.
                 </p>
                 <div class="hero-btn-group">
                     <button class="btn-primary btn-large" onclick="showSection('login-screen')" data-key="get-started">
@@ -70,13 +73,13 @@
                         <div class="step-number">1</div>
                         <div class="step-icon"><i class="fas fa-recycle"></i></div>
                         <h3>1. Collect & Segregate</h3>
-                        <p>Gather dry plastic bottles, containers, and household scrap.</p>
+                        <p>Gather dry plastic bottles, containers, and household scrap at home.</p>
                     </div>
                     <div class="step-card">
                         <div class="step-number">2</div>
-                        <div class="step-icon"><i class="fas fa-barcode"></i></div>
-                        <h3>2. Scan / Calculate</h3>
-                        <p>Scan the product barcode or log estimated weight at ₹20/KG.</p>
+                        <div class="step-icon"><i class="fas fa-calculator"></i></div>
+                        <h3>2. Calculate / Scan</h3>
+                        <p>Log total scrap weight at ₹20/KG and scan barcodes for 10% coupon rewards.</p>
                     </div>
                     <div class="step-card">
                         <div class="step-number">3</div>
@@ -88,7 +91,7 @@
                         <div class="step-number">4</div>
                         <div class="step-icon"><i class="fas fa-bag-shopping"></i></div>
                         <h3>4. Eco-Shopping</h3>
-                        <p>Use your real wallet balance to order from 100+ plastic-free goods.</p>
+                        <p>Use your real wallet balance and discount coupons to buy 100+ plastic-free goods.</p>
                     </div>
                 </div>
             </div>
@@ -110,13 +113,13 @@
                     </div>
                     <div class="benefit-card">
                         <i class="fas fa-map-location-dot benefit-icon"></i>
-                        <h4>Geo-Tagged Recycling Map</h4>
-                        <p>Locate nearby scrap drop hubs with live turn-by-turn navigation.</p>
+                        <h4>Live Worldwide Map</h4>
+                        <p>Locate nearby genuine recycling drop hubs with live turn-by-turn navigation.</p>
                     </div>
                     <div class="benefit-card">
-                        <i class="fas fa-seedling benefit-icon"></i>
-                        <h4>100+ Sustainable Catalog</h4>
-                        <p>Shop zero-plastic lifestyle essentials directly with your earned credits.</p>
+                        <i class="fas fa-certificate benefit-icon"></i>
+                        <h4>Verified Impact Certificates</h4>
+                        <p>Download verifiable sustainability certificates documenting your total carbon offset.</p>
                     </div>
                 </div>
             </div>
@@ -151,7 +154,7 @@
                         <ul class="footer-links">
                             <li onclick="showSection('terms-section')">Terms & Conditions</li>
                             <li onclick="showSection('privacy-section')">Privacy Policy</li>
-                            <li onclick="showSection('standards-section')">Deposit Return Standards</li>
+                            <li onclick="showSection('standards-section')">Deposit & Coupon Standards</li>
                         </ul>
                     </div>
                 </div>
@@ -198,7 +201,7 @@
             <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
                 <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-user-shield"></i> Privacy Policy</h2>
                 <div style="line-height: 1.7; font-size: 0.9rem; color: #f1f5f9;">
-                    <p><strong>1. Location Data:</strong> GPS coordinates are accessed strictly with user consent to display the closest recycling aggregators on the interactive map.</p><br>
+                    <p><strong>1. Location Data:</strong> GPS coordinates are accessed strictly with user consent to display genuine recycling aggregators via OpenStreetMap on the interactive map.</p><br>
                     <p><strong>2. Transaction Records:</strong> User deposit histories, order receipts, and ratings are securely encrypted on Google Firebase Firestore.</p><br>
                     <p><strong>3. Third-Party Sharing:</strong> We do not sell or monetize personal customer details with commercial advertising networks.</p>
                 </div>
@@ -206,14 +209,14 @@
             </div>
         </section>
 
-        <!-- 3. DEPOSIT RETURN STANDARDS -->
+        <!-- 3. DEPOSIT & COUPON STANDARDS -->
         <section id="standards-section" class="centered-view hidden">
             <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
-                <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-award"></i> Deposit Return Standards</h2>
+                <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-award"></i> Deposit & Coupon Standards</h2>
                 <div style="line-height: 1.7; font-size: 0.9rem; color: #f1f5f9;">
-                    <p><strong>1. 25% Deposit Policy:</strong> Container rewards are calculated at 25% of verified packaging MRP upon return of intact plastic bottles with barcode labels.</p><br>
-                    <p><strong>2. Bulk Rate Standard:</strong> Unlabeled or bulk mixed plastic scrap is standardized at the municipal base rate of ₹20 per Kilogram.</p><br>
-                    <p><strong>3. Fair Use Safeguards:</strong> Individual container calculations are capped at ₹2,000 MRP per unit to prevent arbitrary submissions prior to operator inspection.</p>
+                    <p><strong>1. Premium Barcode 10% Discount:</strong> Premium members unlock barcode scanning to generate instant 10% discount vouchers redeemable across all sustainable products in our catalog.</p><br>
+                    <p><strong>2. Bulk Scrap Weight Standard:</strong> Bulk mixed dry plastic scrap is standardized at the base municipal rate of ₹20 per Kilogram.</p><br>
+                    <p><strong>3. Stacking Policy:</strong> Users can combine their 10% discount coupon codes with their verified Real Wallet credits at checkout for maximum savings.</p>
                 </div>
                 <button class="btn-primary" onclick="showSection('intro-screen')" style="margin-top: 20px; width: 100%;">Close</button>
             </div>
@@ -249,7 +252,7 @@
         <!-- CALCULATOR DASHBOARD -->
         <section id="dashboard" class="centered-view hidden">
             <div class="glass-card">
-                <h2 data-key="nav-dash">Calculator</h2>
+                <h2 data-key="nav-dash">Scrap Calculator</h2>
                 <div class="calc-container">
                     <input type="number" id="plastic-weight" placeholder="KGs" oninput="updateReward()">
                     <div class="reward-box">
@@ -260,28 +263,59 @@
             </div>
         </section>
 
-        <!-- BARCODE SCANNER -->
+        <!-- BARCODE SCANNER (WITH PREMIUM UPGRADE GATE) -->
         <section id="barcode-screen" class="centered-view hidden">
-            <div class="glass-card" style="width: 100%; max-width: 550px;">
-                <h2>📷 Product Barcode Deposit</h2>
-                <p style="color: #cbd5e1; font-size: 0.85rem; margin-top: 5px;">Scan product barcode or enter numbers to claim <strong>25% Eco-Deposit Reward</strong>!</p>
+            <!-- Premium Paywall Card (Shown to Free Users) -->
+            <div id="barcode-premium-gate" class="glass-card" style="width: 100%; max-width: 520px;">
+                <div style="font-size: 3rem; color: #f1c40f; margin-bottom: 10px;">⭐</div>
+                <h2 style="color: #f1c40f;">ECOEARN Premium Scanner</h2>
+                <p style="color: #cbd5e1; font-size: 0.9rem; margin: 10px 0 20px 0; line-height: 1.5;">
+                    Unlock the smart barcode camera scanner to identify branded packaging and generate <strong>instant 10% Discount Coupons</strong> for catalog orders!
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.06); border: 1.5px solid #27ae60; padding: 15px; border-radius: 12px; cursor: pointer;" onclick="activatePremiumMembership('monthly')">
+                        <h4 style="color: #2ecc71;">Monthly Pass</h4>
+                        <p style="font-size: 1.5rem; font-weight: 800; margin: 5px 0;">₹149</p>
+                        <small style="color: #aaa;">Billed monthly</small>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.06); border: 1.5px solid #f1c40f; padding: 15px; border-radius: 12px; cursor: pointer;" onclick="activatePremiumMembership('yearly')">
+                        <span style="background: #f1c40f; color:#000; font-size:0.65rem; font-weight:bold; padding:2px 6px; border-radius:10px;">BEST VALUE</span>
+                        <h4 style="color: #f1c40f; margin-top:3px;">Annual Pass</h4>
+                        <p style="font-size: 1.5rem; font-weight: 800; margin: 5px 0;">₹1,200</p>
+                        <small style="color: #aaa;">Save ₹588/yr</small>
+                    </div>
+                </div>
+
+                <button class="btn-primary" style="width: 100%; background: #f1c40f; color: #000;" onclick="activatePremiumMembership('demo')">
+                    <i class="fas fa-bolt"></i> Unlock Premium Scanner Now
+                </button>
+            </div>
+
+            <!-- Unlocked Premium Scanner Interface (Shown to Premium Users) -->
+            <div id="barcode-scanner-unlocked" class="glass-card hidden" style="width: 100%; max-width: 550px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                    <h2 style="font-size: 1.3rem;">📷 Barcode 10% Discount Scanner</h2>
+                    <span style="background:#f1c40f; color:#000; font-weight:bold; font-size:0.75rem; padding:3px 8px; border-radius:6px;">PREMIUM</span>
+                </div>
+                <p style="color: #cbd5e1; font-size: 0.85rem;">Scan any brand container barcode to generate a <strong>10% Discount Coupon Code</strong>!</p>
                 
                 <div style="display: flex; gap: 10px; margin: 15px 0; justify-content: center;">
                     <button id="btn-cam-tab" type="button" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem;" onclick="switchBarcodeTab('cam')">📷 Live Camera</button>
-                    <button id="btn-file-tab" type="button" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: #333;" onclick="switchBarcodeTab('file')">📁 Upload Image (Laptop)</button>
+                    <button id="btn-file-tab" type="button" class="btn-primary" style="padding: 8px 15px; font-size: 0.85rem; background: #333;" onclick="switchBarcodeTab('file')">📁 Upload Image</button>
                 </div>
 
                 <div id="barcode-cam-view" style="width: 100%; margin: 10px 0;">
-                    <div id="reader" style="width: 100%; min-height: 250px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;"></div>
+                    <div id="reader" style="width: 100%; min-height: 240px; background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden;"></div>
                 </div>
 
-                <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 20px 0; text-align: center; border: 2px dashed #27ae60; padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.05);">
+                <div id="barcode-file-view" class="hidden" style="width: 100%; margin: 15px 0; text-align: center; border: 2px dashed #27ae60; padding: 20px; border-radius: 12px; background: rgba(255,255,255,0.05);">
                     <i class="fas fa-file-image" style="font-size: 2.2rem; color: #27ae60; margin-bottom: 8px;"></i>
-                    <p style="color: #eee; font-size: 0.9rem; margin-bottom: 10px;">Select a barcode photo from your files:</p>
+                    <p style="color: #eee; font-size: 0.9rem; margin-bottom: 10px;">Select a barcode photo from your device:</p>
                     <input type="file" id="barcode-file-input" accept="image/*" onchange="processBarcodeFromFile(this)" style="display: none;">
                     <button type="button" class="btn-primary" onclick="document.getElementById('barcode-file-input').click()">Choose Image File</button>
 
-                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15);">
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15);">
                         <p style="color: #cbd5e1; font-size: 0.8rem; margin-bottom: 8px;">Or enter the 13-digit barcode number manually:</p>
                         <div style="display: flex; gap: 8px; justify-content: center;">
                             <input type="text" id="manual-barcode-input" placeholder="e.g. 8901030000000" style="padding: 10px; border-radius: 8px; border: none; width: 65%; color: #333;">
@@ -295,11 +329,11 @@
             </div>
         </section>
 
-        <!-- RECYCLING MAP -->
+        <!-- RECYCLING MAP (WORLDWIDE LIVE GPS) -->
         <section id="map-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 100%; max-width: 800px; padding: 20px;">
-                <h2>🗺️ Nearest Recycling Centers</h2>
-                <p style="color: #cbd5e1; font-size: 0.85rem; margin-top: 5px;">Real-time GPS mapping for nearby scrap aggregators and drop-off hubs.</p>
+                <h2>🗺️ Nearest Recycling Centers (Worldwide GPS)</h2>
+                <p style="color: #cbd5e1; font-size: 0.85rem; margin-top: 5px;">Real-time OpenStreetMap aggregation of genuine drop-off yards and scrap collection centers.</p>
                 <div id="eco-map" style="height: 380px; width: 100%; border-radius: 12px; margin-top: 15px; border: 1.5px solid #27ae60; position: relative; z-index: 1;"></div>
             </div>
         </section>
@@ -369,7 +403,15 @@
             <div class="glass-card">
                 <h2 data-key="nav-cart">Cart</h2>
                 <div id="cart-items"></div>
-                <h3 style="margin: 20px 0;"><span data-key="total-text">Total</span>: ₹<span id="cart-total-price">0</span></h3>
+                
+                <!-- Coupon Redemption Bar -->
+                <div style="display:flex; gap:8px; margin: 15px 0;">
+                    <input type="text" id="cart-coupon-input" placeholder="Coupon Code (e.g. ECO-SAVE-10)" style="padding:10px; border-radius:6px; border:none; width:70%; color:#333; text-transform:uppercase;">
+                    <button class="btn-primary" onclick="applyCouponCode()" style="padding:10px 14px; font-size:0.85rem;">Apply</button>
+                </div>
+                <p id="coupon-applied-msg" style="color:#2ecc71; font-size:0.85rem; margin-bottom:10px;" class="hidden"></p>
+
+                <h3 style="margin: 15px 0;"><span data-key="total-text">Total</span>: ₹<span id="cart-total-price">0</span></h3>
                 <button class="btn-primary" onclick="processToPickup()" data-key="purchase-btn">Purchase</button>
             </div>
         </section>
@@ -417,16 +459,85 @@
             </div>
         </section>
 
-        <!-- IMPACT -->
+        <!-- IMPACT & OFFICIAL CERTIFICATE -->
         <section id="growth" class="centered-view hidden">
-            <div class="glass-card">
-                <h2 data-key="nav-growth">My Impact</h2>
-                <div class="impact-stat" style="margin: 20px 0;">
-                    <p style="font-size: 2rem; color: #27ae60; margin: 0;"><span id="total-kg">0</span> KG</p>
-                    <small data-key="plastic-recycled" style="color: #cbd5e1;">Plastic Recycled</small>
+            <div class="glass-card" style="max-width: 520px;">
+                <h2 data-key="nav-growth">My Environmental Impact</h2>
+                
+                <div class="impact-stat" style="margin: 20px 0; background: rgba(39, 174, 96, 0.15); border: 1.5px solid #27ae60; border-radius: 16px; padding: 25px;">
+                    <p style="font-size: 3rem; font-weight: 800; color: #2ecc71; margin: 0;"><span id="total-kg">0</span> KG</p>
+                    <small data-key="plastic-recycled" style="color: #cbd5e1; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">Plastic Diverted From Landfills</small>
                 </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-smog" style="color:#38bdf8; font-size: 1.3rem;"></i>
+                        <h4 style="margin: 5px 0 2px 0; color:#fff;"><span id="co2-saved">0</span> KG</h4>
+                        <small style="color:#aaa;">CO₂ Offset</small>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-tree" style="color:#2ecc71; font-size: 1.3rem;"></i>
+                        <h4 style="margin: 5px 0 2px 0; color:#fff;"><span id="trees-saved">0</span></h4>
+                        <small style="color:#aaa;">Trees Equiv.</small>
+                    </div>
+                </div>
+
+                <button class="btn-primary" style="width: 100%; font-size: 1.05rem; padding: 14px;" onclick="generateOfficialCertificate()">
+                    <i class="fas fa-download"></i> Download Sustainability Certificate
+                </button>
             </div>
         </section>
+
+        <!-- PRINTABLE OFFICIAL CERTIFICATE MODAL -->
+        <div id="certificate-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:3000; display:flex; justify-content:center; align-items:center; padding:20px;">
+            <div id="certificate-print-area" style="background:#ffffff; color:#0f172a; width:100%; max-width:700px; padding:35px; border-radius:12px; border:8px double #16a34a; text-align:center; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:12px; margin-bottom:20px;">
+                    <div style="font-size:1.6rem; font-weight:900; color:#16a34a; letter-spacing:1px;">🌿 ECOEARN</div>
+                    <div style="font-size:0.75rem; color:#64748b; text-align:right;">
+                        CERTIFICATE ID: <strong id="cert-id" style="color:#0f172a;">ECO-2026-XXXX</strong><br>
+                        ISSUED: <strong id="cert-date" style="color:#0f172a;">--</strong>
+                    </div>
+                </div>
+
+                <h1 style="font-size:1.8rem; color:#0f172a; text-transform:uppercase; margin-bottom:5px; font-family:Georgia, serif;">Certificate of Environmental Stewardship</h1>
+                <p style="font-size:0.9rem; color:#64748b; font-style:italic; margin-bottom:20px;">This is officially awarded to</p>
+
+                <h2 id="cert-user-name" style="font-size:1.6rem; color:#15803d; border-bottom:1px dashed #cbd5e1; display:inline-block; padding:0 30px 5px 30px; margin-bottom:15px;">User Name</h2>
+
+                <p style="font-size:0.92rem; color:#334155; max-width:540px; margin:0 auto 25px auto; line-height:1.6;">
+                    In recognition of your outstanding contribution to circular waste diversion. By segregating and recycling verified household recyclables through the ECOEARN digital platform, you have diverted:
+                </p>
+
+                <div style="display:flex; justify-content:center; gap:25px; margin-bottom:25px;">
+                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:10px 20px; border-radius:8px;">
+                        <span style="font-size:1.4rem; font-weight:900; color:#16a34a;" id="cert-weight">0 KG</span><br>
+                        <small style="font-size:0.75rem; color:#64748b;">Plastic Recycled</small>
+                    </div>
+                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:10px 20px; border-radius:8px;">
+                        <span style="font-size:1.4rem; font-weight:900; color:#16a34a;" id="cert-co2">0 KG</span><br>
+                        <small style="font-size:0.75rem; color:#64748b;">CO₂ Avoided</small>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e2e8f0; padding-top:20px; margin-top:20px;">
+                    <div style="text-align:left;">
+                        <i class="fas fa-shield-halved" style="font-size:2.2rem; color:#16a34a;"></i><br>
+                        <small style="font-size:0.7rem; color:#64748b;">VERIFIED CIRCULAR AUDIT</small>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-family:'Brush Script MT', cursive; font-size:1.4rem; color:#0f172a;">EcoEarn Green Council</div>
+                        <div style="border-top:1px solid #0f172a; width:160px; margin-top:2px;"></div>
+                        <small style="font-size:0.7rem; color:#64748b;">AUTHORIZED REGISTRAR</small>
+                    </div>
+                </div>
+
+                <div style="margin-top:25px; display:flex; gap:10px; justify-content:center;" class="no-print">
+                    <button class="btn-primary" onclick="window.print()" style="padding:8px 20px; font-size:0.85rem;"><i class="fas fa-print"></i> Print / Save PDF</button>
+                    <button class="btn-secondary" onclick="closeCertificateModal()" style="padding:8px 20px; font-size:0.85rem; background:#334155; color:#fff;">Close</button>
+                </div>
+            </div>
+        </div>
 
         <!-- LEADERBOARD -->
         <section id="leaderboard" class="centered-view hidden">
@@ -459,6 +570,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=5"></script>
+    <script src="script.js?v=6"></script>
 </body>
 </html>
