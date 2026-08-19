@@ -8,18 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- QR Code Generator Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Barcode Reader Library -->
+    <!-- Barcode & QR Reader Library -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <!-- Leaflet.js Interactive Map (Live Worldwide GPS) -->
+    <!-- Leaflet.js Interactive Map (GPS Tracking & Routes) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Direct PDF Downloader Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
     <header class="top-bar">
         <div class="hamburger" onclick="toggleSidebar()"><i class="fas fa-bars"></i></div>
         <div class="logo" onclick="showSection('intro-screen')" style="cursor: pointer;">ECOEARN</div>
-        <div class="cart-trigger" onclick="showSection('cart')">
-            <i class="fas fa-shopping-cart"></i><span id="cart-badge" class="badge">0</span>
+        
+        <div style="display:flex; align-items:center; gap:15px;">
+            <button class="btn-operator-tag" onclick="promptOperatorLogin()">
+                <i class="fas fa-truck-ramp-box"></i> Operator Portal
+            </button>
+            <div class="cart-trigger" onclick="showSection('cart')">
+                <i class="fas fa-shopping-cart"></i><span id="cart-badge" class="badge">0</span>
+            </div>
         </div>
     </header>
 
@@ -27,6 +35,7 @@
         <div class="close-btn" onclick="toggleSidebar()">&times;</div>
         <ul>
             <li onclick="showSection('intro-screen')">🏠 <span>Home</span></li>
+            <li onclick="promptOperatorLogin()" style="color:#f1c40f; font-weight:bold;">🚚 <span>Operator Dashboard</span></li>
             <li onclick="showSection('about')">🌿 <span data-key="nav-about">About</span></li>
             <li onclick="showSection('growth')">📈 <span data-key="nav-growth">My Impact & Certificate</span></li>
             <li onclick="showSection('dashboard')">📊 <span data-key="nav-dash">Calculator</span></li>
@@ -45,7 +54,7 @@
     <div id="overlay" onclick="toggleSidebar()"></div>
 
     <main>
-        <!-- 1. RICH LANDING PAGE -->
+        <!-- 1. LANDING PAGE -->
         <section id="intro-screen" class="landing-section">
             <div class="landing-hero">
                 <span class="hero-badge">🌱 Smart Circular Economy</span>
@@ -59,6 +68,9 @@
                     </button>
                     <button class="btn-secondary btn-large" onclick="showSection('products')">
                         <i class="fas fa-shopping-bag"></i> Browse Eco-Catalog
+                    </button>
+                    <button class="btn-secondary btn-large" onclick="promptOperatorLogin()" style="border-color:#f1c40f; color:#f1c40f;">
+                        <i class="fas fa-user-gear"></i> Operator Login
                     </button>
                 </div>
             </div>
@@ -164,6 +176,80 @@
             </footer>
         </section>
 
+        <!-- OPERATOR PASSWORD LOGIN MODAL SCREEN -->
+        <section id="operator-login-screen" class="centered-view hidden">
+            <div class="glass-card" style="border: 2px solid #f1c40f;">
+                <div style="font-size: 2.5rem; color: #f1c40f; margin-bottom: 10px;"><i class="fas fa-shield-halved"></i></div>
+                <h2 style="color: #f1c40f;">Operator Authentication</h2>
+                <p style="color: #cbd5e1; font-size: 0.88rem; margin: 8px 0 15px 0;">Restricted area for authorized field collection personnel.</p>
+                
+                <div class="vertical-form">
+                    <input type="password" id="operator-pass-input" placeholder="Enter Operator Key" style="text-align:center; font-size:1.1rem; letter-spacing:2px; font-weight:bold;">
+                    <button class="btn-primary" style="background:#f1c40f; color:#000;" onclick="verifyOperatorAccess()">
+                        <i class="fas fa-lock-open"></i> Unlock Dashboard
+                    </button>
+                    <button class="btn-secondary" onclick="showSection('intro-screen')" style="background:transparent; border:none; color:#aaa;">Cancel</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FULL-FEATURED OPERATOR DASHBOARD (SCHEDULE, LIVE ROUTE MAP & QR SCANNER) -->
+        <section id="operator-dashboard-screen" class="centered-view hidden">
+            <div class="glass-card" style="max-width: 900px; width: 100%; text-align: left;">
+                
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid rgba(255,255,255,0.15); padding-bottom:12px; margin-bottom:20px;">
+                    <div>
+                        <h2 style="color:#f1c40f; margin:0;"><i class="fas fa-truck-fast"></i> Field Logistics Dashboard</h2>
+                        <small style="color:#cbd5e1;">Logged in as Authorized Scrap Operator</small>
+                    </div>
+                    <button class="btn-secondary" onclick="exitOperatorMode()" style="padding:6px 12px; font-size:0.8rem; background:#334155; color:#fff;">Logout Operator</button>
+                </div>
+
+                <!-- Operator Tabs -->
+                <div style="display: flex; gap: 10px; margin-bottom: 15px; justify-content: center;">
+                    <button id="btn-op-schedule-tab" class="btn-primary" style="padding:8px 16px; font-size:0.85rem;" onclick="switchOperatorTab('schedule')">📋 Today's Pickups</button>
+                    <button id="btn-op-map-tab" class="btn-primary" style="padding:8px 16px; font-size:0.85rem; background:#334155;" onclick="switchOperatorTab('map')">🗺️ Route Optimizer Map</button>
+                    <button id="btn-op-scan-tab" class="btn-primary" style="padding:8px 16px; font-size:0.85rem; background:#334155;" onclick="switchOperatorTab('scan')">📷 Scan Citizen QR</button>
+                </div>
+
+                <!-- 1. Schedule View -->
+                <div id="op-tab-schedule" style="max-height: 420px; overflow-y: auto;">
+                    <h3 style="color:#2ecc71; margin-bottom:12px;">📅 Scheduled Household Pickups</h3>
+                    <div id="op-pickups-list"></div>
+                </div>
+
+                <!-- 2. Optimized Route Map View -->
+                <div id="op-tab-map" class="hidden">
+                    <h3 style="color:#38bdf8; margin-bottom:8px;">🚗 Optimized Collection Route</h3>
+                    <p style="color:#cbd5e1; font-size:0.85rem; margin-bottom:10px;">Calculated shortest sequence between scheduled addresses for vehicle fuel efficiency.</p>
+                    <div id="op-route-map" style="height:320px; width:100%; border-radius:12px; border:1.5px solid #38bdf8;"></div>
+                </div>
+
+                <!-- 3. QR Camera Scanner View for Operator -->
+                <div id="op-tab-scan" class="hidden" style="text-align: center;">
+                    <h3 style="color:#2ecc71; margin-bottom:8px;">📷 Live Collector QR Scanner</h3>
+                    <p style="color:#cbd5e1; font-size:0.85rem; margin-bottom:12px;">Point camera at the citizen's <strong>My Collector QR</strong> screen to verify and credit.</p>
+                    
+                    <div id="op-qr-camera-view" style="width:100%; max-width:400px; margin:0 auto; min-height:240px; background:#000; border-radius:10px; overflow:hidden;"></div>
+                    
+                    <!-- Verification / Scale Weight Box -->
+                    <div id="op-active-verification-box" class="hidden" style="background:rgba(39,174,96,0.15); border:1.5px solid #27ae60; padding:15px; border-radius:10px; margin-top:15px; text-align:left;">
+                        <h4 style="color:#2ecc71; margin-bottom:8px;">⚖️ Physical Weight Audit</h4>
+                        <p><strong>Citizen Email:</strong> <span id="op-verified-user-email">--</span></p>
+                        <p><strong>Expected Balance:</strong> ₹<span id="op-verified-exp-balance">0</span></p>
+                        
+                        <div class="vertical-form" style="margin-top:10px;">
+                            <label style="font-size:0.85rem; color:#cbd5e1;">Certified Scale Weight (KGs):</label>
+                            <input type="number" id="op-scale-kg-input" placeholder="e.g. 15.5" oninput="calculateOpCredit()">
+                            <p style="color:#2ecc71; font-weight:bold; margin:6px 0;">Credit to Real Wallet: ₹<span id="op-scale-credit-val">0</span></p>
+                            <button class="btn-primary" onclick="submitOperatorApproval()">Confirm & Transfer Credit</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- HELP SECTION -->
         <section id="help-section" class="centered-view hidden">
             <div class="glass-card" style="max-width: 680px; text-align: left;">
@@ -183,7 +269,7 @@
             </div>
         </section>
 
-        <!-- 1. TERMS & CONDITIONS -->
+        <!-- TERMS, PRIVACY & STANDARDS -->
         <section id="terms-section" class="centered-view hidden">
             <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
                 <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-file-contract"></i> Terms & Conditions</h2>
@@ -196,7 +282,6 @@
             </div>
         </section>
 
-        <!-- 2. PRIVACY POLICY -->
         <section id="privacy-section" class="centered-view hidden">
             <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
                 <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-user-shield"></i> Privacy Policy</h2>
@@ -209,7 +294,6 @@
             </div>
         </section>
 
-        <!-- 3. DEPOSIT & COUPON STANDARDS -->
         <section id="standards-section" class="centered-view hidden">
             <div class="glass-card" style="max-width: 680px; text-align: left; max-height: 80vh; overflow-y: auto;">
                 <h2 style="color: #27ae60; text-align: center; margin-bottom: 15px;"><i class="fas fa-award"></i> Deposit & Coupon Standards</h2>
@@ -263,9 +347,8 @@
             </div>
         </section>
 
-        <!-- BARCODE SCANNER (WITH PREMIUM UPGRADE GATE) -->
+        <!-- BARCODE SCANNER (PREMIUM) -->
         <section id="barcode-screen" class="centered-view hidden">
-            <!-- Premium Paywall Card (Shown to Free Users) -->
             <div id="barcode-premium-gate" class="glass-card" style="width: 100%; max-width: 520px;">
                 <div style="font-size: 3rem; color: #f1c40f; margin-bottom: 10px;">⭐</div>
                 <h2 style="color: #f1c40f;">ECOEARN Premium Scanner</h2>
@@ -292,7 +375,6 @@
                 </button>
             </div>
 
-            <!-- Unlocked Premium Scanner Interface (Shown to Premium Users) -->
             <div id="barcode-scanner-unlocked" class="glass-card hidden" style="width: 100%; max-width: 550px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
                     <h2 style="font-size: 1.3rem;">📷 Barcode 10% Discount Scanner</h2>
@@ -329,7 +411,7 @@
             </div>
         </section>
 
-        <!-- RECYCLING MAP (WORLDWIDE LIVE GPS) -->
+        <!-- RECYCLING MAP -->
         <section id="map-screen" class="centered-view hidden">
             <div class="glass-card" style="width: 100%; max-width: 800px; padding: 20px;">
                 <h2>🗺️ Nearest Recycling Centers (Worldwide GPS)</h2>
@@ -369,24 +451,6 @@
             </div>
         </section>
 
-        <!-- OPERATOR VERIFICATION PORTAL -->
-        <section id="operator-approval-screen" class="centered-view hidden">
-            <div class="glass-card" style="border:2px solid #27ae60;">
-                <h2 style="color:#27ae60;">Operator Verification Portal</h2>
-                <div style="text-align:left; background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin:15px 0;">
-                    <p><strong>User Email:</strong> <span id="op-user-email">Loading...</span></p>
-                    <p><strong>Current Real Wallet:</strong> ₹<span id="op-user-balance">0</span></p>
-                    <p><strong>Current Expected Wallet:</strong> ₹<span id="op-user-exp-balance">0</span></p>
-                </div>
-                <div class="vertical-form">
-                    <label style="text-align:left; color:#cbd5e1; font-size:0.85rem;">Enter Scale Weight (KGs):</label>
-                    <input type="number" id="op-verified-weight" placeholder="Measured Weight in KGs" oninput="updateOpCreditPreview()">
-                    <p style="font-weight:bold; color:#27ae60; margin:10px 0;">Credit Preview: ₹<span id="op-credit-preview">0</span></p>
-                    <button class="btn-primary" onclick="approveAndCreditUser()">Approve & Credit Real Wallet</button>
-                </div>
-            </div>
-        </section>
-
         <!-- PRODUCT CATALOG -->
         <section id="products" class="centered-view hidden">
             <div class="scroll-container" style="width: 100%; max-width: 1200px; padding: 20px;">
@@ -404,7 +468,6 @@
                 <h2 data-key="nav-cart">Cart</h2>
                 <div id="cart-items"></div>
                 
-                <!-- Coupon Redemption Bar -->
                 <div style="display:flex; gap:8px; margin: 15px 0;">
                     <input type="text" id="cart-coupon-input" placeholder="Coupon Code (e.g. ECO-SAVE-10)" style="padding:10px; border-radius:6px; border:none; width:70%; color:#333; text-transform:uppercase;">
                     <button class="btn-primary" onclick="applyCouponCode()" style="padding:10px 14px; font-size:0.85rem;">Apply</button>
@@ -421,8 +484,8 @@
             <div class="glass-card">
                 <h2 data-key="pickup-title">Schedule Pickup</h2>
                 <div class="vertical-form">
-                    <input type="text" id="pickup-address" placeholder="Address" required>
-                    <input type="text" id="pickup-landmark" placeholder="Landmark" required>
+                    <input type="text" id="pickup-address" placeholder="Address / Street" required>
+                    <input type="text" id="pickup-landmark" placeholder="Locality / Landmark" required>
                     <input type="date" id="pickup-date" required>
                     <button class="btn-primary" onclick="confirmPurchaseAndPickup()" data-key="confirm-order">Confirm Order</button>
                 </div>
@@ -459,82 +522,84 @@
             </div>
         </section>
 
-        <!-- IMPACT & OFFICIAL CERTIFICATE -->
+        <!-- IMPACT SECTION (NO TREE EQUIV) -->
         <section id="growth" class="centered-view hidden">
-            <div class="glass-card" style="max-width: 520px;">
+            <div class="glass-card" style="max-width: 500px;">
                 <h2 data-key="nav-growth">My Environmental Impact</h2>
                 
-                <div class="impact-stat" style="margin: 20px 0; background: rgba(39, 174, 96, 0.15); border: 1.5px solid #27ae60; border-radius: 16px; padding: 25px;">
-                    <p style="font-size: 3rem; font-weight: 800; color: #2ecc71; margin: 0;"><span id="total-kg">0</span> KG</p>
-                    <small data-key="plastic-recycled" style="color: #cbd5e1; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">Plastic Diverted From Landfills</small>
+                <div class="impact-stat" style="margin: 20px 0; background: rgba(39, 174, 96, 0.15); border: 1.5px solid #27ae60; border-radius: 16px; padding: 22px;">
+                    <p style="font-size: 2.8rem; font-weight: 800; color: #2ecc71; margin: 0;"><span id="total-kg">0</span> KG</p>
+                    <small data-key="plastic-recycled" style="color: #cbd5e1; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px;">Plastic Diverted From Landfills</small>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
-                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
-                        <i class="fas fa-smog" style="color:#38bdf8; font-size: 1.3rem;"></i>
-                        <h4 style="margin: 5px 0 2px 0; color:#fff;"><span id="co2-saved">0</span> KG</h4>
-                        <small style="color:#aaa;">CO₂ Offset</small>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
-                        <i class="fas fa-tree" style="color:#2ecc71; font-size: 1.3rem;"></i>
-                        <h4 style="margin: 5px 0 2px 0; color:#fff;"><span id="trees-saved">0</span></h4>
-                        <small style="color:#aaa;">Trees Equiv.</small>
+                <div style="background: rgba(255,255,255,0.06); padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <i class="fas fa-smog" style="color:#38bdf8; font-size: 2rem;"></i>
+                    <div style="text-align: left;">
+                        <h3 style="margin: 0; color:#fff; font-size: 1.4rem;"><span id="co2-saved">0</span> KG</h3>
+                        <small style="color:#cbd5e1; font-size: 0.85rem;">Total Greenhouse CO₂ Emissions Avoided</small>
                     </div>
                 </div>
 
-                <button class="btn-primary" style="width: 100%; font-size: 1.05rem; padding: 14px;" onclick="generateOfficialCertificate()">
-                    <i class="fas fa-download"></i> Download Sustainability Certificate
+                <button class="btn-primary" style="width: 100%; font-size: 1.05rem; padding: 14px;" onclick="openCertificatePreview()">
+                    <i class="fas fa-certificate"></i> View & Download Certificate
                 </button>
             </div>
         </section>
 
-        <!-- PRINTABLE OFFICIAL CERTIFICATE MODAL -->
-        <div id="certificate-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:3000; display:flex; justify-content:center; align-items:center; padding:20px;">
-            <div id="certificate-print-area" style="background:#ffffff; color:#0f172a; width:100%; max-width:700px; padding:35px; border-radius:12px; border:8px double #16a34a; text-align:center; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+        <!-- OFFICIAL CERTIFICATE MODAL (WITH DIRECT DOWNLOAD) -->
+        <div id="certificate-modal" class="hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:3000; display:flex; justify-content:center; align-items:center; padding:15px; overflow-y:auto;">
+            <div style="width:100%; max-width:680px; text-align:center;">
                 
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:12px; margin-bottom:20px;">
-                    <div style="font-size:1.6rem; font-weight:900; color:#16a34a; letter-spacing:1px;">🌿 ECOEARN</div>
-                    <div style="font-size:0.75rem; color:#64748b; text-align:right;">
-                        CERTIFICATE ID: <strong id="cert-id" style="color:#0f172a;">ECO-2026-XXXX</strong><br>
-                        ISSUED: <strong id="cert-date" style="color:#0f172a;">--</strong>
+                <div id="certificate-print-area" style="background:#ffffff; color:#0f172a; padding:35px 30px; border-radius:12px; border:8px double #16a34a; text-align:center; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.8);">
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #16a34a; padding-bottom:12px; margin-bottom:20px;">
+                        <div style="font-size:1.6rem; font-weight:900; color:#16a34a; letter-spacing:1px;">🌿 ECOEARN</div>
+                        <div style="font-size:0.75rem; color:#64748b; text-align:right;">
+                            CERTIFICATE ID: <strong id="cert-id" style="color:#0f172a;">ECO-2026-XXXX</strong><br>
+                            ISSUED: <strong id="cert-date" style="color:#0f172a;">--</strong>
+                        </div>
+                    </div>
+
+                    <h1 style="font-size:1.65rem; color:#0f172a; text-transform:uppercase; margin-bottom:5px; font-family:Georgia, serif; letter-spacing:0.5px;">Certificate of Environmental Stewardship</h1>
+                    <p style="font-size:0.88rem; color:#64748b; font-style:italic; margin-bottom:15px;">This is officially awarded to</p>
+
+                    <h2 id="cert-user-name" style="font-size:1.6rem; color:#15803d; border-bottom:2px solid #16a34a; display:inline-block; padding:0 25px 4px 25px; margin-bottom:18px; font-weight:800; letter-spacing:1px;">USER NAME</h2>
+
+                    <p style="font-size:0.9rem; color:#334155; max-width:540px; margin:0 auto 20px auto; line-height:1.6;">
+                        In recognition of outstanding dedication to municipal circular waste diversion. By segregating household plastic scrap through the ECOEARN digital platform, you have successfully achieved:
+                    </p>
+
+                    <div style="display:flex; justify-content:center; gap:20px; margin-bottom:25px;">
+                        <div style="background:#f0fdf4; border:1px solid #86efac; padding:12px 25px; border-radius:8px;">
+                            <span style="font-size:1.5rem; font-weight:900; color:#16a34a;" id="cert-weight">0 KG</span><br>
+                            <small style="font-size:0.75rem; color:#64748b; font-weight:600;">Plastic Recycled</small>
+                        </div>
+                        <div style="background:#f0fdf4; border:1px solid #86efac; padding:12px 25px; border-radius:8px;">
+                            <span style="font-size:1.5rem; font-weight:900; color:#16a34a;" id="cert-co2">0 KG</span><br>
+                            <small style="font-size:0.75rem; color:#64748b; font-weight:600;">CO₂ Emissions Saved</small>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e2e8f0; padding-top:18px; margin-top:15px;">
+                        <div style="text-align:left;">
+                            <i class="fas fa-shield-halved" style="font-size:2rem; color:#16a34a;"></i><br>
+                            <small style="font-size:0.68rem; color:#64748b; font-weight:bold;">VERIFIED CIRCULAR AUDIT</small>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-family:'Brush Script MT', cursive; font-size:1.3rem; color:#0f172a;">EcoEarn Green Council</div>
+                            <div style="border-top:1px solid #0f172a; width:150px; margin-top:2px;"></div>
+                            <small style="font-size:0.68rem; color:#64748b; font-weight:bold;">AUTHORIZED REGISTRAR</small>
+                        </div>
                     </div>
                 </div>
 
-                <h1 style="font-size:1.8rem; color:#0f172a; text-transform:uppercase; margin-bottom:5px; font-family:Georgia, serif;">Certificate of Environmental Stewardship</h1>
-                <p style="font-size:0.9rem; color:#64748b; font-style:italic; margin-bottom:20px;">This is officially awarded to</p>
-
-                <h2 id="cert-user-name" style="font-size:1.6rem; color:#15803d; border-bottom:1px dashed #cbd5e1; display:inline-block; padding:0 30px 5px 30px; margin-bottom:15px;">User Name</h2>
-
-                <p style="font-size:0.92rem; color:#334155; max-width:540px; margin:0 auto 25px auto; line-height:1.6;">
-                    In recognition of your outstanding contribution to circular waste diversion. By segregating and recycling verified household recyclables through the ECOEARN digital platform, you have diverted:
-                </p>
-
-                <div style="display:flex; justify-content:center; gap:25px; margin-bottom:25px;">
-                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:10px 20px; border-radius:8px;">
-                        <span style="font-size:1.4rem; font-weight:900; color:#16a34a;" id="cert-weight">0 KG</span><br>
-                        <small style="font-size:0.75rem; color:#64748b;">Plastic Recycled</small>
-                    </div>
-                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:10px 20px; border-radius:8px;">
-                        <span style="font-size:1.4rem; font-weight:900; color:#16a34a;" id="cert-co2">0 KG</span><br>
-                        <small style="font-size:0.75rem; color:#64748b;">CO₂ Avoided</small>
-                    </div>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid #e2e8f0; padding-top:20px; margin-top:20px;">
-                    <div style="text-align:left;">
-                        <i class="fas fa-shield-halved" style="font-size:2.2rem; color:#16a34a;"></i><br>
-                        <small style="font-size:0.7rem; color:#64748b;">VERIFIED CIRCULAR AUDIT</small>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-family:'Brush Script MT', cursive; font-size:1.4rem; color:#0f172a;">EcoEarn Green Council</div>
-                        <div style="border-top:1px solid #0f172a; width:160px; margin-top:2px;"></div>
-                        <small style="font-size:0.7rem; color:#64748b;">AUTHORIZED REGISTRAR</small>
-                    </div>
-                </div>
-
-                <div style="margin-top:25px; display:flex; gap:10px; justify-content:center;" class="no-print">
-                    <button class="btn-primary" onclick="window.print()" style="padding:8px 20px; font-size:0.85rem;"><i class="fas fa-print"></i> Print / Save PDF</button>
-                    <button class="btn-secondary" onclick="closeCertificateModal()" style="padding:8px 20px; font-size:0.85rem; background:#334155; color:#fff;">Close</button>
+                <div style="margin-top:15px; display:flex; gap:12px; justify-content:center;">
+                    <button class="btn-primary" onclick="downloadCertificatePDF()" style="padding:10px 22px; font-size:0.95rem;">
+                        <i class="fas fa-download"></i> Download Certificate
+                    </button>
+                    <button class="btn-secondary" onclick="closeCertificateModal()" style="padding:10px 20px; font-size:0.95rem; background:#334155; color:#fff;">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -570,6 +635,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="script.js?v=6"></script>
+    <script src="script.js?v=8"></script>
 </body>
 </html>

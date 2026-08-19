@@ -24,9 +24,11 @@ let unlockedCouponCode = null;
 
 // Scanner & Map State Variables
 let html5QrScannerInstance = null;
-let lastScannedProduct = null;
+let operatorQrScannerInstance = null;
 let ecoMapInstance = null;
+let opRouteMapInstance = null;
 let mapInitialized = false;
+let isOperatorAuthenticated = false;
 
 // ==========================================
 // 2. TRANSLATIONS DICTIONARY
@@ -173,7 +175,7 @@ const translations = {
 };
 
 // ==========================================
-// 3. PRODUCT LIST (100 SUSTAINABLE ITEMS)
+// 3. PRODUCT LIST (100 ITEMS)
 // ==========================================
 const productList = [
     { id: 1, name: { en: "Bamboo Toothbrushes", te: "వెదురు టూత్ బ్రష్‌లు", hi: "बांस के टूथब्रश" }, price: 60, img: "brush.png" },
@@ -181,7 +183,7 @@ const productList = [
     { id: 3, name: { en: "Stainless Steel Straws", te: "స్టీల్ స్ట్రాలు", hi: "స్టెయిన్‌లెస్ స్టీల్ స్ట్రా" }, price: 80, img: "straw.png" },
     { id: 4, name: { en: "Beeswax Wraps", te: "తేనెటీగ మైనపు రేపర్లు", hi: "मोम के रैप्स" }, price: 250, img: "wax.jpeg" },
     { id: 5, name: { en: "Cotton Bags", te: "పత్తి సంచులు", hi: "सूती थैले" }, price: 100, img: "cloth.png" },
-    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूट के थैले" }, price: 150, img: "jute.png" },
+    { id: 6, name: { en: "Jute Shopping Bags", te: "జనపనార సంచులు", hi: "जूట్ के थैले" }, price: 150, img: "jute.png" },
     { id: 7, name: { en: "Bamboo Cutlery", te: "వెదురు స్పూన్లు", hi: "बांस के चम्मच और कांटे" }, price: 200, img: "spoon.png" },
     { id: 8, name: { en: "Stainless Steel Lunch Boxes", te: "స్టీల్ లంచ్ బాక్సులు", hi: "స్టెయిన్‌లెస్ స్టీల్ టిఫిన్" }, price: 450, img: "box..jpeg" },
     { id: 9, name: { en: "Copper Water Bottles", te: "రాగి వాటర్ బాటిల్స్", hi: "तांबे की पानी की बोतलें" }, price: 850, img: "copper.png" },
@@ -279,19 +281,11 @@ const productList = [
 ];
 
 // ==========================================
-// 4. AUTH, SESSION & OPERATOR QR HANDLER
+// 4. AUTH, SESSION & INITIALIZATION
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const scanUid = urlParams.get('approve_uid');
-    
-    if (scanUid) {
-        targetScanUid = scanUid;
-        loadOperatorView(scanUid);
-    }
-
     auth.onAuthStateChanged(async (user) => {
-        if (targetScanUid) return;
+        if (isOperatorAuthenticated) return;
 
         if (user) {
             await loadUserData(user.uid, false);
@@ -332,40 +326,235 @@ window.addEventListener('DOMContentLoaded', () => {
     renderProducts();
 });
 
-async function loadOperatorView(uid) {
-    showSection('operator-approval-screen');
-    try {
-        const doc = await db.collection('users').doc(uid).get();
-        if (doc.exists) {
-            const d = doc.data();
-            document.getElementById('op-user-email').innerText = d.email || "Unknown User";
-            document.getElementById('op-user-balance').innerText = d.wallet || 0;
-            document.getElementById('op-user-exp-balance').innerText = d.expectedWallet || 0;
-        } else {
-            alert("Scanned User Not Found in System!");
-        }
-    } catch (err) {
-        console.error("Error loading user for verification:", err);
+// ==========================================
+// 5. OPERATOR PORTAL & PASSWORD GATE (EcoEarn@2026)
+// ==========================================
+function promptOperatorLogin() {
+    if (isOperatorAuthenticated) {
+        openOperatorDashboard();
+    } else {
+        showSection('operator-login-screen');
     }
 }
 
-function changeLanguage(lang) {
-    currentLang = lang;
-    document.querySelectorAll('[data-key]').forEach(el => {
-        const key = el.getAttribute('data-key');
-        if (translations[lang] && translations[lang][key]) el.innerText = translations[lang][key];
-    });
-    renderProducts();
+function verifyOperatorAccess() {
+    const input = document.getElementById('operator-pass-input');
+    if (!input) return;
+
+    const enteredKey = input.value.trim();
+    if (enteredKey === "EcoEarn@2026") {
+        isOperatorAuthenticated = true;
+        input.value = "";
+        openOperatorDashboard();
+    } else {
+        alert("❌ Invalid Operator Credentials. Access Denied.");
+    }
 }
 
-function setInitialLanguage() {
-    const selected = document.getElementById('main-lang-select').value;
-    changeLanguage(selected);
-    showSection('dashboard');
+function exitOperatorMode() {
+    isOperatorAuthenticated = false;
+    stopOperatorQrScanner();
+    showSection('intro-screen');
+}
+
+async function openOperatorDashboard() {
+    showSection('operator-dashboard-screen');
+    switchOperatorTab('schedule');
+    await loadOperatorPickupSchedule();
+}
+
+function switchOperatorTab(tab) {
+    const tabSched = document.getElementById('op-tab-schedule');
+    const tabMap = document.getElementById('op-tab-map');
+    const tabScan = document.getElementById('op-tab-scan');
+    const btnSched = document.getElementById('btn-op-schedule-tab');
+    const btnMap = document.getElementById('btn-op-map-tab');
+    const btnScan = document.getElementById('btn-op-scan-tab');
+
+    tabSched.classList.add('hidden');
+    tabMap.classList.add('hidden');
+    tabScan.classList.add('hidden');
+    btnSched.style.background = '#334155';
+    btnMap.style.background = '#334155';
+    btnScan.style.background = '#334155';
+
+    if (tab === 'schedule') {
+        tabSched.classList.remove('hidden');
+        btnSched.style.background = '#27ae60';
+        stopOperatorQrScanner();
+    } else if (tab === 'map') {
+        tabMap.classList.remove('hidden');
+        btnMap.style.background = '#38bdf8';
+        stopOperatorQrScanner();
+        setTimeout(initOperatorRouteMap, 300);
+    } else if (tab === 'scan') {
+        tabScan.classList.remove('hidden');
+        btnScan.style.background = '#27ae60';
+        initOperatorQrCameraScanner();
+    }
+}
+
+async function loadOperatorPickupSchedule() {
+    const container = document.getElementById('op-pickups-list');
+    if (!container) return;
+
+    try {
+        const snap = await db.collection('users').get();
+        let pickupStops = [];
+
+        snap.forEach(doc => {
+            const d = doc.data();
+            if (d.orders && d.orders.length > 0) {
+                d.orders.forEach(o => {
+                    pickupStops.push({
+                        uid: doc.id,
+                        email: d.email,
+                        date: o.date,
+                        expWallet: d.expectedWallet || 0,
+                        orderId: o.orderId
+                    });
+                });
+            }
+        });
+
+        if (pickupStops.length === 0) {
+            // Default active routes for display demo
+            pickupStops = [
+                { email: "user.mvp@ecoearn.org", date: "Today", locality: "MVP Colony Sector 3", expKg: 12 },
+                { email: "resident.gajuwaka@ecoearn.org", date: "Today", locality: "Gajuwaka Main Road", expKg: 25 },
+                { email: "green.kurmannapalem@ecoearn.org", date: "Tomorrow", locality: "Kurmannapalem Junction", expKg: 18 }
+            ];
+        }
+
+        container.innerHTML = pickupStops.map((s, idx) => `
+            <div class="op-stop-card">
+                <div>
+                    <strong style="color:#f1c40f;">Stop #${idx + 1}: ${s.locality || s.email}</strong><br>
+                    <small style="color:#cbd5e1;">Scheduled: ${s.date} | Est. Weight: ~${s.expKg || 15} KG</small>
+                </div>
+                <button class="btn-primary" onclick="switchOperatorTab('scan')" style="padding:6px 14px; font-size:0.8rem;">
+                    <i class="fas fa-qrcode"></i> Audit
+                </button>
+            </div>
+        `).join('');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function initOperatorRouteMap() {
+    if (opRouteMapInstance) return;
+
+    // Center on local district hub
+    const centerLat = 17.6868;
+    const centerLng = 83.2185;
+
+    opRouteMapInstance = L.map('op-route-map').setView([centerLat, centerLng], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(opRouteMapInstance);
+
+    const stops = [
+        { name: "Stop 1: MVP Colony Hub", lat: 17.7400, lng: 83.3300 },
+        { name: "Stop 2: Siripuram Circle", lat: 17.7220, lng: 83.3150 },
+        { name: "Stop 3: Gajuwaka Cluster", lat: 17.6900, lng: 83.2100 },
+        { name: "Unload: Kapuluppada MRF Yard", lat: 17.8200, lng: 83.3700 }
+    ];
+
+    const latlngs = stops.map(s => [s.lat, s.lng]);
+    L.polyline(latlngs, { color: '#38bdf8', weight: 4, dashArray: '6, 8' }).addTo(opRouteMapInstance);
+
+    stops.forEach((s, i) => {
+        L.marker([s.lat, s.lng]).addTo(opRouteMapInstance)
+            .bindPopup(`<b>${s.name}</b><br><a href="https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}" target="_blank" style="color:#38bdf8;">🚗 Turn-by-Turn GPS</a>`);
+    });
+}
+
+function initOperatorQrCameraScanner() {
+    if (typeof Html5Qrcode === 'undefined') return;
+    stopOperatorQrScanner();
+
+    operatorQrScannerInstance = new Html5Qrcode("op-qr-camera-view");
+    operatorQrScannerInstance.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 220, height: 220 } },
+        (decodedText) => {
+            handleOperatorDecodedQR(decodedText);
+            stopOperatorQrScanner();
+        },
+        (error) => { /* frame noise */ }
+    ).catch(err => {
+        console.warn("Operator camera scanner fallback:", err);
+    });
+}
+
+function stopOperatorQrScanner() {
+    if (operatorQrScannerInstance && operatorQrScannerInstance.isScanning) {
+        operatorQrScannerInstance.stop().then(() => {
+            operatorQrScannerInstance.clear();
+        }).catch(err => console.error(err));
+    }
+}
+
+async function handleOperatorDecodedQR(decodedText) {
+    try {
+        let scannedUid = decodedText;
+        if (decodedText.includes("approve_uid=")) {
+            scannedUid = decodedText.split("approve_uid=")[1];
+        }
+
+        targetScanUid = scannedUid;
+        const doc = await db.collection('users').doc(scannedUid).get();
+        if (doc.exists) {
+            const d = doc.data();
+            document.getElementById('op-verified-user-email').innerText = d.email || "Citizen";
+            document.getElementById('op-verified-exp-balance').innerText = d.expectedWallet || 0;
+            document.getElementById('op-active-verification-box').classList.remove('hidden');
+        } else {
+            alert("Scanned citizen ID not found!");
+        }
+    } catch (err) {
+        alert("Error processing QR: " + err.message);
+    }
+}
+
+function calculateOpCredit() {
+    const kg = parseFloat(document.getElementById('op-scale-kg-input').value) || 0;
+    document.getElementById('op-scale-credit-val').innerText = kg * 20;
+}
+
+async function submitOperatorApproval() {
+    if (!targetScanUid) return alert("No citizen selected!");
+    const kg = parseFloat(document.getElementById('op-scale-kg-input').value) || 0;
+    if (kg <= 0) return alert("Please enter measured scale weight in KGs!");
+
+    try {
+        const userRef = db.collection('users').doc(targetScanUid);
+        const doc = await userRef.get();
+        if (!doc.exists) return alert("User not found!");
+
+        const d = doc.data();
+        const credit = kg * 20;
+        const newRealWallet = (d.wallet || 0) + credit;
+        const newTotalKg = (d.totalKg || 0) + kg;
+        const newExpWallet = Math.max(0, (d.expectedWallet || 0) - credit);
+
+        await userRef.update({
+            wallet: newRealWallet,
+            expectedWallet: newExpWallet,
+            totalKg: newTotalKg
+        });
+
+        alert(`✅ Verified successfully! ₹${credit} transferred to citizen's Real Wallet.`);
+        document.getElementById('op-active-verification-box').classList.add('hidden');
+        document.getElementById('op-scale-kg-input').value = "";
+        targetScanUid = null;
+        switchOperatorTab('schedule');
+    } catch (err) {
+        alert("Approval failed: " + err.message);
+    }
 }
 
 // ==========================================
-// 5. CORE DATA & WALLET LOGIC
+// 6. CORE USER DATA (CO2 ONLY)
 // ==========================================
 async function loadUserData(uid, isLogin = false) {
     const doc = await db.collection('users').doc(uid).get();
@@ -375,14 +564,9 @@ async function loadUserData(uid, isLogin = false) {
     document.getElementById('total-kg').innerText = totalKgVal;
     document.getElementById('wallet-balance').innerText = currentUserData.wallet || 0;
     
-    // Calculate Ecological Metrics (1 KG Plastic = 2.5 KG CO2 avoided, ~20 KG CO2 per Tree)
     const co2Saved = Math.round(totalKgVal * 2.5);
-    const treesEquiv = (co2Saved / 20).toFixed(1);
-    
     const co2Elem = document.getElementById('co2-saved');
     if (co2Elem) co2Elem.innerText = co2Saved;
-    const treeElem = document.getElementById('trees-saved');
-    if (treeElem) treeElem.innerText = treesEquiv;
 
     const expWalletElem = document.getElementById('expected-wallet-balance');
     if (expWalletElem) {
@@ -413,9 +597,6 @@ async function addToExpectedWallet() {
     }
 }
 
-// ==========================================
-// 6. OPERATOR QR CODE & APPROVAL SYSTEM
-// ==========================================
 function showQrModal() {
     if (!currentUserData) return alert("Please log in first!");
     const container = document.getElementById('qrcode-container');
@@ -440,43 +621,8 @@ function showQrModal() {
     showSection('qr-modal-screen');
 }
 
-function updateOpCreditPreview() {
-    const w = parseFloat(document.getElementById('op-verified-weight').value) || 0;
-    document.getElementById('op-credit-preview').innerText = w * 20;
-}
-
-async function approveAndCreditUser() {
-    if (!targetScanUid) return alert("No user target selected!");
-    const w = parseFloat(document.getElementById('op-verified-weight').value) || 0;
-    if (w <= 0) return alert("Please enter a valid measured scale weight!");
-
-    try {
-        const userRef = db.collection('users').doc(targetScanUid);
-        const doc = await userRef.get();
-        if (!doc.exists) return alert("User not found!");
-        
-        const d = doc.data();
-        const addedCredit = w * 20;
-        const newRealWallet = (d.wallet || 0) + addedCredit;
-        const newTotalKg = (d.totalKg || 0) + w;
-        const newExpWallet = Math.max(0, (d.expectedWallet || 0) - addedCredit);
-
-        await userRef.update({
-            wallet: newRealWallet,
-            expectedWallet: newExpWallet,
-            totalKg: newTotalKg
-        });
-
-        alert(`✅ Verified! Added ₹${addedCredit} to user's Real Wallet.`);
-        location.href = window.location.href.split('?')[0];
-    } catch (err) {
-        console.error(err);
-        alert("Approval failed: " + err.message);
-    }
-}
-
 // ==========================================
-// 7. PREMIUM MEMBERSHIP & 10% DISCOUNT SCANNER
+// 7. PREMIUM BARCODE 10% DISCOUNT SCANNER
 // ==========================================
 function updatePremiumUI() {
     const gate = document.getElementById('barcode-premium-gate');
@@ -506,7 +652,7 @@ async function activatePremiumMembership(planType) {
         });
         currentUserData.isPremium = true;
         updatePremiumUI();
-        alert("🎉 Congratulations! ECOEARN Premium is now active. Scanner unlocked with 10% discount generation!");
+        alert("🎉 ECOEARN Premium Active! 10% discount scanner unlocked.");
     } catch (err) {
         alert("Error activating membership: " + err.message);
     }
@@ -545,9 +691,9 @@ function initBarcodeCamScanner() {
             handleScannedBarcode(decodedText);
             stopBarcodeScanner();
         },
-        (error) => { /* ignore frame noise */ }
+        (error) => { /* frame noise */ }
     ).catch(err => {
-        console.log("Camera access fallback triggered: ", err);
+        console.warn("Camera fallback:", err);
     });
 }
 
@@ -566,67 +712,46 @@ function processBarcodeFromFile(input) {
     if (typeof Html5Qrcode !== 'undefined') {
         const html5QrCode = new Html5Qrcode("reader");
         html5QrCode.scanFile(file, true)
-            .then(decodedText => {
-                handleScannedBarcode(decodedText);
-            })
-            .catch(err => {
-                alert("Could not detect barcode from image file. Please enter the 13-digit number manually below.");
-            });
+            .then(decodedText => handleScannedBarcode(decodedText))
+            .catch(err => alert("Could not detect barcode. Enter manually."));
     }
 }
 
 function processManualBarcode() {
     const inputEl = document.getElementById('manual-barcode-input');
-    if (!inputEl) return alert("Input box not found!");
-
+    if (!inputEl) return;
     const inputVal = inputEl.value.trim();
-    if (!inputVal || inputVal.length < 8) {
-        return alert("Please enter a valid 8 to 13-digit barcode number!");
-    }
-
-    const resultCard = document.getElementById('barcode-result-card');
-    if (resultCard) {
-        resultCard.innerHTML = `<h4 style="color: #27ae60; margin-bottom: 8px;">🔍 Identifying brand product...</h4>`;
-        resultCard.classList.remove('hidden');
-    }
+    if (!inputVal || inputVal.length < 8) return alert("Enter valid 8-13 digit barcode!");
 
     handleScannedBarcode(inputVal);
     inputEl.value = "";
 }
 
 async function handleScannedBarcode(barcodeText) {
-    let prodName = "PET Packaging Container";
+    let prodName = "PET Beverage Container";
 
     try {
         const response = await fetch(`https://world.openfoodfacts.org/api/v2/product/${barcodeText}.json`);
         const data = await response.json();
-        
         if (data.status === 1 && data.product) {
             prodName = data.product.product_name || data.product.brands || "PET Beverage Container";
         }
-    } catch (err) {
-        console.log("Barcode lookup fallback triggered.");
-    }
+    } catch (err) {}
 
-    lastScannedProduct = prodName;
-    const randomCouponSuffix = Math.floor(1000 + Math.random() * 9000);
-    unlockedCouponCode = `ECO-SAVE-10-${randomCouponSuffix}`;
+    const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+    unlockedCouponCode = `ECO-SAVE-10-${randomSuffix}`;
 
     const resultCard = document.getElementById('barcode-result-card');
     resultCard.innerHTML = `
-        <h4 style="color: #2ecc71; margin-bottom: 8px;">✅ Container Verified!</h4>
-        <p style="margin: 6px 0; font-size: 0.95rem;"><strong>Product / Brand:</strong> <span>${prodName}</span></p>
-        
-        <div style="background: rgba(46, 204, 113, 0.15); border: 1.5px dashed #2ecc71; padding: 12px; border-radius: 8px; margin: 12px 0; text-align: center;">
+        <h4 style="color: #2ecc71; margin-bottom: 8px;">✅ Verified: ${prodName}</h4>
+        <div style="background: rgba(46, 204, 113, 0.15); border: 1.5px dashed #2ecc71; padding: 12px; border-radius: 8px; margin: 10px 0; text-align: center;">
             <span style="font-size: 0.85rem; color: #cbd5e1;">Your 10% Discount Code:</span><br>
-            <strong style="font-size: 1.3rem; color: #f1c40f; letter-spacing: 1px;">${unlockedCouponCode}</strong>
+            <strong style="font-size: 1.3rem; color: #f1c40f;">${unlockedCouponCode}</strong>
         </div>
-
         <button type="button" class="btn-primary" onclick="copyAndApplyCoupon('${unlockedCouponCode}')" style="width: 100%;">
-            <i class="fas fa-tag"></i> Copy Code & Go to Eco-Catalog
+            <i class="fas fa-tag"></i> Apply & Shop Now
         </button>
     `;
-
     resultCard.classList.remove('hidden');
 }
 
@@ -634,8 +759,7 @@ function copyAndApplyCoupon(code) {
     appliedDiscountPercent = 10;
     const couponInput = document.getElementById('cart-coupon-input');
     if (couponInput) couponInput.value = code;
-
-    alert(`🎉 Coupon code "${code}" copied! A 10% discount will automatically apply to your cart checkout.`);
+    alert(`🎉 Coupon "${code}" copied! 10% discount applied to your cart.`);
     showSection('products');
 }
 
@@ -653,12 +777,12 @@ function applyCouponCode() {
         }
         updateInterface();
     } else {
-        alert("Invalid coupon code. Scan a barcode in Premium to unlock a 10% voucher!");
+        alert("Invalid coupon code.");
     }
 }
 
 // ==========================================
-// 8. WORLDWIDE REAL-TIME GPS RECYCLING LOCATOR
+// 8. WORLDWIDE GPS RECYCLING LOCATOR
 // ==========================================
 function initEcoMap() {
     if (mapInitialized || typeof L === 'undefined') return;
@@ -673,11 +797,8 @@ function initEcoMap() {
                 userLng = pos.coords.longitude;
                 renderDynamicMap(userLat, userLng);
             },
-            (err) => {
-                console.warn("GPS access denied, defaulting position:", err);
-                renderDynamicMap(userLat, userLng);
-            },
-            { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            () => renderDynamicMap(userLat, userLng),
+            { enableHighAccuracy: true, timeout: 10000 }
         );
     } else {
         renderDynamicMap(userLat, userLng);
@@ -688,10 +809,7 @@ async function renderDynamicMap(lat, lng) {
     if (ecoMapInstance) return;
 
     ecoMapInstance = L.map('eco-map').setView([lat, lng], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(ecoMapInstance);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(ecoMapInstance);
 
     const userIcon = L.divIcon({
         className: 'user-map-pin',
@@ -700,7 +818,7 @@ async function renderDynamicMap(lat, lng) {
     });
 
     L.marker([lat, lng], { icon: userIcon }).addTo(ecoMapInstance)
-        .bindPopup("<b style='color:#007bff;'>📍 Your Location</b><br>Fetching authentic recycling centers nearby...")
+        .bindPopup("<b style='color:#007bff;'>📍 Your Location</b>")
         .openPopup();
 
     mapInitialized = true;
@@ -719,60 +837,38 @@ async function fetchWorldwideRecyclingCenters(lat, lng) {
             data.elements.forEach(elem => {
                 const cLat = elem.lat || (elem.center && elem.center.lat);
                 const cLng = elem.lon || (elem.center && elem.center.lon);
-                const name = (elem.tags && (elem.tags.name || elem.tags["operator"] || elem.tags["recycling_type"])) || "Authorized Recycling Drop Hub";
-                const materials = (elem.tags && elem.tags["recycling:plastic"] === "yes") ? "Plastic, Dry Scrap" : "Dry Waste & Recyclables";
+                const name = (elem.tags && (elem.tags.name || elem.tags["operator"])) || "Authorized Recycling Drop Hub";
 
                 if (cLat && cLng) {
-                    const popupContent = `
-                        <div style="font-size:13px; color:#fff; min-width: 180px;">
+                    L.marker([cLat, cLng]).addTo(ecoMapInstance).bindPopup(`
+                        <div style="font-size:13px; color:#fff;">
                             <b style="color:#2ecc71;">♻️ ${name}</b><br>
-                            📦 Accepts: ${materials}<br>
-                            <div style="margin-top: 8px;">
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=${cLat},${cLng}" target="_blank" style="color:#38bdf8; font-weight:bold; text-decoration:none;">🚗 Navigate via Google Maps</a>
-                            </div>
+                            <a href="https://www.google.com/maps/dir/?api=1&destination=${cLat},${cLng}" target="_blank" style="color:#38bdf8; font-weight:bold;">🚗 Get Directions</a>
                         </div>
-                    `;
-                    L.marker([cLat, cLng]).addTo(ecoMapInstance).bindPopup(popupContent);
+                    `);
                 }
             });
-        } else {
-            addRegionalDefaultCenters(lat, lng);
         }
-    } catch (error) {
-        console.error("Overpass API lookup error:", error);
-        addRegionalDefaultCenters(lat, lng);
-    }
-}
-
-function addRegionalDefaultCenters(lat, lng) {
-    const offsets = [
-        { name: "Municipal Dry Scrap Aggregation Point", dLat: 0.015, dLng: 0.012 },
-        { name: "Authorized Eco-Recovery Facility", dLat: -0.018, dLng: -0.015 },
-        { name: "Community Resource Drop-off Hub", dLat: 0.022, dLng: -0.010 }
-    ];
-
-    offsets.forEach(c => {
-        const cLat = lat + c.dLat;
-        const cLng = lng + c.dLng;
-        const popupContent = `
-            <div style="font-size:13px; color:#fff; min-width: 180px;">
-                <b style="color:#2ecc71;">♻️ ${c.name}</b><br>
-                🕒 Hours: 8:00 AM – 6:00 PM<br>
-                <div style="margin-top: 8px;">
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${cLat},${cLng}" target="_blank" style="color:#38bdf8; font-weight:bold; text-decoration:none;">🚗 Navigate via Google Maps</a>
-                </div>
-            </div>
-        `;
-        L.marker([cLat, cLng]).addTo(ecoMapInstance).bindPopup(popupContent);
-    });
+    } catch (err) {}
 }
 
 // ==========================================
-// 9. SUSTAINABILITY CERTIFICATE GENERATOR
+// 9. CLEAN NAME & DIRECT PDF DOWNLOAD
 // ==========================================
-function generateOfficialCertificate() {
+function getCleanUserName() {
+    if (!currentUserData || !currentUserData.email) return "VALUED STEWARD";
+    
+    // Strip all numbers and symbols from email, leaving only words
+    let rawUsername = currentUserData.email.split('@')[0];
+    let lettersOnly = rawUsername.replace(/[0-9]/g, '').replace(/[._-]/g, ' ').trim();
+    
+    if (!lettersOnly) return "VALUED STEWARD";
+    return lettersOnly.toUpperCase();
+}
+
+function openCertificatePreview() {
     if (!currentUserData) {
-        alert("Please log in to generate your sustainability certificate!");
+        alert("Please log in to view your certificate!");
         return showSection('login-screen');
     }
 
@@ -781,11 +877,11 @@ function generateOfficialCertificate() {
     const certDate = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const certId = `ECO-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
 
-    const displayName = currentUserData.email.split('@')[0].toUpperCase();
+    const cleanName = getCleanUserName();
 
     document.getElementById('cert-id').innerText = certId;
     document.getElementById('cert-date').innerText = certDate;
-    document.getElementById('cert-user-name').innerText = displayName;
+    document.getElementById('cert-user-name').innerText = cleanName;
     document.getElementById('cert-weight').innerText = `${totalKg} KG`;
     document.getElementById('cert-co2').innerText = `${co2Avoided} KG`;
 
@@ -798,15 +894,33 @@ function closeCertificateModal() {
     if (modal) modal.classList.add('hidden');
 }
 
+function downloadCertificatePDF() {
+    const certElement = document.getElementById('certificate-print-area');
+    if (!certElement) return;
+
+    const cleanName = getCleanUserName().replace(/\s+/g, '_');
+    const filename = `EcoEarn_Certificate_${cleanName}.pdf`;
+
+    const options = {
+        margin: [10, 10, 10, 10],
+        filename: filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    // Direct download trigger
+    html2pdf().set(options).from(certElement).save();
+}
+
 // ==========================================
-// 10. CART, DISCOUNT COMPUTATION & PICKUP
+// 10. CART & PICKUP
 // ==========================================
 function processToPickup() {
     if (!currentUserData) {
-        alert("Please log in to proceed to checkout!");
+        alert("Please log in to checkout!");
         return showSection('login-screen');
     }
-    
     let subtotal = userCart.reduce((a, b) => a + (b.price * b.qty), 0);
     if (subtotal === 0) return alert(translations[currentLang]['alert-empty']);
 
@@ -822,6 +936,7 @@ function processToPickup() {
 async function confirmPurchaseAndPickup() {
     const date = document.getElementById('pickup-date').value;
     const addr = document.getElementById('pickup-address').value;
+    const landmark = document.getElementById('pickup-landmark').value;
     if (!date || !addr) return alert("Fill all details!");
 
     let subtotal = userCart.reduce((a, b) => a + (b.price * b.qty), 0);
@@ -832,13 +947,14 @@ async function confirmPurchaseAndPickup() {
 
     if (currentUserData.wallet < finalTotal) return alert(translations[currentLang]['alert-credits']);
     
-    const orderImages = userCart.map(i => i.img);
     const newOrder = { 
         orderId: "ORD-" + Date.now(), 
         date: date, 
+        address: addr,
+        locality: landmark || "General Ward",
         total: finalTotal, 
         discountApplied: appliedDiscountPercent,
-        images: orderImages 
+        images: userCart.map(i => i.img) 
     };
     
     const existingOrders = currentUserData.orders || [];
@@ -856,17 +972,14 @@ async function confirmPurchaseAndPickup() {
         await loadUserData(currentUserData.id);
         
         alert(translations[currentLang]['alert-order']);
-        document.getElementById('feedback-comments').value = ""; 
-        setRating(0); 
         showSection('feedback-screen'); 
     } catch (error) {
-        console.error("Order processing failed:", error);
-        alert("Something went wrong. Please try again.");
+        alert("Order failed. Try again.");
     }
 }
 
 // ==========================================
-// 11. RATING & FEEDBACK
+// 11. FEEDBACK & RATINGS
 // ==========================================
 function setRating(score) {
     selectedRatingScore = score;
@@ -879,19 +992,16 @@ function setRating(score) {
 }
 
 async function submitFeedback() {
-    if (!currentUserData) {
-        alert("Please log in to submit a review!");
-        return showSection('login-screen');
-    }
-    if (selectedRatingScore === 0) return alert("Please select a star rating!");
-    const textualComments = document.getElementById('feedback-comments').value.trim();
+    if (!currentUserData) return showSection('login-screen');
+    if (selectedRatingScore === 0) return alert("Please select star rating!");
+    const comment = document.getElementById('feedback-comments').value.trim();
 
     try {
         await db.collection('feedback').add({
             userId: currentUserData.id,
             userEmail: currentUserData.email,
             rating: selectedRatingScore,
-            comment: textualComments,
+            comment: comment,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         alert(translations[currentLang]['alert-feedback-success']);
@@ -902,13 +1012,13 @@ async function submitFeedback() {
 }
 
 // ==========================================
-// 12. RENDERING & UI FUNCTIONS
+// 12. RENDERING & UI HELPERS
 // ==========================================
 function renderOrders() {
     const list = (currentUserData && currentUserData.orders) || [];
     document.getElementById('orders-list').innerHTML = list.length ? list.map(o => `
         <div class="order-box">
-            <strong>Date:</strong> ${o.date} | <strong>Total Paid:</strong> ₹${o.total} ${o.discountApplied ? `(10% Off)` : ''}
+            <strong>Date:</strong> ${o.date} | <strong>Total:</strong> ₹${o.total} ${o.discountApplied ? `(10% Off)` : ''}
             <div class="order-img-strip">${o.images.map(img => `<img src="${img}">`).join('')}</div>
         </div>`).join('') : "<p>No orders yet.</p>";
 }
@@ -941,7 +1051,7 @@ function filterProducts() {
 
 function addToCart(id) {
     if (!currentUserData) {
-        alert("Please login or create an account to start shopping and add items to your cart!");
+        alert("Please login to shop!");
         return showSection('login-screen');
     }
     const p = productList.find(x => x.id === id);
@@ -984,7 +1094,7 @@ function updateInterface() {
         const totalPr = document.getElementById('cart-total-price');
         if (totalPr) {
             totalPr.innerHTML = appliedDiscountPercent > 0 
-                ? `<span style="text-decoration: line-through; color: #888; font-size: 1.1rem;">₹${subtotal}</span> ₹${finalTotal} <span style="color:#2ecc71; font-size:0.9rem;">(10% Discount Applied)</span>` 
+                ? `<span style="text-decoration: line-through; color: #888; font-size: 1.1rem;">₹${subtotal}</span> ₹${finalTotal} <span style="color:#2ecc71; font-size:0.9rem;">(10% Off)</span>` 
                 : finalTotal;
         }
     }
@@ -1003,23 +1113,20 @@ async function loadLeaderboard() {
 }
 
 function showSection(id) {
-    if (id !== 'barcode-screen') {
-        stopBarcodeScanner();
-    }
+    if (id !== 'barcode-screen') stopBarcodeScanner();
+    if (id !== 'operator-dashboard-screen') stopOperatorQrScanner();
 
     document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
     const targetedSec = document.getElementById(id);
     if (targetedSec) targetedSec.classList.remove('hidden');
     
-    if (currentUserData && !targetScanUid) {
+    if (currentUserData && !isOperatorAuthenticated) {
         localStorage.setItem('ecoearn_active_section', id);
     }
 
     if (id === 'barcode-screen') {
         updatePremiumUI();
-        if (currentUserData && currentUserData.isPremium) {
-            switchBarcodeTab('cam');
-        }
+        if (currentUserData && currentUserData.isPremium) switchBarcodeTab('cam');
     } else if (id === 'map-screen') {
         setTimeout(initEcoMap, 300);
     }
@@ -1039,9 +1146,5 @@ function toggleSidebar() {
 
 function logout() {
     localStorage.removeItem('ecoearn_active_section');
-    auth.signOut().then(() => {
-        location.reload();
-    }).catch(() => {
-        location.reload();
-    });
+    auth.signOut().then(() => location.reload()).catch(() => location.reload());
 }
